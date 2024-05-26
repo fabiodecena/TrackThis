@@ -13,15 +13,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -36,11 +39,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.trackthis.data.Topic
+import androidx.navigation.compose.rememberNavController
 import com.example.trackthis.data.NavigationItem
+import com.example.trackthis.data.Topic
 import com.example.trackthis.data.TopicListItem
+import com.example.trackthis.screen.ActiveTrackScreen
 import com.example.trackthis.screen.BuildScreen
 import com.example.trackthis.screen.HomeScreen
+import com.example.trackthis.screen.InactiveTrackScreen
 import com.example.trackthis.screen.LocationScreen
 import com.example.trackthis.screen.MainScreen
 import com.example.trackthis.screen.ProfileScreen
@@ -79,7 +85,13 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
             LocationScreen()
         }
         composable(NavigationItem.Settings.route) {
-            SettingsScreen()
+            SettingsScreen(navController = navController)
+        }
+        composable(NavigationItem.ActiveTrack.route) {
+            ActiveTrackScreen()
+        }
+        composable(NavigationItem.InactiveTrack.route) {
+            InactiveTrackScreen()
         }
         composable(NavigationItem.Profile.route) {
             ProfileScreen()
@@ -90,9 +102,14 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
 
 @Composable
 fun TopicListItem(topicListItem: TopicListItem) {
+    var checked by remember { mutableStateOf(topicListItem.selected) }
     Surface(
         color = MaterialTheme.colorScheme.background,
-        onClick = { /*TODO*/ }) {
+        onClick = {
+            topicListItem.selected = !topicListItem.selected
+            checked = topicListItem.selected
+        }
+    ) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -117,9 +134,9 @@ fun TopicListItem(topicListItem: TopicListItem) {
                     style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.Center
                 )
-                Icon(
-                    imageVector = Icons.Filled.Menu,
-                    contentDescription = stringResource(id = topicListItem.name)
+                Checkbox(
+                    checked = checked,
+                    onCheckedChange = null
                 )
             }
         }
@@ -192,6 +209,6 @@ fun visualizeTopics(
 @Composable
 fun GreetingPreview() {
     TrackThisTheme {
-        SettingsScreen()
+        SettingsScreen(navController = rememberNavController())
     }
 }

@@ -52,7 +52,7 @@ fun TopAppBar(navController: NavController) {
                 }
             ) {
                 Icon(
-                    imageVector = topBarNavigationItems[0].icon,
+                    imageVector = topBarNavigationItems[0].icon!!,
                     contentDescription = topBarNavigationItems[0].title
                 )
             }
@@ -70,7 +70,7 @@ fun TopAppBar(navController: NavController) {
                 }
             ) {
                 Icon(
-                    imageVector = topBarNavigationItems[1].icon,
+                    imageVector = topBarNavigationItems[1].icon!!,
                     contentDescription = topBarNavigationItems[1].title
                 )
             }
@@ -86,7 +86,7 @@ fun BottomBar(navController: NavController) {
     NavigationBar(containerColor = NavigationBarDefaults.containerColor) {
         bottomBarNavigationItems.forEach { item ->
             NavigationBarItem(
-                icon = { Icon(imageVector = item.icon, contentDescription = item.title) },
+                icon = { Icon(imageVector = item.icon!!, contentDescription = item.title) },
                 label = { Text(text = item.title) },
                 selected = currentRoute == item.route,
                 colors = NavigationBarItemDefaults.colors(
