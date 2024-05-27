@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -16,6 +17,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -27,6 +29,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -40,6 +43,7 @@ import com.example.trackthis.bars.TopAppBar
 import com.example.trackthis.data.listOfVisualizedTopicListItem
 import com.example.trackthis.data.listOfVisualizedTopics
 import com.example.trackthis.data.trackNavigationItems
+import com.example.trackthis.ui.theme.TrackThisTheme
 import com.example.trackthis.visualizeTopics
 
 @Composable
@@ -54,13 +58,72 @@ fun MainScreen() {
 }
 @Composable
 fun SettingsScreen(modifier: Modifier = Modifier, navController: NavController) {
+   ActiveTrackScreen(modifier, navController)
+}
+
+@Composable
+fun ActiveTrackScreen(modifier: Modifier = Modifier, navController: NavController) {
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
     ) {
         Row(
             modifier = modifier
-                .padding(10.dp)
+                .fillMaxWidth()
+                .padding(10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                modifier = modifier
+                    .clickable { navController.navigate(trackNavigationItems[0].route) {
+                        navController.graph.startDestinationRoute?.let { route ->
+                            popUpTo(route) {
+                                saveState = true
+                            }
+                        }
+                        launchSingleTop = true
+                        restoreState = true }
+                    }
+                    .background(colorResource(id = R.color.purple_200), RoundedCornerShape(10.dp))
+                    .padding(10.dp),
+                text = trackNavigationItems[0].title
+            )
+            Text(
+                modifier = modifier
+                    .clickable { navController.navigate(trackNavigationItems[1].route) {
+                        navController.graph.startDestinationRoute?.let { route ->
+                            popUpTo(route) {
+                                saveState = true
+                            }
+                        }
+                        launchSingleTop = true
+                        restoreState = true }
+                    }
+                    .padding(10.dp),
+                text = trackNavigationItems[1].title
+            )
+        }
+        LazyColumn(
+            modifier = modifier
+                .height(450.dp)
+        ) {
+            items(listOfVisualizedTopicListItem.filter { it.selected }) { topic ->
+                TopicListItem(topic)
+            }
+        }
+    }
+}
+@Composable
+fun InactiveTrackScreen(modifier: Modifier = Modifier, navController: NavController) {
+    Column(
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+    ) {
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
                 modifier = modifier
@@ -74,7 +137,8 @@ fun SettingsScreen(modifier: Modifier = Modifier, navController: NavController) 
                         restoreState = true }
                     }
                     .padding(10.dp),
-                text = "Active Tracking")
+                text = trackNavigationItems[0].title
+            )
             Text(
                 modifier = modifier
                     .clickable { navController.navigate(trackNavigationItems[1].route) {
@@ -86,50 +150,11 @@ fun SettingsScreen(modifier: Modifier = Modifier, navController: NavController) 
                         launchSingleTop = true
                         restoreState = true }
                     }
+                    .background(colorResource(id = R.color.teal_200), RoundedCornerShape(10.dp))
                     .padding(10.dp),
-                text = "Inactive Tracking")
+                text = trackNavigationItems[1].title
+            )
         }
-        LazyColumn(
-            modifier = modifier
-                .height(450.dp)
-        ) {
-            items(listOfVisualizedTopicListItem.filter { it.selected }) { topic ->
-                TopicListItem(topic)
-            }
-        }
-    }
-}
-
-@Composable
-fun ActiveTrackScreen(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .verticalScroll(rememberScrollState())
-    ) {
-        Text(
-            modifier = modifier
-                .padding(10.dp),
-            text = "Active Tracking")
-        LazyColumn(
-            modifier = modifier
-                .height(450.dp)
-        ) {
-            items(listOfVisualizedTopicListItem.filter { it.selected }) { topic ->
-                TopicListItem(topic)
-            }
-        }
-    }
-}
-@Composable
-fun InactiveTrackScreen(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .verticalScroll(rememberScrollState())
-    ) {
-        Text(
-            modifier = modifier
-                .padding(10.dp),
-            text = "Inactive Tracking")
         LazyColumn(
             modifier = modifier
                 .height(450.dp)
@@ -210,5 +235,13 @@ fun LocationScreen() {
             textAlign = TextAlign.Center,
             fontSize = 25.sp
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    TrackThisTheme {
+        SettingsScreen(navController = rememberNavController())
     }
 }

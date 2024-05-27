@@ -22,6 +22,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.trackthis.R
 import com.example.trackthis.data.bottomBarNavigationItems
 import com.example.trackthis.data.topBarNavigationItems
+import com.example.trackthis.data.trackNavigationItems
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,7 +42,7 @@ fun TopAppBar(navController: NavController) {
         },
         navigationIcon = {
             IconButton(
-                onClick = { navController.navigate(topBarNavigationItems[0].route) {
+                onClick = { navController.navigate(trackNavigationItems[0].route) {
                     navController.graph.startDestinationRoute?.let { route ->
                         popUpTo(route) {
                             saveState = true

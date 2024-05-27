@@ -34,12 +34,10 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.Topic
 import com.example.trackthis.data.TopicListItem
@@ -88,10 +86,10 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
             SettingsScreen(navController = navController)
         }
         composable(NavigationItem.ActiveTrack.route) {
-            ActiveTrackScreen()
+            ActiveTrackScreen(navController = navController)
         }
         composable(NavigationItem.InactiveTrack.route) {
-            InactiveTrackScreen()
+            InactiveTrackScreen(navController = navController)
         }
         composable(NavigationItem.Profile.route) {
             ProfileScreen()
@@ -205,10 +203,4 @@ fun visualizeTopics(
     return matchingVisualizedTopic
 }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    TrackThisTheme {
-        SettingsScreen(navController = rememberNavController())
-    }
-}
+

@@ -14,8 +14,8 @@ sealed class NavigationItem(var route: String, var icon: ImageVector?, var title
     data object Location: NavigationItem("location", Icons.Filled.LocationOn, "Location")
     data object Profile: NavigationItem("profile", Icons.Filled.Person, "Profile")
     data object Settings: NavigationItem("settings", Icons.Filled.Menu, "Settings")
-    data object ActiveTrack: NavigationItem("activeTrack", null,"Active Track")
-    data object InactiveTrack: NavigationItem("inactiveTrack",null ,"Inactive Track")
+    data object ActiveTrack: NavigationItem("activeTrack", null,"Active Tracking")
+    data object InactiveTrack: NavigationItem("inactiveTrack",null ,"Inactive Tracking")
 
 }
 val topBarNavigationItems = listOf(
