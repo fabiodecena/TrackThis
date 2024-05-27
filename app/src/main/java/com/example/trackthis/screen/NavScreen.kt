@@ -105,7 +105,7 @@ fun ActiveTrackScreen(modifier: Modifier = Modifier, navController: NavControlle
         }
         LazyColumn(
             modifier = modifier
-                .height(450.dp)
+                .height(500.dp)
         ) {
             items(listOfVisualizedTopicListItem.filter { it.selected }) { topic ->
                 TopicListItem(topic)
@@ -157,7 +157,7 @@ fun InactiveTrackScreen(modifier: Modifier = Modifier, navController: NavControl
         }
         LazyColumn(
             modifier = modifier
-                .height(450.dp)
+                .height(500.dp)
         ) {
             items(listOfVisualizedTopicListItem.filter { !it.selected }) { topic ->
                 TopicListItem(topic)
