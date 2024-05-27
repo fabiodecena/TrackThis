@@ -14,10 +14,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -25,48 +21,49 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.example.trackthis.R
 import com.example.trackthis.data.Topic
 
 @Composable
-fun TopicCard(topic: Topic, modifier: Modifier = Modifier) {
-    var expanded by remember { mutableStateOf(false) }
-
+fun TopicCard(
+    topic: Topic,
+    isExpanded: Boolean,
+    onCardClick: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Card(
-        modifier = modifier
-        .clickable { expanded = !expanded },
+        modifier = modifier.clickable { onCardClick(topic.name) },
         colors = CardDefaults.cardColors(colorResource(id = R.color.light_grey)),
         elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.padding_small))
     ) {
         Row(
-            modifier = modifier
-                .fillMaxWidth(),
+            modifier = modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 painter = painterResource(id = topic.imageRes),
                 contentDescription = null,
-                modifier = Modifier
-                    .size(width = 68.dp, height = 68.dp),
+                modifier = Modifier.size(width = 68.dp, height = 68.dp),
                 contentScale = ContentScale.Crop
             )
             Text(
-                modifier = Modifier
-                    .padding(start = 20.dp),
+                modifier = Modifier.padding(start = 20.dp),
                 text = stringResource(id = topic.name),
                 style = MaterialTheme.typography.bodyMedium
             )
         }
-        if (expanded) {
+        if (isExpanded) {
             Divider()
             Row(
                 modifier = modifier
                     .fillMaxWidth()
-                    .padding(
-                        start = dimensionResource(R.dimen.padding_medium)
-                    ),
+                    .padding(start = dimensionResource(R.dimen.padding_medium)),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -75,14 +72,18 @@ fun TopicCard(topic: Topic, modifier: Modifier = Modifier) {
                     contentDescription = null,
                     modifier = Modifier
                         .padding(end = dimensionResource(R.dimen.padding_medium))
-                        .clickable {  }
+                        .clickable { }
                 )
                 Text(
-                    text = "Start to Track your Progress about ${stringResource(id = topic.name)}",
+                    text = buildAnnotatedString {
+                        append("Start to Track your Progress about ")
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append(stringResource(id = topic.name))
+                        }
+                    },
                     textAlign = TextAlign.Left,
                     style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium)
-                    )
+                    modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))
                 )
             }
         }

@@ -22,6 +22,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -189,6 +193,8 @@ fun HomeScreen( modifier: Modifier = Modifier) {
         listOfVisualizedTopic = listOfVisualizedTopics,
         listOfVisualizedTopicListItem = listOfVisualizedTopicListItem
     )
+    var expandedTopicName by remember { mutableStateOf<Int?>(null) }
+
     LazyVerticalGrid(
         modifier = modifier,
         columns = GridCells.Fixed(2),
@@ -197,7 +203,13 @@ fun HomeScreen( modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
     ) {
         items(visualizedTopics) { topic ->
-            TopicCard(topic)
+            TopicCard(
+                topic = topic,
+                isExpanded = topic.name == expandedTopicName,
+                onCardClick = { clickedTopicName ->
+                    expandedTopicName = if (expandedTopicName == clickedTopicName)  null else clickedTopicName
+                }
+            )
         }
     }
 }
