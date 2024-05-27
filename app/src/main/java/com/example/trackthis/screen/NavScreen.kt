@@ -36,10 +36,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.trackthis.Navigation
 import com.example.trackthis.R
-import com.example.trackthis.TopicCard
-import com.example.trackthis.TopicListItem
 import com.example.trackthis.bars.BottomBar
 import com.example.trackthis.bars.TopAppBar
+import com.example.trackthis.component.TopicCard
+import com.example.trackthis.component.TopicListItem
 import com.example.trackthis.data.listOfVisualizedTopicListItem
 import com.example.trackthis.data.listOfVisualizedTopics
 import com.example.trackthis.data.trackNavigationItems

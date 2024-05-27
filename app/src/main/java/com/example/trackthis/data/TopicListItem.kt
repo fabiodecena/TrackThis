@@ -36,4 +36,4 @@ var listOfVisualizedTopicListItem = mutableListOf(
     TopicListItem(R.string.physics, R.drawable.physics, true),
     TopicListItem(R.string.history, R.drawable.history, false),
     TopicListItem(R.string.journalism, R.drawable.journalism, true)
-)
+).sortedBy { it.name }
