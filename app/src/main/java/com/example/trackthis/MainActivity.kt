@@ -22,6 +22,7 @@ import com.example.trackthis.screen.LocationScreen
 import com.example.trackthis.screen.MainScreen
 import com.example.trackthis.screen.ProfileScreen
 import com.example.trackthis.screen.SettingsScreen
+import com.example.trackthis.screen.TrackDetailsScreen
 import com.example.trackthis.ui.theme.TrackThisTheme
 
 class MainActivity : ComponentActivity() {
@@ -47,7 +48,10 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
         startDestination = NavigationItem.Home.route
     ){
         composable(NavigationItem.Home.route) {
-            HomeScreen()
+            HomeScreen(navController = navController)
+        }
+        composable(NavigationItem.TrackDetails.route) {
+            TrackDetailsScreen()
         }
         composable(NavigationItem.Build.route) {
             BuildScreen()
@@ -58,10 +62,10 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
         composable(NavigationItem.Settings.route) {
             SettingsScreen(navController = navController)
         }
-        composable(NavigationItem.ActiveTrack.route) {
+        composable(NavigationItem.ActiveTrackSelection.route) {
             ActiveTrackScreen(navController = navController)
         }
-        composable(NavigationItem.InactiveTrack.route) {
+        composable(NavigationItem.InactiveTrackSelection.route) {
             InactiveTrackScreen(navController = navController)
         }
         composable(NavigationItem.Profile.route) {

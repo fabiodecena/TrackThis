@@ -10,12 +10,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class NavigationItem(var route: String, var icon: ImageVector?, var title: String ) {
     data object Home: NavigationItem("home", Icons.Filled.Home, "Home")
+    data object TrackDetails: NavigationItem("trackDetails", null, "Track Details")
     data object Build: NavigationItem("build", Icons.Filled.Build, "Build")
     data object Location: NavigationItem("location", Icons.Filled.LocationOn, "Location")
     data object Profile: NavigationItem("profile", Icons.Filled.Person, "Profile")
     data object Settings: NavigationItem("settings", Icons.Filled.Menu, "Settings")
-    data object ActiveTrack: NavigationItem("activeTrack", null,"Active Tracking")
-    data object InactiveTrack: NavigationItem("inactiveTrack",null ,"Inactive Tracking")
+    data object ActiveTrackSelection: NavigationItem("activeTrack", null,"Active Tracking")
+    data object InactiveTrackSelection: NavigationItem("inactiveTrack",null ,"Inactive Tracking")
 
 }
 val topBarNavigationItems = listOf(
@@ -29,6 +30,9 @@ val bottomBarNavigationItems = listOf(
     NavigationItem.Location
 )
 val trackNavigationItems = listOf(
-    NavigationItem.ActiveTrack,
-    NavigationItem.InactiveTrack
+    NavigationItem.ActiveTrackSelection,
+    NavigationItem.InactiveTrackSelection
+)
+val trackDetails = listOf(
+    NavigationItem.TrackDetails
 )

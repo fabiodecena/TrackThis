@@ -27,15 +27,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.trackthis.R
 import com.example.trackthis.data.Topic
+import com.example.trackthis.data.trackDetails
 
 @Composable
 fun TopicCard(
     topic: Topic,
     isExpanded: Boolean,
     onCardClick: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController
 ) {
     Card(
         modifier = modifier.clickable { onCardClick(topic.name) },
@@ -68,11 +71,20 @@ fun TopicCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Icon(
+                    tint = MaterialTheme.colorScheme.primary,
                     painter = painterResource(id = R.drawable.play_circle_24dp_fill0_wght400_grad0_opsz24),
                     contentDescription = null,
                     modifier = Modifier
                         .padding(end = dimensionResource(R.dimen.padding_medium))
-                        .clickable { }
+                        .clickable { navController.navigate(trackDetails[0].route) {
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                    saveState = true
+                                }
+                            }
+                            launchSingleTop = true
+                            restoreState = true }
+                        }
                 )
                 Text(
                     text = buildAnnotatedString {

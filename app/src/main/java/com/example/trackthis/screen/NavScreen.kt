@@ -33,7 +33,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -44,10 +43,10 @@ import com.example.trackthis.bars.BottomBar
 import com.example.trackthis.bars.TopAppBar
 import com.example.trackthis.component.TopicCard
 import com.example.trackthis.component.TopicListItem
+import com.example.trackthis.component.TrackDetails
 import com.example.trackthis.data.listOfVisualizedTopicListItem
 import com.example.trackthis.data.listOfVisualizedTopics
 import com.example.trackthis.data.trackNavigationItems
-import com.example.trackthis.ui.theme.TrackThisTheme
 import com.example.trackthis.visualizeTopics
 
 @Composable
@@ -79,14 +78,16 @@ fun ActiveTrackScreen(modifier: Modifier = Modifier, navController: NavControlle
         ) {
             Text(
                 modifier = modifier
-                    .clickable { navController.navigate(trackNavigationItems[0].route) {
-                        navController.graph.startDestinationRoute?.let { route ->
-                            popUpTo(route) {
-                                saveState = true
+                    .clickable {
+                        navController.navigate(trackNavigationItems[0].route) {
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                    saveState = true
+                                }
                             }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true }
                     }
                     .background(colorResource(id = R.color.purple_200), RoundedCornerShape(10.dp))
                     .padding(10.dp),
@@ -94,14 +95,16 @@ fun ActiveTrackScreen(modifier: Modifier = Modifier, navController: NavControlle
             )
             Text(
                 modifier = modifier
-                    .clickable { navController.navigate(trackNavigationItems[1].route) {
-                        navController.graph.startDestinationRoute?.let { route ->
-                            popUpTo(route) {
-                                saveState = true
+                    .clickable {
+                        navController.navigate(trackNavigationItems[1].route) {
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                    saveState = true
+                                }
                             }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true }
                     }
                     .padding(10.dp),
                 text = trackNavigationItems[1].title
@@ -131,28 +134,32 @@ fun InactiveTrackScreen(modifier: Modifier = Modifier, navController: NavControl
         ) {
             Text(
                 modifier = modifier
-                    .clickable { navController.navigate(trackNavigationItems[0].route) {
-                        navController.graph.startDestinationRoute?.let { route ->
-                            popUpTo(route) {
-                                saveState = true
+                    .clickable {
+                        navController.navigate(trackNavigationItems[0].route) {
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                    saveState = true
+                                }
                             }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true }
                     }
                     .padding(10.dp),
                 text = trackNavigationItems[0].title
             )
             Text(
                 modifier = modifier
-                    .clickable { navController.navigate(trackNavigationItems[1].route) {
-                        navController.graph.startDestinationRoute?.let { route ->
-                            popUpTo(route) {
-                                saveState = true
+                    .clickable {
+                        navController.navigate(trackNavigationItems[1].route) {
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                    saveState = true
+                                }
                             }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true }
                     }
                     .background(colorResource(id = R.color.teal_200), RoundedCornerShape(10.dp))
                     .padding(10.dp),
@@ -188,7 +195,7 @@ fun ProfileScreen() {
     }
 }
 @Composable
-fun HomeScreen( modifier: Modifier = Modifier) {
+fun HomeScreen( modifier: Modifier = Modifier, navController: NavController) {
     val visualizedTopics = visualizeTopics(
         listOfVisualizedTopic = listOfVisualizedTopics,
         listOfVisualizedTopicListItem = listOfVisualizedTopicListItem
@@ -204,6 +211,7 @@ fun HomeScreen( modifier: Modifier = Modifier) {
     ) {
         items(visualizedTopics) { topic ->
             TopicCard(
+                navController = navController,
                 topic = topic,
                 isExpanded = topic.name == expandedTopicName,
                 onCardClick = { clickedTopicName ->
@@ -213,6 +221,11 @@ fun HomeScreen( modifier: Modifier = Modifier) {
         }
     }
 }
+@Composable
+fun TrackDetailsScreen(modifier: Modifier = Modifier) {
+    TrackDetails()
+}
+
 @Composable
 fun BuildScreen() {
     Column(
@@ -247,13 +260,5 @@ fun LocationScreen() {
             textAlign = TextAlign.Center,
             fontSize = 25.sp
         )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    TrackThisTheme {
-        SettingsScreen(navController = rememberNavController())
     }
 }
