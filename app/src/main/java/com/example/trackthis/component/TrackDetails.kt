@@ -10,4 +10,5 @@ fun TrackDetails() {
     Column() {
         Text(text = "Architecture")
     }
+
 }
