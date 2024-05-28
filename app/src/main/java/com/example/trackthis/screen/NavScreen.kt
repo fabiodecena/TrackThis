@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,9 +15,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -66,10 +63,7 @@ fun SettingsScreen(modifier: Modifier = Modifier, navController: NavController) 
 
 @Composable
 fun ActiveTrackScreen(modifier: Modifier = Modifier, navController: NavController) {
-    Column(
-        modifier = modifier
-            .verticalScroll(rememberScrollState())
-    ) {
+    Column {
         Row(
             modifier = modifier
                 .fillMaxWidth()
@@ -112,7 +106,6 @@ fun ActiveTrackScreen(modifier: Modifier = Modifier, navController: NavControlle
         }
         LazyColumn(
             modifier = modifier
-                .height(500.dp)
         ) {
             items(listOfVisualizedTopicListItem.filter { it.selected }) { topic ->
                 TopicListItem(topic)
@@ -122,10 +115,7 @@ fun ActiveTrackScreen(modifier: Modifier = Modifier, navController: NavControlle
 }
 @Composable
 fun InactiveTrackScreen(modifier: Modifier = Modifier, navController: NavController) {
-    Column(
-        modifier = modifier
-            .verticalScroll(rememberScrollState())
-    ) {
+    Column {
         Row(
             modifier = modifier
                 .fillMaxWidth()
@@ -168,7 +158,6 @@ fun InactiveTrackScreen(modifier: Modifier = Modifier, navController: NavControl
         }
         LazyColumn(
             modifier = modifier
-                .height(500.dp)
         ) {
             items(listOfVisualizedTopicListItem.filter { !it.selected }) { topic ->
                 TopicListItem(topic)
@@ -223,7 +212,7 @@ fun HomeScreen( modifier: Modifier = Modifier, navController: NavController) {
 }
 @Composable
 fun TrackDetailsScreen(modifier: Modifier = Modifier) {
-    TrackDetails()
+    TrackDetails(modifier)
 }
 
 @Composable
