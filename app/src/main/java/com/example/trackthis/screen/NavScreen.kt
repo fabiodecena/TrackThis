@@ -204,7 +204,6 @@ fun HomeScreen( modifier: Modifier = Modifier, navController: NavController) {
                 isExpanded = topic.name == expandedTopicName,
                 onCardClick = { clickedTopicName ->
                     expandedTopicName = if (expandedTopicName == clickedTopicName)  null else clickedTopicName
-                    topic.expanded = true
                 }
             )
         }

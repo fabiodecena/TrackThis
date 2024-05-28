@@ -86,6 +86,7 @@ fun TopicCard(
                                 launchSingleTop = true
                                 restoreState = true
                             }
+                            topic.expanded = true
                         }
                 )
                 Text(
