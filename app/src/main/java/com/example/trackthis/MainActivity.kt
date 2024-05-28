@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.trackthis.component.TrackDetails
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.Topic
 import com.example.trackthis.data.TopicListItem
@@ -22,7 +23,6 @@ import com.example.trackthis.screen.LocationScreen
 import com.example.trackthis.screen.MainScreen
 import com.example.trackthis.screen.ProfileScreen
 import com.example.trackthis.screen.SettingsScreen
-import com.example.trackthis.screen.TrackDetailsScreen
 import com.example.trackthis.ui.theme.TrackThisTheme
 
 class MainActivity : ComponentActivity() {
@@ -51,7 +51,7 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
             HomeScreen(navController = navController)
         }
         composable(NavigationItem.TrackDetails.route) {
-            TrackDetailsScreen()
+            TrackDetails(modifier)
         }
         composable(NavigationItem.Build.route) {
             BuildScreen()

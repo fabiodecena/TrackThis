@@ -8,7 +8,9 @@ data class Topic (
     @StringRes val name: Int,
     val availableCourses: Int,
     @DrawableRes val imageRes: Int
-)
+) {
+    var expanded: Boolean = false
+}
 
 var listOfVisualizedTopics = mutableListOf(
     Topic(R.string.architecture,58, R.drawable.architecture),

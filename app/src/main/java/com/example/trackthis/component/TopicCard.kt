@@ -76,14 +76,16 @@ fun TopicCard(
                     contentDescription = null,
                     modifier = Modifier
                         .padding(end = dimensionResource(R.dimen.padding_medium))
-                        .clickable { navController.navigate(trackDetails[0].route) {
-                            navController.graph.startDestinationRoute?.let { route ->
-                                popUpTo(route) {
-                                    saveState = true
+                        .clickable {
+                            navController.navigate(trackDetails[0].route) {
+                                navController.graph.startDestinationRoute?.let { route ->
+                                    popUpTo(route) {
+                                        saveState = true
+                                    }
                                 }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                            launchSingleTop = true
-                            restoreState = true }
                         }
                 )
                 Text(
@@ -100,4 +102,9 @@ fun TopicCard(
             }
         }
     }
+}
+
+fun findExpandedTopicName(topics: List<Topic>): Topic {
+    val expandedTopic = topics.firstOrNull { it.expanded }
+    return expandedTopic!!
 }

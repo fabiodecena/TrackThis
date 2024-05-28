@@ -40,7 +40,6 @@ import com.example.trackthis.bars.BottomBar
 import com.example.trackthis.bars.TopAppBar
 import com.example.trackthis.component.TopicCard
 import com.example.trackthis.component.TopicListItem
-import com.example.trackthis.component.TrackDetails
 import com.example.trackthis.data.listOfVisualizedTopicListItem
 import com.example.trackthis.data.listOfVisualizedTopics
 import com.example.trackthis.data.trackNavigationItems
@@ -205,16 +204,12 @@ fun HomeScreen( modifier: Modifier = Modifier, navController: NavController) {
                 isExpanded = topic.name == expandedTopicName,
                 onCardClick = { clickedTopicName ->
                     expandedTopicName = if (expandedTopicName == clickedTopicName)  null else clickedTopicName
+                    topic.expanded = true
                 }
             )
         }
     }
 }
-@Composable
-fun TrackDetailsScreen(modifier: Modifier = Modifier) {
-    TrackDetails(modifier)
-}
-
 @Composable
 fun BuildScreen() {
     Column(
