@@ -19,7 +19,7 @@ fun TrackDetails(modifier: Modifier, topic: Topic = findExpandedTopicName(listOf
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(stringResource(topic.name))
-        topic.expanded = !topic.expanded
+        topic.expanded = false
     }
 
 }
