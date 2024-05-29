@@ -25,4 +25,5 @@
     <string name="photography">Photography</string>
     <string name="tech">Tech</string>
     <string name="topbar_title">Track This!</string>
+    <string name="user_name">Student Name</string>
 </resources>

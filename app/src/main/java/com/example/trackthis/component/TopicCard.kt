@@ -77,7 +77,7 @@ fun TopicCard(
                     modifier = Modifier
                         .padding(end = dimensionResource(R.dimen.padding_medium))
                         .clickable {
-                            navController.navigate(trackDetails[0].route) {
+                            navController.navigate("${trackDetails[0].route}/${topic.name}") {
                                 navController.graph.startDestinationRoute?.let { route ->
                                     popUpTo(route) {
                                         saveState = true
@@ -86,7 +86,6 @@ fun TopicCard(
                                 launchSingleTop = true
                                 restoreState = true
                             }
-                            topic.expanded = true
                         }
                 )
                 Text(
