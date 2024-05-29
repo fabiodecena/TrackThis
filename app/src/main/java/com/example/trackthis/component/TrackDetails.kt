@@ -23,3 +23,8 @@ fun TrackDetails(modifier: Modifier, topic: Topic = findExpandedTopicName(listOf
     }
 
 }
+
+fun findExpandedTopicName(topics: List<Topic>): Topic {
+    val expandedTopic = topics.firstOrNull { it.expanded }
+    return expandedTopic!!
+}

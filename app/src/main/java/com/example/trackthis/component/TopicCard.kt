@@ -104,8 +104,3 @@ fun TopicCard(
         }
     }
 }
-
-fun findExpandedTopicName(topics: List<Topic>): Topic {
-    val expandedTopic = topics.firstOrNull { it.expanded }
-    return expandedTopic!!
-}
