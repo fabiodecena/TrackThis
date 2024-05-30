@@ -60,8 +60,8 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
         ) { backStackEntry ->
             val topicId = backStackEntry.arguments?.getInt("topicId")
             val topic = listOfVisualizedTopics.find { it.name == topicId }
-            if (topic != null) {
-                TrackDetails(topic)
+            topic?.let {
+                TrackDetails(topic = topic)
             }
         }
         composable(NavigationItem.Build.route) {

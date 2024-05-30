@@ -70,7 +70,7 @@ fun ActiveTrackScreen(modifier: Modifier = Modifier, navController: NavControlle
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                modifier = modifier
+                modifier = Modifier
                     .clickable {
                         navController.navigate(trackNavigationItems[0].route) {
                             navController.graph.startDestinationRoute?.let { route ->
@@ -87,7 +87,7 @@ fun ActiveTrackScreen(modifier: Modifier = Modifier, navController: NavControlle
                 text = trackNavigationItems[0].title
             )
             Text(
-                modifier = modifier
+                modifier = Modifier
                     .clickable {
                         navController.navigate(trackNavigationItems[1].route) {
                             navController.graph.startDestinationRoute?.let { route ->
@@ -104,7 +104,7 @@ fun ActiveTrackScreen(modifier: Modifier = Modifier, navController: NavControlle
             )
         }
         LazyColumn(
-            modifier = modifier
+            modifier = Modifier
         ) {
             items(listOfVisualizedTopicListItem.filter { it.selected }) { topic ->
                 TopicListItem(topic)
@@ -122,7 +122,7 @@ fun InactiveTrackScreen(modifier: Modifier = Modifier, navController: NavControl
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                modifier = modifier
+                modifier = Modifier
                     .clickable {
                         navController.navigate(trackNavigationItems[0].route) {
                             navController.graph.startDestinationRoute?.let { route ->
@@ -138,7 +138,7 @@ fun InactiveTrackScreen(modifier: Modifier = Modifier, navController: NavControl
                 text = trackNavigationItems[0].title
             )
             Text(
-                modifier = modifier
+                modifier = Modifier
                     .clickable {
                         navController.navigate(trackNavigationItems[1].route) {
                             navController.graph.startDestinationRoute?.let { route ->
@@ -156,7 +156,7 @@ fun InactiveTrackScreen(modifier: Modifier = Modifier, navController: NavControl
             )
         }
         LazyColumn(
-            modifier = modifier
+            modifier = Modifier
         ) {
             items(listOfVisualizedTopicListItem.filter { !it.selected }) { topic ->
                 TopicListItem(topic)
@@ -165,9 +165,9 @@ fun InactiveTrackScreen(modifier: Modifier = Modifier, navController: NavControl
     }
 }
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.black))
             .wrapContentSize(Alignment.Center)
@@ -210,9 +210,9 @@ fun HomeScreen( modifier: Modifier = Modifier, navController: NavController) {
     }
 }
 @Composable
-fun BuildScreen() {
+fun BuildScreen(modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.light_grey))
             .wrapContentSize(Alignment.Center)
@@ -228,9 +228,9 @@ fun BuildScreen() {
     }
 }
 @Composable
-fun LocationScreen() {
+fun LocationScreen(modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.purple_500))
             .wrapContentSize(Alignment.Center)

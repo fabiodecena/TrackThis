@@ -33,11 +33,11 @@ import com.example.trackthis.data.listOfVisualizedTopics
 
 
 @Composable
-fun TrackDetails(topic: Topic) {
+fun TrackDetails(modifier: Modifier = Modifier, topic: Topic) {
     var userNameInput by remember { mutableStateOf("") }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
