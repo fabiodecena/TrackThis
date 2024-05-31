@@ -1,4 +1,4 @@
-package com.example.trackthis.bars
+package com.example.trackthis.component.bars
 
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -6,14 +6,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
@@ -29,8 +27,10 @@ import com.example.trackthis.data.trackNavigationItems
 fun TopAppBar(navController: NavController) {
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.errorContainer,
-            titleContentColor = MaterialTheme.colorScheme.onErrorContainer
+            titleContentColor = MaterialTheme.colorScheme.onErrorContainer,
+            containerColor = MaterialTheme.colorScheme.secondary,
+            actionIconContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            navigationIconContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
         ),
         title = {
             Text(
@@ -50,7 +50,7 @@ fun TopAppBar(navController: NavController) {
                     }
                     launchSingleTop = true
                     restoreState = true }
-                }
+                },
             ) {
                 Icon(
                     imageVector = topBarNavigationItems[0].icon!!,
@@ -84,23 +84,22 @@ fun BottomBar(navController: NavController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    NavigationBar(containerColor = NavigationBarDefaults.containerColor) {
+    NavigationBar(
+        containerColor = MaterialTheme.colorScheme.secondary
+    ) {
         bottomBarNavigationItems.forEach { item ->
             NavigationBarItem(
                 icon = { Icon(imageVector = item.icon!!, contentDescription = item.title) },
                 label = { Text(text = item.title) },
                 selected = currentRoute == item.route,
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = Color.Gray,
-                    selectedTextColor = Color.Gray,
-                    unselectedIconColor = Color.Black,
-                    unselectedTextColor = Color.Black
+                    selectedIconColor = MaterialTheme.colorScheme.inverseOnSurface,
+                    selectedTextColor = MaterialTheme.colorScheme.inverseOnSurface,
+                    unselectedIconColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                    unselectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer
                 ),
                 onClick = {
                     navController.navigate(item.route) {
-                        // Pop up to the start destination of the graph to
-                        // avoid building up a large stack of destinations
-                        // on the back stack as users select items
                         navController.graph.startDestinationRoute?.let { route ->
                             popUpTo(route) {
                             }

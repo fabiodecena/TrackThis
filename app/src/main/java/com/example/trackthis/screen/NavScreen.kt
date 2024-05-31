@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,8 +37,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.trackthis.Navigation
 import com.example.trackthis.R
-import com.example.trackthis.bars.BottomBar
-import com.example.trackthis.bars.TopAppBar
+import com.example.trackthis.component.bars.BottomBar
+import com.example.trackthis.component.bars.TopAppBar
 import com.example.trackthis.component.TopicCard
 import com.example.trackthis.component.TopicListItem
 import com.example.trackthis.data.listOfVisualizedTopicListItem
@@ -50,7 +51,8 @@ fun MainScreen() {
     val navController = rememberNavController()
     Scaffold(
         topBar = { TopAppBar(navController = navController) },
-        bottomBar = { BottomBar(navController = navController) }
+        bottomBar = { BottomBar(navController = navController) },
+        containerColor = MaterialTheme.colorScheme.inverseOnSurface,
     ) { innerPadding ->
         Navigation(navController = navController, modifier = Modifier.padding(innerPadding))
     }
@@ -202,7 +204,7 @@ fun HomeScreen( modifier: Modifier = Modifier, navController: NavController) {
                 navController = navController,
                 topic = topic,
                 isExpanded = topic.name == expandedTopicName,
-                onCardClick = { clickedTopicName ->
+                onCardButtonClick = { clickedTopicName ->
                     expandedTopicName = if (expandedTopicName == clickedTopicName)  null else clickedTopicName
                 }
             )
