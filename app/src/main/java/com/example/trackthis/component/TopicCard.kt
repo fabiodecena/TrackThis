@@ -48,7 +48,7 @@ fun TopicCard(
 ) {
     Card(
         shape = if (isExpanded) MaterialTheme.shapes.medium
-        else RoundedCornerShape(bottomEnd = 16.dp, topStart = 16.dp),
+            else RoundedCornerShape(bottomEnd = 16.dp, topStart = 16.dp),
         modifier = modifier
                 .animateContentSize(
                     animationSpec = spring(
