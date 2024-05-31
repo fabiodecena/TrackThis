@@ -20,20 +20,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.trackthis.R
 import com.example.trackthis.data.TopicListElement
 
 @Composable
 fun TopicListItem(topicListItem: TopicListElement) {
     var checked by remember { mutableStateOf(topicListItem.selected) }
     Surface(
-        color = MaterialTheme.colorScheme.background,
+        color = MaterialTheme.colorScheme.surface,
         onClick = {
             topicListItem.selected = !topicListItem.selected
             checked = topicListItem.selected
@@ -43,7 +40,8 @@ fun TopicListItem(topicListItem: TopicListElement) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(40.dp),
-            colors = CardDefaults.cardColors(colorResource(id = R.color.light_grey))
+            colors = if(checked) CardDefaults.cardColors(MaterialTheme.colorScheme.secondaryContainer)
+                else CardDefaults.cardColors(MaterialTheme.colorScheme.onTertiary)
         ) {
             Row(
                 modifier = Modifier
@@ -71,9 +69,3 @@ fun TopicListItem(topicListItem: TopicListElement) {
         }
     }
 }
-@Preview
-@Composable
-fun TopicListItemPreview() {
-
-
-    }

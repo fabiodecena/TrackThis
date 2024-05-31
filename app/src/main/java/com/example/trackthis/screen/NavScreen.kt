@@ -84,7 +84,7 @@ fun ActiveTrackScreen(modifier: Modifier = Modifier, navController: NavControlle
                             restoreState = true
                         }
                     }
-                    .background(colorResource(id = R.color.purple_200), RoundedCornerShape(10.dp))
+                    .background((MaterialTheme.colorScheme.secondary), RoundedCornerShape(10.dp))
                     .padding(10.dp),
                 text = trackNavigationItems[0].title
             )
@@ -152,7 +152,7 @@ fun InactiveTrackScreen(modifier: Modifier = Modifier, navController: NavControl
                             restoreState = true
                         }
                     }
-                    .background(colorResource(id = R.color.teal_200), RoundedCornerShape(10.dp))
+                    .background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(10.dp))
                     .padding(10.dp),
                 text = trackNavigationItems[1].title
             )
