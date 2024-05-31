@@ -42,15 +42,13 @@ fun TopAppBar(navController: NavController) {
         },
         navigationIcon = {
             IconButton(
-                onClick = { navController.navigate(trackNavigationItems[0].route) {
-                    navController.graph.startDestinationRoute?.let { route ->
-                        popUpTo(route) {
-                            saveState = true
+                onClick = {
+                    navController.navigate(trackNavigationItems[0].route) {
+                        navController.graph.startDestinationRoute?.let { route ->
+                            popUpTo(route)
                         }
                     }
-                    launchSingleTop = true
-                    restoreState = true }
-                },
+                }
             ) {
                 Icon(
                     imageVector = topBarNavigationItems[0].icon!!,
@@ -60,14 +58,12 @@ fun TopAppBar(navController: NavController) {
         },
         actions = {
             IconButton(
-                onClick = { navController.navigate(topBarNavigationItems[1].route) {
-                    navController.graph.startDestinationRoute?.let { route ->
-                        popUpTo(route) {
-                            saveState = true
+                onClick = {
+                    navController.navigate(topBarNavigationItems[1].route) {
+                        navController.graph.startDestinationRoute?.let { route ->
+                            popUpTo(route)
                         }
                     }
-                    launchSingleTop = true
-                    restoreState = true }
                 }
             ) {
                 Icon(
