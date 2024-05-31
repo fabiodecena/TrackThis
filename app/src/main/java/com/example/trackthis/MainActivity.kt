@@ -71,13 +71,7 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
             LocationScreen()
         }
         composable(NavigationItem.Settings.route) {
-            SettingsScreen(navController = navController)
-        }
-        composable(NavigationItem.ActiveTrackSelection.route) {
-            ActiveTrackScreen(navController = navController)
-        }
-        composable(NavigationItem.InactiveTrackSelection.route) {
-            InactiveTrackScreen(navController = navController)
+            SettingsScreen()
         }
         composable(NavigationItem.Profile.route) {
             ProfileScreen()

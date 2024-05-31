@@ -34,13 +34,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.trackthis.Navigation
 import com.example.trackthis.R
-import com.example.trackthis.component.bars.BottomBar
-import com.example.trackthis.component.bars.TopAppBar
 import com.example.trackthis.component.TopicCard
 import com.example.trackthis.component.TopicListItem
+import com.example.trackthis.component.bars.BottomBar
+import com.example.trackthis.component.bars.TopAppBar
+import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.listOfVisualizedTopicListItem
 import com.example.trackthis.data.listOfVisualizedTopics
 import com.example.trackthis.data.trackNavigationItems
@@ -58,114 +62,78 @@ fun MainScreen() {
     }
 }
 @Composable
-fun SettingsScreen(modifier: Modifier = Modifier, navController: NavController) {
-   ActiveTrackScreen(modifier, navController)
+fun SettingsScreen() {
+    val navController = rememberNavController()
+    Scaffold(
+        topBar = { TopRowSelectionScreen(navController = navController) },
+    ) { innerPadding ->
+        NavHost(
+            modifier = Modifier.padding(innerPadding),
+            navController = navController,
+            startDestination = NavigationItem.ActiveTrackSelection.route
+        ){
+            composable(NavigationItem.ActiveTrackSelection.route) {
+                ActiveTrackScreen()
+            }
+            composable(NavigationItem.InactiveTrackSelection.route) {
+                InactiveTrackScreen()
+            }
+        }
+    }
+}
+@Composable
+fun TopRowSelectionScreen(modifier: Modifier = Modifier, navController: NavController) {
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(10.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        trackNavigationItems.forEach { item ->
+            Text(
+                modifier = Modifier
+                    .clickable {
+                        navController.navigate(item.route) {
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                    saveState = true
+                                }
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                    .background(
+                        if (currentRoute == item.route) MaterialTheme.colorScheme.secondary
+                             else MaterialTheme.colorScheme.surface,
+                        RoundedCornerShape(10.dp)
+                    )
+                    .padding(10.dp),
+                text = item.title
+            )
+        }
+    }
+}
+@Composable
+fun ActiveTrackScreen() {
+    LazyColumn(modifier = Modifier) {
+        items(listOfVisualizedTopicListItem.filter { it.selected }) { topic ->
+            TopicListItem(topic)
+        }
+    }
 }
 
 @Composable
-fun ActiveTrackScreen(modifier: Modifier = Modifier, navController: NavController) {
-    Column {
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                modifier = Modifier
-                    .clickable {
-                        navController.navigate(trackNavigationItems[0].route) {
-                            navController.graph.startDestinationRoute?.let { route ->
-                                popUpTo(route) {
-                                    saveState = true
-                                }
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
-                    .background((MaterialTheme.colorScheme.secondary), RoundedCornerShape(10.dp))
-                    .padding(10.dp),
-                text = trackNavigationItems[0].title
-            )
-            Text(
-                modifier = Modifier
-                    .clickable {
-                        navController.navigate(trackNavigationItems[1].route) {
-                            navController.graph.startDestinationRoute?.let { route ->
-                                popUpTo(route) {
-                                    saveState = true
-                                }
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
-                    .padding(10.dp),
-                text = trackNavigationItems[1].title
-            )
-        }
-        LazyColumn(
-            modifier = Modifier
-        ) {
-            items(listOfVisualizedTopicListItem.filter { it.selected }) { topic ->
-                TopicListItem(topic)
-            }
+fun InactiveTrackScreen() {
+    LazyColumn(modifier = Modifier    ) {
+        items(listOfVisualizedTopicListItem.filter { !it.selected }) { topic ->
+            TopicListItem(topic)
         }
     }
 }
-@Composable
-fun InactiveTrackScreen(modifier: Modifier = Modifier, navController: NavController) {
-    Column {
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                modifier = Modifier
-                    .clickable {
-                        navController.navigate(trackNavigationItems[0].route) {
-                            navController.graph.startDestinationRoute?.let { route ->
-                                popUpTo(route) {
-                                    saveState = true
-                                }
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
-                    .padding(10.dp),
-                text = trackNavigationItems[0].title
-            )
-            Text(
-                modifier = Modifier
-                    .clickable {
-                        navController.navigate(trackNavigationItems[1].route) {
-                            navController.graph.startDestinationRoute?.let { route ->
-                                popUpTo(route) {
-                                    saveState = true
-                                }
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
-                    .background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(10.dp))
-                    .padding(10.dp),
-                text = trackNavigationItems[1].title
-            )
-        }
-        LazyColumn(
-            modifier = Modifier
-        ) {
-            items(listOfVisualizedTopicListItem.filter { !it.selected }) { topic ->
-                TopicListItem(topic)
-            }
-        }
-    }
-}
+
 @Composable
 fun ProfileScreen(modifier: Modifier = Modifier) {
     Column(
