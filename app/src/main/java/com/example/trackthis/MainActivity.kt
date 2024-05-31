@@ -16,7 +16,7 @@ import androidx.navigation.navArgument
 import com.example.trackthis.component.TrackDetails
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.Topic
-import com.example.trackthis.data.TopicListItem
+import com.example.trackthis.data.TopicListElement
 import com.example.trackthis.data.listOfVisualizedTopics
 import com.example.trackthis.data.trackDetails
 import com.example.trackthis.screen.ActiveTrackScreen
@@ -92,7 +92,7 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
 
 fun visualizeTopics(
     listOfVisualizedTopic: List<Topic>,
-    listOfVisualizedTopicListItem: List<TopicListItem>
+    listOfVisualizedTopicListItem: List<TopicListElement>
 ): List<Topic> {
     // Create a map of visualized topics by name
     val visualizedTopicsListItemsMap = listOfVisualizedTopicListItem.associateBy { it.name }
