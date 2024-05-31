@@ -1,6 +1,5 @@
 package com.example.trackthis.component
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -8,6 +7,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CheckCircleOutline
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,8 +26,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -35,6 +40,7 @@ import com.example.trackthis.data.listOfVisualizedTopics
 @Composable
 fun TrackDetails(modifier: Modifier = Modifier, topic: Topic) {
     var userNameInput by remember { mutableStateOf("") }
+    var objectivesInput by remember { mutableStateOf("") }
 
     Column(
         modifier = modifier
@@ -53,7 +59,7 @@ fun TrackDetails(modifier: Modifier = Modifier, topic: Topic) {
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_medium)),
             label = R.string.user_name,
-            leadingIcon = R.drawable.play_circle_24dp_fill0_wght400_grad0_opsz24,
+            leadingIcon = Icons.Filled.Person,
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next
@@ -61,13 +67,52 @@ fun TrackDetails(modifier: Modifier = Modifier, topic: Topic) {
             value = userNameInput,
             onValueChanged = { userNameInput = it }
         )
+        EditField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(R.dimen.padding_medium)),
+            label = R.string.daily_effort,
+            leadingIcon = Icons.Filled.AccessTime,
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next
+            ),
+            value = objectivesInput,
+            onValueChanged = { objectivesInput = it }
+        )
+        EditField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(R.dimen.padding_medium)),
+            label = R.string.final_goal,
+            leadingIcon = Icons.Filled.CheckCircleOutline,
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next
+            ),
+            value = objectivesInput,
+            onValueChanged = { objectivesInput = it }
+        )
+        FloatingActionButton(
+            onClick = { /*TODO*/ },
+            modifier = Modifier
+                .padding(dimensionResource(R.dimen.padding_medium))
+                .align(Alignment.End)
+        ) {
+            Icon(
+                /*Add a ToolTip to the FAB*//*TODO*/
+                Icons.Filled.Add,
+                null,
+                tint = MaterialTheme.colorScheme.onPrimary
+            )
+        }
     }
 }
 
 @Composable
 fun EditField(
     @StringRes label: Int,
-    @DrawableRes leadingIcon: Int,
+    leadingIcon: ImageVector,
     keyboardOptions: KeyboardOptions,
     value: String,
     onValueChanged: (String) -> Unit,
@@ -76,7 +121,7 @@ fun EditField(
     TextField(
         value = value,
         singleLine = true,
-        leadingIcon = { Icon(painter = painterResource(id = leadingIcon), null) },
+        leadingIcon = { Icon(leadingIcon,null) },
         modifier = modifier,
         onValueChange = onValueChanged,
         label = { Text(stringResource(label)) },

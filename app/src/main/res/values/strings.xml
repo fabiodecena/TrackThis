@@ -27,4 +27,6 @@
     <string name="topbar_title">Track This!</string>
     <string name="user_name">Student Name</string>
     <string name="expand_button_content_description">See more or less information about a Card.</string>
+    <string name="final_goal">Final Goal</string>
+    <string name="daily_effort">Daily Effort</string>
 </resources>
