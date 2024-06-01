@@ -10,8 +10,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddComment
+import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.CheckCircleOutline
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -39,8 +42,12 @@ import com.example.trackthis.data.listOfVisualizedTopics
 
 @Composable
 fun TrackDetails(modifier: Modifier = Modifier, topic: Topic) {
-    var userNameInput by remember { mutableStateOf("") }
-    var objectivesInput by remember { mutableStateOf("") }
+    var studyNameInput by remember { mutableStateOf("") }
+    var descriptionInput by remember { mutableStateOf("") }
+    var dailyEffortInput by remember { mutableStateOf("") }
+    var finalGoalInput by remember { mutableStateOf("") }
+    var startingDateInput by remember { mutableStateOf("") }
+    var endingDateInput by remember { mutableStateOf("") }
 
     Column(
         modifier = modifier
@@ -58,14 +65,27 @@ fun TrackDetails(modifier: Modifier = Modifier, topic: Topic) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_medium)),
-            label = R.string.user_name,
-            leadingIcon = Icons.Filled.Person,
+            label = R.string.study_name,
+            leadingIcon = Icons.Filled.Book,
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next
             ),
-            value = userNameInput,
-            onValueChanged = { userNameInput = it }
+            value = studyNameInput,
+            onValueChanged = { studyNameInput = it }
+        )
+        EditField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(R.dimen.padding_medium)),
+            label = R.string.description,
+            leadingIcon = Icons.Filled.AddComment,
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next
+            ),
+            value = descriptionInput,
+            onValueChanged = { descriptionInput = it }
         )
         EditField(
             modifier = Modifier
@@ -74,11 +94,11 @@ fun TrackDetails(modifier: Modifier = Modifier, topic: Topic) {
             label = R.string.daily_effort,
             leadingIcon = Icons.Filled.AccessTime,
             keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Text,
+                keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next
             ),
-            value = objectivesInput,
-            onValueChanged = { objectivesInput = it }
+            value = dailyEffortInput,
+            onValueChanged = { dailyEffortInput = it }
         )
         EditField(
             modifier = Modifier
@@ -87,12 +107,39 @@ fun TrackDetails(modifier: Modifier = Modifier, topic: Topic) {
             label = R.string.final_goal,
             leadingIcon = Icons.Filled.CheckCircleOutline,
             keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Text,
+                keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next
             ),
-            value = objectivesInput,
-            onValueChanged = { objectivesInput = it }
+            value = finalGoalInput,
+            onValueChanged = { finalGoalInput = it }
         )
+        EditField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(R.dimen.padding_medium)),
+            label = R.string.starting_date,
+            leadingIcon = Icons.Filled.CalendarToday,
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next
+            ),
+            value = startingDateInput,
+            onValueChanged = { startingDateInput = it }
+        )
+        EditField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(R.dimen.padding_medium)),
+            label = R.string.ending_date,
+            leadingIcon = Icons.Filled.CalendarMonth,
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done
+            ),
+            value = endingDateInput,
+            onValueChanged = { endingDateInput = it }
+        )
+
         FloatingActionButton(
             onClick = { /*TODO*/ },
             modifier = Modifier
@@ -111,12 +158,12 @@ fun TrackDetails(modifier: Modifier = Modifier, topic: Topic) {
 
 @Composable
 fun EditField(
+    modifier: Modifier = Modifier,
     @StringRes label: Int,
     leadingIcon: ImageVector,
     keyboardOptions: KeyboardOptions,
     value: String,
     onValueChanged: (String) -> Unit,
-    modifier: Modifier = Modifier
 ) {
     TextField(
         value = value,
