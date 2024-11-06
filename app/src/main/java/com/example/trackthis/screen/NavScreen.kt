@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,21 +34,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.trackthis.Navigation
 import com.example.trackthis.R
 import com.example.trackthis.component.TopicCard
 import com.example.trackthis.component.TopicListItem
 import com.example.trackthis.component.bars.BottomBar
 import com.example.trackthis.component.bars.TopAppBar
-import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.listOfVisualizedTopicListItem
 import com.example.trackthis.data.listOfVisualizedTopics
 import com.example.trackthis.data.trackNavigationItems
+import com.example.trackthis.navigation.Navigation
+import com.example.trackthis.navigation.NavigationSelectionScreen
+import com.example.trackthis.ui.AppViewModel
 import com.example.trackthis.visualizeTopics
 
 @Composable
@@ -67,18 +69,7 @@ fun SettingsScreen() {
     Scaffold(
         topBar = { TopRowSelectionScreen(navController = navController) },
     ) { innerPadding ->
-        NavHost(
-            modifier = Modifier.padding(innerPadding),
-            navController = navController,
-            startDestination = NavigationItem.ActiveTrackSelection.route
-        ){
-            composable(NavigationItem.ActiveTrackSelection.route) {
-                ActiveTrackScreen()
-            }
-            composable(NavigationItem.InactiveTrackSelection.route) {
-                InactiveTrackScreen()
-            }
-        }
+        NavigationSelectionScreen(navController = navController, modifier = Modifier.padding(innerPadding))
     }
 }
 @Composable
@@ -107,7 +98,7 @@ fun TopRowSelectionScreen(modifier: Modifier = Modifier, navController: NavContr
                     }
                     .background(
                         if (currentRoute == item.route) MaterialTheme.colorScheme.secondary
-                             else MaterialTheme.colorScheme.surface,
+                        else MaterialTheme.colorScheme.surface,
                         RoundedCornerShape(10.dp)
                     )
                     .padding(10.dp),
@@ -153,11 +144,18 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
     }
 }
 @Composable
-fun HomeScreen( modifier: Modifier = Modifier, navController: NavController) {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    appViewModel: AppViewModel = viewModel(),
+    navController: NavController
+) {
     val visualizedTopics = visualizeTopics(
         listOfVisualizedTopic = listOfVisualizedTopics,
         listOfVisualizedTopicListItem = listOfVisualizedTopicListItem
     )
+
+    val appUiState by appViewModel.uiState.collectAsState()
+
     var expandedTopicName by remember { mutableStateOf<Int?>(null) }
 
     LazyVerticalGrid(

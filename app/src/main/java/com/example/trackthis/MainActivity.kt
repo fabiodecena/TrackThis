@@ -18,7 +18,6 @@ import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.Topic
 import com.example.trackthis.data.TopicListElement
 import com.example.trackthis.data.listOfVisualizedTopics
-import com.example.trackthis.data.trackDetails
 import com.example.trackthis.screen.ActiveTrackScreen
 import com.example.trackthis.screen.BuildScreen
 import com.example.trackthis.screen.HomeScreen
@@ -44,45 +43,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-@Composable
-fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) {
-    NavHost(
-        modifier = modifier,
-        navController = navController,
-        startDestination = NavigationItem.Home.route
-    ){
-        composable(NavigationItem.Home.route) {
-            HomeScreen(navController = navController)
-        }
-        composable(
-            route = "${trackDetails[0].route}/{topicId}",
-            arguments = listOf(navArgument("topicId") { type = NavType.IntType })
-        ) { backStackEntry ->
-            val topicId = backStackEntry.arguments?.getInt("topicId")
-            val topic = listOfVisualizedTopics.find { it.name == topicId }
-            topic?.let {
-                TrackDetails(topic = topic)
-            }
-        }
-        composable(NavigationItem.Build.route) {
-            BuildScreen()
-        }
-        composable(NavigationItem.Location.route) {
-            LocationScreen()
-        }
-        composable(NavigationItem.Settings.route) {
-            SettingsScreen()
-        }
-        composable(NavigationItem.Profile.route) {
-            ProfileScreen()
-        }
-    }
-}
-
-
-
-
-
 
 fun visualizeTopics(
     listOfVisualizedTopic: List<Topic>,
