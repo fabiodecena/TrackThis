@@ -18,8 +18,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.trackthis.R
+import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.bottomBarNavigationItems
-import com.example.trackthis.data.topBarNavigationItems
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +43,7 @@ fun TopAppBar(navController: NavController) {
         navigationIcon = {
             IconButton(
                 onClick = {
-                    navController.navigate(topBarNavigationItems[0].route) {
+                    navController.navigate(NavigationItem.Settings.route) {
                         navController.graph.startDestinationRoute?.let { route ->
                             popUpTo(route)
                         }
@@ -50,15 +51,15 @@ fun TopAppBar(navController: NavController) {
                 }
             ) {
                 Icon(
-                    imageVector = topBarNavigationItems[0].icon!!,
-                    contentDescription = topBarNavigationItems[0].title
+                    imageVector = NavigationItem.Settings.icon!!,
+                    contentDescription = NavigationItem.Settings.title
                 )
             }
         },
         actions = {
             IconButton(
                 onClick = {
-                    navController.navigate(topBarNavigationItems[1].route) {
+                    navController.navigate(NavigationItem.Profile.route) {
                         navController.graph.startDestinationRoute?.let { route ->
                             popUpTo(route)
                         }
@@ -66,8 +67,8 @@ fun TopAppBar(navController: NavController) {
                 }
             ) {
                 Icon(
-                    imageVector = topBarNavigationItems[1].icon!!,
-                    contentDescription = topBarNavigationItems[1].title
+                    imageVector = NavigationItem.Profile.icon!!,
+                    contentDescription = NavigationItem.Profile.title
                 )
             }
         },

@@ -35,8 +35,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.trackthis.R
+import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.Topic
-import com.example.trackthis.data.trackDetails
 import com.example.trackthis.ui.AppUiState
 import com.example.trackthis.ui.AppViewModel
 
@@ -54,6 +54,7 @@ fun TopicCard(
     Card(
         shape = if (expanded) MaterialTheme.shapes.medium
             else RoundedCornerShape(bottomEnd = 16.dp, topStart = 16.dp),
+        // animation when the  card is expanded or collapsed through modifier
         modifier = modifier
                 .animateContentSize(
                     animationSpec = spring(
@@ -100,7 +101,7 @@ fun TopicCard(
                     modifier = Modifier
                         .padding(end = dimensionResource(R.dimen.padding_medium))
                         .clickable {
-                            navController.navigate("${trackDetails[0].route}/${topic.name}") {
+                            navController.navigate("${NavigationItem.TrackDetails.route}/${topic.name}") {
                                 navController.graph.startDestinationRoute?.let { route ->
                                     popUpTo(route) {
                                         saveState = true

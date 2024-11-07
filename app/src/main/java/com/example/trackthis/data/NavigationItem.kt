@@ -19,11 +19,6 @@ sealed class NavigationItem(var route: String, var icon: ImageVector?, var title
     data object InactiveTrackSelection: NavigationItem("inactiveTrack",null ,"Inactive Tracking")
 
 }
-val topBarNavigationItems = listOf(
-    NavigationItem.Settings,
-    NavigationItem.Profile
-
-)
 val bottomBarNavigationItems = listOf(
     NavigationItem.Home,
     NavigationItem.Build,
@@ -33,6 +28,4 @@ val trackNavigationItems = listOf(
     NavigationItem.ActiveTrackSelection,
     NavigationItem.InactiveTrackSelection
 )
-val trackDetails = listOf(
-    NavigationItem.TrackDetails
-)
+
