@@ -22,9 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,7 +31,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -45,12 +41,10 @@ import com.example.trackthis.component.TopicListItem
 import com.example.trackthis.component.bars.BottomBar
 import com.example.trackthis.component.bars.TopAppBar
 import com.example.trackthis.data.listOfVisualizedTopicListItem
-import com.example.trackthis.data.listOfVisualizedTopics
 import com.example.trackthis.data.trackNavigationItems
 import com.example.trackthis.navigation.Navigation
 import com.example.trackthis.navigation.NavigationSelectionScreen
 import com.example.trackthis.ui.AppViewModel
-import com.example.trackthis.visualizeTopics
 
 @Composable
 fun MainScreen() {
@@ -149,14 +143,7 @@ fun HomeScreen(
     appViewModel: AppViewModel = viewModel(),
     navController: NavController
 ) {
-    val visualizedTopics = visualizeTopics(
-        listOfVisualizedTopic = listOfVisualizedTopics,
-        listOfVisualizedTopicListItem = listOfVisualizedTopicListItem
-    )
-
-    val appUiState by appViewModel.uiState.collectAsState()
-
-    var expandedTopicName by remember { mutableStateOf<Int?>(null) }
+    val appUiState by appViewModel.appUiState.collectAsState()
 
     LazyVerticalGrid(
         modifier = modifier,
@@ -165,14 +152,13 @@ fun HomeScreen(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)),
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
     ) {
-        items(visualizedTopics) { topic ->
+        items(appViewModel.updateTopicList()) { it ->
             TopicCard(
                 navController = navController,
-                topic = topic,
-                isExpanded = topic.name == expandedTopicName,
-                onCardButtonClick = { clickedTopicName ->
-                    expandedTopicName = if (expandedTopicName == clickedTopicName)  null else clickedTopicName
-                }
+                topic = it,
+                viewModel = appViewModel,
+                appUiState = appUiState,
+                onCardButtonClick = { appViewModel.toggleExpanded(it) },
             )
         }
     }

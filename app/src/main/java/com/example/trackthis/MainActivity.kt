@@ -6,26 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import com.example.trackthis.component.TrackDetails
-import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.Topic
 import com.example.trackthis.data.TopicListElement
-import com.example.trackthis.data.listOfVisualizedTopics
-import com.example.trackthis.screen.ActiveTrackScreen
-import com.example.trackthis.screen.BuildScreen
-import com.example.trackthis.screen.HomeScreen
-import com.example.trackthis.screen.InactiveTrackScreen
-import com.example.trackthis.screen.LocationScreen
 import com.example.trackthis.screen.MainScreen
-import com.example.trackthis.screen.ProfileScreen
-import com.example.trackthis.screen.SettingsScreen
 import com.example.trackthis.ui.theme.TrackThisTheme
 
 class MainActivity : ComponentActivity() {
@@ -43,7 +27,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 fun visualizeTopics(
     listOfVisualizedTopic: List<Topic>,
     listOfVisualizedTopicListItem: List<TopicListElement>

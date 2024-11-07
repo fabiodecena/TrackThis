@@ -37,17 +37,22 @@ import androidx.navigation.NavController
 import com.example.trackthis.R
 import com.example.trackthis.data.Topic
 import com.example.trackthis.data.trackDetails
+import com.example.trackthis.ui.AppUiState
+import com.example.trackthis.ui.AppViewModel
 
 @Composable
 fun TopicCard(
     topic: Topic,
-    isExpanded: Boolean,
+    viewModel: AppViewModel,
+    appUiState: AppUiState,
     onCardButtonClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
+    val expanded = appUiState.expandedTopicName == topic.name
+
     Card(
-        shape = if (isExpanded) MaterialTheme.shapes.medium
+        shape = if (expanded) MaterialTheme.shapes.medium
             else RoundedCornerShape(bottomEnd = 16.dp, topStart = 16.dp),
         modifier = modifier
                 .animateContentSize(
@@ -72,14 +77,14 @@ fun TopicCard(
                 modifier = Modifier.padding(start = 10.dp),
                 text = stringResource(id = topic.name),
                 style = MaterialTheme.typography.bodyMedium,
-                color = if (isExpanded) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSecondaryContainer
+                color = if (expanded) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSecondaryContainer
             )
             TopicCardButton(
                 topic = topic,
-                expanded = isExpanded,
+                expanded = expanded,
                 onButtonClick = onCardButtonClick)
         }
-        if (isExpanded) {
+        if (expanded) {
             Divider()
             Row(
                 modifier = modifier
