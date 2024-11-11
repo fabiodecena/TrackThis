@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -14,11 +15,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.AddComment
 import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.CheckCircleOutline
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -58,7 +59,6 @@ fun TrackDetails(
     topic: Topic
 ) {
     var studyNameInput by remember { mutableStateOf("") }
-    var descriptionInput by remember { mutableStateOf("") }
     var dailyEffortInput by remember { mutableStateOf("") }
     var finalGoalInput by remember { mutableStateOf("") }
     var startingDateInput by remember { mutableStateOf("") }
@@ -76,6 +76,13 @@ fun TrackDetails(
             text = stringResource(topic.name),
             style = MaterialTheme.typography.headlineMedium
         )
+
+        Divider()
+        Row (
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(R.dimen.padding_medium)),
+        ) { }
         EditField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -88,19 +95,6 @@ fun TrackDetails(
             ),
             value = studyNameInput,
             onValueChanged = { studyNameInput = it }
-        )
-        EditField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(dimensionResource(R.dimen.padding_medium)),
-            label = R.string.description,
-            leadingIcon = Icons.Filled.AddComment,
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next
-            ),
-            value = descriptionInput,
-            onValueChanged = { descriptionInput = it }
         )
         EditField(
             modifier = Modifier
@@ -122,7 +116,7 @@ fun TrackDetails(
             label = R.string.final_goal,
             leadingIcon = Icons.Filled.CheckCircleOutline,
             keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Number,
+                keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next
             ),
             value = finalGoalInput,
