@@ -50,6 +50,7 @@ import androidx.navigation.NavController
 import com.example.trackthis.R
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.Topic
+import com.example.trackthis.data.addStartedTopicElementToList
 import java.util.Date
 import java.util.Locale
 
@@ -130,13 +131,10 @@ fun TrackDetails(
             onClick = {
                 navController.navigate(NavigationItem.Statistics.route) {
                     navController.graph.startDestinationRoute?.let { route ->
-                        popUpTo(route) {
-                            saveState = true
-                        }
+                        popUpTo(route)
                     }
-                    launchSingleTop = true
-                    restoreState = true
                 }
+                addStartedTopicElementToList(studyNameInput)
             },
             modifier = Modifier
                 .padding(dimensionResource(R.dimen.padding_medium2))

@@ -36,10 +36,12 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.trackthis.R
+import com.example.trackthis.component.StartedTopic
 import com.example.trackthis.component.TopicCard
 import com.example.trackthis.component.TopicListItem
 import com.example.trackthis.component.bars.BottomBar
 import com.example.trackthis.component.bars.TopAppBar
+import com.example.trackthis.data.listOfStartedTopic
 import com.example.trackthis.data.listOfVisualizedTopicListItem
 import com.example.trackthis.data.trackNavigationItems
 import com.example.trackthis.navigation.Navigation
@@ -121,7 +123,11 @@ fun InactiveTrackScreen() {
 @Composable
 fun StatisticsScreen(modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier) {
-
+        items(listOfStartedTopic) {topic ->
+            StartedTopic(
+                topicElement = topic
+            )
+        }
     }
 }
 @Composable
