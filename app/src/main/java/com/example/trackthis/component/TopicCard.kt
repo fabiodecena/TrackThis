@@ -38,7 +38,6 @@ import com.example.trackthis.R
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.Topic
 import com.example.trackthis.ui.AppUiState
-import com.example.trackthis.ui.AppViewModel
 
 @Composable
 fun TopicCard(
