@@ -156,7 +156,6 @@ fun HomeScreen(
             TopicCard(
                 navController = navController,
                 topic = it,
-                viewModel = appViewModel,
                 appUiState = appUiState,
                 onCardButtonClick = { appViewModel.toggleExpanded(it) },
             )

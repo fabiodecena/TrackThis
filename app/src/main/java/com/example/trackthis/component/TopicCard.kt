@@ -43,7 +43,6 @@ import com.example.trackthis.ui.AppViewModel
 @Composable
 fun TopicCard(
     topic: Topic,
-    viewModel: AppViewModel,
     appUiState: AppUiState,
     onCardButtonClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
