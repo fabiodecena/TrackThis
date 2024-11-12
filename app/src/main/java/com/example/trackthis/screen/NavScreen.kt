@@ -112,13 +112,18 @@ fun ActiveTrackScreen() {
 
 @Composable
 fun InactiveTrackScreen() {
-    LazyColumn(modifier = Modifier    ) {
+    LazyColumn(modifier = Modifier) {
         items(listOfVisualizedTopicListItem.filter { !it.selected }) { topic ->
             TopicListItem(topic)
         }
     }
 }
+@Composable
+fun StatisticsScreen(modifier: Modifier = Modifier) {
+    LazyColumn(modifier = modifier) {
 
+    }
+}
 @Composable
 fun ProfileScreen(modifier: Modifier = Modifier) {
     Column(
@@ -162,24 +167,7 @@ fun HomeScreen(
         }
     }
 }
-@Composable
-fun StatisticsScreen(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(colorResource(id = R.color.light_grey))
-            .wrapContentSize(Alignment.Center)
-    ) {
-        Text(
-            text = "Profile View",
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 25.sp
-        )
-    }
-}
+
 @Composable
 fun LocationScreen(modifier: Modifier = Modifier) {
     Column(
