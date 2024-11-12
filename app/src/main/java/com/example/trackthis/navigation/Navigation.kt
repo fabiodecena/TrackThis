@@ -9,10 +9,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.trackthis.component.TrackDetails
 import com.example.trackthis.data.NavigationItem
-import com.example.trackthis.data.Topic
 import com.example.trackthis.data.listOfVisualizedTopics
 import com.example.trackthis.screen.ActiveTrackScreen
-import com.example.trackthis.screen.BuildScreen
+import com.example.trackthis.screen.StatisticsScreen
 import com.example.trackthis.screen.HomeScreen
 import com.example.trackthis.screen.InactiveTrackScreen
 import com.example.trackthis.screen.LocationScreen
@@ -36,11 +35,11 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
             val topicId = backStackEntry.arguments?.getInt("topicId")
             val topic = listOfVisualizedTopics.find { it.name == topicId }
             topic?.let {
-                TrackDetails(topic = topic)
+                TrackDetails(topic = topic, navController = navController)
             }
         }
-        composable(NavigationItem.Build.route) {
-            BuildScreen()
+        composable(NavigationItem.Statistics.route) {
+            StatisticsScreen()
         }
         composable(NavigationItem.Location.route) {
             LocationScreen()

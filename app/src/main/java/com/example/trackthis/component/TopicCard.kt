@@ -81,7 +81,8 @@ fun TopicCard(
             TopicCardButton(
                 topic = topic,
                 expanded = expanded,
-                onButtonClick = onCardButtonClick)
+                onButtonClick = onCardButtonClick
+            )
         }
         if (expanded) {
             Divider()
@@ -112,7 +113,7 @@ fun TopicCard(
                 )
                 Text(
                     text = buildAnnotatedString {
-                        append("Start to Track your Progress about ")
+                        append("Start to Track your Progress about ")/*TODO change string*/
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                             append(stringResource(id = topic.name))
                         }

@@ -163,7 +163,7 @@ fun HomeScreen(
     }
 }
 @Composable
-fun BuildScreen(modifier: Modifier = Modifier) {
+fun StatisticsScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()

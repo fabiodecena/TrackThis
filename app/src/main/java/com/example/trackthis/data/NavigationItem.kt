@@ -1,6 +1,7 @@
 package com.example.trackthis.data
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
@@ -11,7 +12,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 sealed class NavigationItem(var route: String, var icon: ImageVector?, var title: String ) {
     data object Home: NavigationItem("home", Icons.Filled.Home, "Home")
     data object TrackDetails: NavigationItem("trackDetails", null, "Track Details")
-    data object Build: NavigationItem("build", Icons.Filled.Build, "Build")
+    data object Statistics: NavigationItem("statistics", Icons.Filled.BarChart, "Statistics")
     data object Location: NavigationItem("location", Icons.Filled.LocationOn, "Location")
     data object Profile: NavigationItem("profile", Icons.Filled.Person, "Profile")
     data object Settings: NavigationItem("settings", Icons.Filled.Menu, "Settings")
@@ -21,7 +22,7 @@ sealed class NavigationItem(var route: String, var icon: ImageVector?, var title
 }
 val bottomBarNavigationItems = listOf(
     NavigationItem.Home,
-    NavigationItem.Build,
+    NavigationItem.Statistics,
     NavigationItem.Location
 )
 val trackNavigationItems = listOf(

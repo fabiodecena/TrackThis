@@ -17,7 +17,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.CheckCircleOutline
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.DatePicker
@@ -47,10 +46,10 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import com.example.trackthis.R
+import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.Topic
-import com.example.trackthis.data.listOfVisualizedTopics
 import java.util.Date
 import java.util.Locale
 
@@ -58,9 +57,10 @@ import java.util.Locale
 @Composable
 fun TrackDetails(
     modifier: Modifier = Modifier,
-    topic: Topic
+    topic: Topic,
+    navController: NavController
 ) {
-    var studyNameInput by remember { mutableStateOf("") }
+    var studyNameInput = topic.name
     var dailyEffortInput by remember { mutableStateOf("") }
     var finalGoalInput by remember { mutableStateOf("") }
     var startingDateInput by remember { mutableStateOf("") }
@@ -84,25 +84,12 @@ fun TrackDetails(
         Row (
             modifier = modifier
                 .fillMaxWidth()
-                .padding(dimensionResource(R.dimen.padding_medium)),
+                .padding(dimensionResource(R.dimen.padding_medium2)),
         ) { }
         EditField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(dimensionResource(R.dimen.padding_medium)),
-            label = R.string.study_name,
-            leadingIcon = Icons.Filled.Book,
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next
-            ),
-            value = studyNameInput,
-            onValueChanged = { studyNameInput = it }
-        )
-        EditField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(dimensionResource(R.dimen.padding_medium)),
+                .padding(dimensionResource(R.dimen.padding_medium2)),
             label = R.string.daily_effort,
             leadingIcon = Icons.Filled.AccessTime,
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -115,7 +102,7 @@ fun TrackDetails(
         EditField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(dimensionResource(R.dimen.padding_medium)),
+                .padding(dimensionResource(R.dimen.padding_medium2)),
             label = R.string.final_goal,
             leadingIcon = Icons.Filled.CheckCircleOutline,
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -128,25 +115,34 @@ fun TrackDetails(
         DatePickerFieldToModal(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(dimensionResource(R.dimen.padding_medium)),
+                .padding(dimensionResource(R.dimen.padding_medium2)),
             label = R.string.starting_date,
             onValueChanged = { startingDateInput = it }
         )
         DatePickerFieldToModal(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(dimensionResource(R.dimen.padding_medium)),
+                .padding(dimensionResource(R.dimen.padding_medium2)),
             label = R.string.ending_date,
             onValueChanged = { endingDateInput = it }
         )
         FloatingActionButton(
-            onClick = { /*TODO*/ },
+            onClick = {
+                navController.navigate(NavigationItem.Statistics.route) {
+                    navController.graph.startDestinationRoute?.let { route ->
+                        popUpTo(route) {
+                            saveState = true
+                        }
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            },
             modifier = Modifier
-                .padding(dimensionResource(R.dimen.padding_medium))
+                .padding(dimensionResource(R.dimen.padding_medium2))
                 .align(Alignment.End)
         ) {
             Icon(
-                /*Add a ToolTip to the FAB*//*TODO*/
                 Icons.Filled.Add,
                 null,
                 tint = MaterialTheme.colorScheme.onPrimary
@@ -257,10 +253,4 @@ fun DatePickerModal(
 fun convertMillisToDate(millis: Long): String {
     val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
     return formatter.format(Date(millis))
-}
-
-@Preview
-@Composable
-fun TrackDetailsPreview() {
-    TrackDetails(topic = listOfVisualizedTopics[0])
 }
