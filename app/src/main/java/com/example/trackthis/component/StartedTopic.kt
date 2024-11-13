@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.trackthis.R
+import com.example.trackthis.component.charts.LineChartScreen
 import com.example.trackthis.data.StartedTopicElement
 
 @Composable
@@ -35,19 +37,25 @@ fun StartedTopic(
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium)),
+                modifier = Modifier.padding(dimensionResource(R.dimen.padding_small)),
                 text = stringResource(topicElement.name),
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center
             )
         }
-        Row() {
+        Row(
+            modifier = modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
             Card(
                 modifier = Modifier
                     .padding(dimensionResource(R.dimen.padding_medium))
-                    .height(200.dp),
+                    .height(200.dp)
+                    .width(350.dp),
+                shape = MaterialTheme.shapes.large
             ){
-
+                LineChartScreen()
             }
         }
     }
