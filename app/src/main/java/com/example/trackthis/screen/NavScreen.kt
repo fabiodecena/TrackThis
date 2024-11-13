@@ -59,6 +59,33 @@ fun MainScreen() {
         Navigation(navController = navController, modifier = Modifier.padding(innerPadding))
     }
 }
+
+@Composable
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    appViewModel: AppViewModel = viewModel(),
+    navController: NavController
+) {
+    val appUiState by appViewModel.appUiState.collectAsState()
+
+    LazyVerticalGrid(
+        modifier = modifier,
+        columns = GridCells.Fixed(2),
+        contentPadding = PaddingValues(dimensionResource(R.dimen.padding_small)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)),
+        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
+    ) {
+        items(appViewModel.updateTopicList()) { it ->
+            TopicCard(
+                navController = navController,
+                topic = it,
+                appUiState = appUiState,
+                onCardButtonClick = { appViewModel.toggleExpanded(it) },
+            )
+        }
+    }
+}
+
 @Composable
 fun SettingsScreen() {
     val navController = rememberNavController()
@@ -146,31 +173,6 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
             textAlign = TextAlign.Center,
             fontSize = 25.sp
         )
-    }
-}
-@Composable
-fun HomeScreen(
-    modifier: Modifier = Modifier,
-    appViewModel: AppViewModel = viewModel(),
-    navController: NavController
-) {
-    val appUiState by appViewModel.appUiState.collectAsState()
-
-    LazyVerticalGrid(
-        modifier = modifier,
-        columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(dimensionResource(R.dimen.padding_small)),
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)),
-        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
-    ) {
-        items(appViewModel.updateTopicList()) { it ->
-            TopicCard(
-                navController = navController,
-                topic = it,
-                appUiState = appUiState,
-                onCardButtonClick = { appViewModel.toggleExpanded(it) },
-            )
-        }
     }
 }
 
