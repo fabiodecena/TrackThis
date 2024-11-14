@@ -41,6 +41,7 @@ import com.example.trackthis.data.removeStartedTopicElementFromList
 @Composable
 fun StartedTopic(
     topicElement: StartedTopicElement,
+    onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -74,6 +75,7 @@ fun StartedTopic(
             }
             FloatingActionButton(
                 onClick = {
+                    onDelete()
                     removeStartedTopicElementFromList(topicElement.name)
                 },
                 modifier = Modifier
@@ -150,8 +152,8 @@ fun CircleWithLetter(letter: String) {
     }
 }
 
-@Composable
+/*@Composable
 @Preview
 fun StartedTopicPreview() {
     StartedTopic(topicElement = StartedTopicElement(R.string.architecture))
-}
+}*/

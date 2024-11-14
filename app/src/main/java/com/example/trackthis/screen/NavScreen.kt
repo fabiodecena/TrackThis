@@ -22,6 +22,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,7 +43,7 @@ import com.example.trackthis.component.TopicCard
 import com.example.trackthis.component.TopicListItem
 import com.example.trackthis.component.bars.BottomBar
 import com.example.trackthis.component.bars.TopAppBar
-import com.example.trackthis.data.listOfStartedTopic
+import com.example.trackthis.data.StartedTopicElement
 import com.example.trackthis.data.listOfVisualizedTopicListItem
 import com.example.trackthis.data.trackNavigationItems
 import com.example.trackthis.navigation.Navigation
@@ -148,11 +150,17 @@ fun InactiveTrackScreen() {
     }
 }
 @Composable
-fun StatisticsScreen(modifier: Modifier = Modifier) {
+fun StatisticsScreen(
+    modifier: Modifier = Modifier,
+    topics: List<StartedTopicElement>
+) {
+    val topicList = remember { mutableStateListOf<StartedTopicElement>().apply { addAll(topics) } }
+
     LazyColumn(modifier = modifier) {
-        items(listOfStartedTopic) {topic ->
+        items(topicList) { topic ->
             StartedTopic(
-                topicElement = topic
+                topicElement = topic,
+                onDelete = { topicList.remove(topic) }
             )
         }
     }

@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.trackthis.component.TrackDetails
 import com.example.trackthis.data.NavigationItem
+import com.example.trackthis.data.listOfStartedTopic
 import com.example.trackthis.data.listOfVisualizedTopics
 import com.example.trackthis.screen.ActiveTrackScreen
 import com.example.trackthis.screen.StatisticsScreen
@@ -39,7 +40,7 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
             }
         }
         composable(NavigationItem.Statistics.route) {
-            StatisticsScreen()
+            StatisticsScreen(topics = listOfStartedTopic)
         }
         composable(NavigationItem.Location.route) {
             LocationScreen()
