@@ -13,8 +13,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import com.example.trackthis.R
 import com.example.trackthis.component.charts.LineChartScreen
 import com.example.trackthis.data.StartedTopicElement
+import com.example.trackthis.data.removeStartedTopicElementFromList
 
 @Composable
 fun StartedTopic(
@@ -44,13 +49,15 @@ fun StartedTopic(
         shape = MaterialTheme.shapes.large
     ) {
         Row(
-            modifier = modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(R.dimen.padding_small)),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
-                modifier = modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .padding(dimensionResource(R.dimen.padding_small)),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
@@ -65,58 +72,59 @@ fun StartedTopic(
                     textAlign = TextAlign.Center
                 )
             }
-
-        }
-        Row(
-            modifier = modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Card(
+            FloatingActionButton(
+                onClick = {
+                    removeStartedTopicElementFromList(topicElement.name)
+                },
                 modifier = Modifier
-                    .padding(dimensionResource(R.dimen.padding_medium))
-                    .height(200.dp)
-                    .width(350.dp),
-                shape = MaterialTheme.shapes.large
-            ){
-                LineChartScreen()
+                    .padding(dimensionResource(R.dimen.padding_medium2))
+                    .padding(top = dimensionResource(R.dimen.padding_medium))
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Delete,
+                    contentDescription = "Delete Element",
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
             }
         }
-        Row(
-            modifier = modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+        Card(
+            modifier = Modifier
+                .padding(horizontal = dimensionResource(R.dimen.padding_medium))
+                .height(200.dp)
+                .width(350.dp),
+            shape = MaterialTheme.shapes.large
+        ){
+            LineChartScreen()
+        }
+        Card(
+            modifier = Modifier
+                .padding(dimensionResource(R.dimen.padding_medium))
+                .height(70.dp)
+                .width(350.dp),
+            shape = MaterialTheme.shapes.large,
+            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
         ) {
-            Card(
+            Box(
                 modifier = Modifier
-                    .padding(dimensionResource(R.dimen.padding_medium))
-                    .height(70.dp)
-                    .width(350.dp),
-                shape = MaterialTheme.shapes.large,
-                colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .wrapContentSize(Alignment.Center)
-                ){
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                    .fillMaxSize()
+                    .wrapContentSize(Alignment.Center)
+            ){
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
                     ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
-                        ) {
-                            CircleWithLetter("M")
-                            CircleWithLetter("T")
-                            CircleWithLetter("W")
-                            CircleWithLetter("T")
-                            CircleWithLetter("F")
-                            CircleWithLetter("S")
-                            CircleWithLetter("S")
-                        }
+                        CircleWithLetter("M")
+                        CircleWithLetter("T")
+                        CircleWithLetter("W")
+                        CircleWithLetter("T")
+                        CircleWithLetter("F")
+                        CircleWithLetter("S")
+                        CircleWithLetter("S")
                     }
                 }
             }
