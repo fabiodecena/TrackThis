@@ -45,6 +45,7 @@ import com.example.trackthis.component.bars.BottomBar
 import com.example.trackthis.component.bars.TopAppBar
 import com.example.trackthis.data.StartedTopicElement
 import com.example.trackthis.data.listOfVisualizedTopicListItem
+import com.example.trackthis.data.pointsData
 import com.example.trackthis.data.trackNavigationItems
 import com.example.trackthis.navigation.Navigation
 import com.example.trackthis.navigation.NavigationSelectionScreen
@@ -160,7 +161,8 @@ fun StatisticsScreen(
         items(topicList) { topic ->
             StartedTopic(
                 topicElement = topic,
-                onDelete = { topicList.remove(topic) }
+                onDelete = { topicList.remove(topic) },
+                pointsData = pointsData
             )
         }
     }

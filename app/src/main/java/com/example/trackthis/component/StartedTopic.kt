@@ -30,19 +30,21 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import co.yml.charts.common.model.Point
 import com.example.trackthis.R
 import com.example.trackthis.component.charts.LineChartScreen
 import com.example.trackthis.data.StartedTopicElement
+import com.example.trackthis.data.pointsData
 import com.example.trackthis.data.removeStartedTopicElementFromList
 
 @Composable
 fun StartedTopic(
     topicElement: StartedTopicElement,
     onDelete: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    pointsData: List<Point>
 ) {
     Card(
         modifier = modifier
@@ -51,9 +53,8 @@ fun StartedTopic(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(dimensionResource(R.dimen.padding_small)),
-            horizontalArrangement = Arrangement.SpaceBetween,
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
@@ -80,7 +81,7 @@ fun StartedTopic(
                 },
                 modifier = Modifier
                     .padding(dimensionResource(R.dimen.padding_medium2))
-                    .padding(top = dimensionResource(R.dimen.padding_medium))
+                    .padding(top = dimensionResource(R.dimen.padding_medium), start = dimensionResource(R.dimen.padding_large))
             ) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
@@ -89,44 +90,59 @@ fun StartedTopic(
                 )
             }
         }
-        Card(
+        Row(
             modifier = Modifier
-                .padding(horizontal = dimensionResource(R.dimen.padding_medium))
-                .height(200.dp)
-                .width(350.dp),
-            shape = MaterialTheme.shapes.large
-        ){
-            LineChartScreen()
-        }
-        Card(
-            modifier = Modifier
-                .padding(dimensionResource(R.dimen.padding_medium))
-                .height(70.dp)
-                .width(350.dp),
-            shape = MaterialTheme.shapes.large,
-            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
+            Card(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .wrapContentSize(Alignment.Center)
+                    .padding(horizontal = dimensionResource(R.dimen.padding_medium))
+                    .height(200.dp)
+                    .width(350.dp),
+                shape = MaterialTheme.shapes.large
             ){
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
+                LineChartScreen()
+            }
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(R.dimen.padding_medium)),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Card(
+                modifier = Modifier
+                    .padding(dimensionResource(R.dimen.padding_medium))
+                    .height(70.dp)
+                    .width(350.dp),
+                shape = MaterialTheme.shapes.large,
+                colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentSize(Alignment.Center)
+                ){
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        CircleWithLetter("M")
-                        CircleWithLetter("T")
-                        CircleWithLetter("W")
-                        CircleWithLetter("T")
-                        CircleWithLetter("F")
-                        CircleWithLetter("S")
-                        CircleWithLetter("S")
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
+                        ) {
+                            CircleWithLetter("M", pointData = pointsData[0])
+                            CircleWithLetter("T", pointData = pointsData[1])
+                            CircleWithLetter("W", pointData = pointsData[2])
+                            CircleWithLetter("T", pointData = pointsData[3])
+                            CircleWithLetter("F", pointData = pointsData[4])
+                            CircleWithLetter("S", pointData = pointsData[5])
+                            CircleWithLetter("S", pointData = pointsData[6])
+                        }
                     }
                 }
             }
@@ -134,14 +150,24 @@ fun StartedTopic(
     }
 }
 
+
 @Composable
-fun CircleWithLetter(letter: String) {
+fun CircleWithLetter(letter: String, pointData: Point) {
+    val isOnYAxis = pointsData.any { it.y == 0f && it.x == pointData.x }
+
+    val backgroundColor = if (isOnYAxis) {
+        MaterialTheme.colorScheme.onTertiary
+    } else {
+        MaterialTheme.colorScheme.tertiary
+    }
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .clip(MaterialTheme.shapes.extraLarge)
-            .background(MaterialTheme.colorScheme.primary)
-            .size(dimensionResource(R.dimen.padding_medium2)) // Adjust size as needed
+            .background(backgroundColor)
+            .size(dimensionResource(R.dimen.padding_medium2))
+
     ) {
         Text(
             text = letter,

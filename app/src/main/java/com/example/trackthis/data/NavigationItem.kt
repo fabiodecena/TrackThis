@@ -2,7 +2,6 @@ package com.example.trackthis.data
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BarChart
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Menu
@@ -13,7 +12,7 @@ sealed class NavigationItem(var route: String, var icon: ImageVector?, var title
     data object Home: NavigationItem("home", Icons.Filled.Home, "Home")
     data object TrackDetails: NavigationItem("trackDetails", null, "Track Details")
     data object Statistics: NavigationItem("statistics", Icons.Filled.BarChart, "Statistics")
-    data object Location: NavigationItem("location", Icons.Filled.LocationOn, "Location")
+    data object Build: NavigationItem("location", Icons.Filled.LocationOn, "Location")
     data object Profile: NavigationItem("profile", Icons.Filled.Person, "Profile")
     data object Settings: NavigationItem("settings", Icons.Filled.Menu, "Settings")
     data object ActiveTrackSelection: NavigationItem("activeTrack", null,"Active Tracking")
@@ -23,7 +22,7 @@ sealed class NavigationItem(var route: String, var icon: ImageVector?, var title
 val bottomBarNavigationItems = listOf(
     NavigationItem.Home,
     NavigationItem.Statistics,
-    NavigationItem.Location
+    NavigationItem.Build
 )
 val trackNavigationItems = listOf(
     NavigationItem.ActiveTrackSelection,

@@ -36,7 +36,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.trackthis.R
 import com.example.trackthis.data.NavigationItem
+import com.example.trackthis.data.StartedTopicElement
 import com.example.trackthis.data.Topic
+import com.example.trackthis.data.listOfStartedTopic
 import com.example.trackthis.ui.AppUiState
 
 @Composable
@@ -100,14 +102,26 @@ fun TopicCard(
                     modifier = Modifier
                         .padding(end = dimensionResource(R.dimen.padding_medium))
                         .clickable {
-                            navController.navigate("${NavigationItem.TrackDetails.route}/${topic.name}") {
-                                navController.graph.startDestinationRoute?.let { route ->
-                                    popUpTo(route) {
-                                        saveState = true
+                            if (!listOfStartedTopic.contains(StartedTopicElement(topic.name))){
+                                navController.navigate("${NavigationItem.TrackDetails.route}/${topic.name}") {
+                                    navController.graph.startDestinationRoute?.let { route ->
+                                        popUpTo(route) {
+                                            saveState = true
+                                        }
                                     }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                                launchSingleTop = true
-                                restoreState = true
+                            } else {
+                                navController.navigate(NavigationItem.Build.route) {
+                                    navController.graph.startDestinationRoute?.let { route ->
+                                        popUpTo(route) {
+                                            saveState = true
+                                        }
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
                             }
                         }
                 )

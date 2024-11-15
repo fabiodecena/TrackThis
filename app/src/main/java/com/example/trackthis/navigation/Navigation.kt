@@ -42,7 +42,7 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
         composable(NavigationItem.Statistics.route) {
             StatisticsScreen(topics = listOfStartedTopic)
         }
-        composable(NavigationItem.Location.route) {
+        composable(NavigationItem.Build.route) {
             LocationScreen()
         }
         composable(NavigationItem.Settings.route) {
