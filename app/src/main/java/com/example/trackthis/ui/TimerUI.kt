@@ -15,21 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 
-
-@Composable
-fun TimerScreenContent(timerViewModel: TimerViewModel) {
-    val timerValue by timerViewModel.timer.collectAsState()
-
-    TimerScreen(
-        timerValue = timerValue,
-        onStartClick = { timerViewModel.startTimer() },
-        onPauseClick = { timerViewModel.pauseTimer() },
-        onStopClick = { timerViewModel.stopTimer() }
-    )
-}
 
 @Composable
 fun TimerScreen(

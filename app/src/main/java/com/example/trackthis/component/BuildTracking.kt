@@ -19,7 +19,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.trackthis.R
 import com.example.trackthis.data.StartedTopicElement
-import com.example.trackthis.ui.TimerScreenContent
 import com.example.trackthis.ui.TimerViewModel
 
 
@@ -27,6 +26,7 @@ import com.example.trackthis.ui.TimerViewModel
 fun BuildTracking(
     topicElement: StartedTopicElement,
     modifier: Modifier = Modifier,
+    timerViewModel: TimerViewModel
 ) {
     Column(
         modifier = modifier
@@ -68,6 +68,5 @@ fun BuildTracking(
                 )
             }
         }
-        TimerScreenContent(TimerViewModel())
     }
 }

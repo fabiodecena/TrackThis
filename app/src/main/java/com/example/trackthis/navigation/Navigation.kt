@@ -18,6 +18,7 @@ import com.example.trackthis.screen.InactiveTrackScreen
 import com.example.trackthis.screen.BuildScreen
 import com.example.trackthis.screen.ProfileScreen
 import com.example.trackthis.screen.SettingsScreen
+import com.example.trackthis.ui.TimerViewModel
 
 @Composable
 fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -43,7 +44,7 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
             StatisticsScreen(topics = listOfStartedTopic)
         }
         composable(NavigationItem.Build.route) {
-            BuildScreen()
+            BuildScreen(timerViewModel = TimerViewModel())
         }
         composable(NavigationItem.Settings.route) {
             SettingsScreen()

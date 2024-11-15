@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -53,6 +52,8 @@ import com.example.trackthis.data.trackNavigationItems
 import com.example.trackthis.navigation.Navigation
 import com.example.trackthis.navigation.NavigationSelectionScreen
 import com.example.trackthis.ui.AppViewModel
+import com.example.trackthis.ui.TimerScreen
+import com.example.trackthis.ui.TimerViewModel
 
 @Composable
 fun MainScreen() {
@@ -196,11 +197,29 @@ fun StatisticsScreen(
 
 @Composable
 fun BuildScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    timerViewModel: TimerViewModel
 ) {
-    LazyColumn(modifier = modifier) {
+    val timerValue by timerViewModel.timer.collectAsState()
+
+    LazyColumn(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(dimensionResource(R.dimen.padding_medium)),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         items(listOfStartedTopic) { topic ->
-            BuildTracking(topic)
+            BuildTracking(
+                timerViewModel = timerViewModel,
+                topicElement = topic
+            )
         }
     }
+
+    TimerScreen(
+        timerValue = timerValue,
+        onStartClick = { timerViewModel.startTimer() },
+        onPauseClick = { timerViewModel.pauseTimer() },
+        onStopClick = { timerViewModel.stopTimer() }
+    )
 }
