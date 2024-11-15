@@ -126,23 +126,17 @@ fun StartedTopic(
                         .fillMaxSize()
                         .wrapContentSize(Alignment.Center)
                 ){
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
-                        ) {
-                            CircleWithLetter("M", pointData = pointsData[0])
-                            CircleWithLetter("T", pointData = pointsData[1])
-                            CircleWithLetter("W", pointData = pointsData[2])
-                            CircleWithLetter("T", pointData = pointsData[3])
-                            CircleWithLetter("F", pointData = pointsData[4])
-                            CircleWithLetter("S", pointData = pointsData[5])
-                            CircleWithLetter("S", pointData = pointsData[6])
-                        }
+                    Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
+                ) {
+                    CircleWithLetter("M", pointData = pointsData[0])
+                    CircleWithLetter("T", pointData = pointsData[1])
+                    CircleWithLetter("W", pointData = pointsData[2])
+                    CircleWithLetter("T", pointData = pointsData[3])
+                    CircleWithLetter("F", pointData = pointsData[4])
+                    CircleWithLetter("S", pointData = pointsData[5])
+                    CircleWithLetter("S", pointData = pointsData[6])
                     }
                 }
             }
@@ -154,25 +148,19 @@ fun StartedTopic(
 @Composable
 fun CircleWithLetter(letter: String, pointData: Point) {
     val isOnYAxis = pointsData.any { it.y == 0f && it.x == pointData.x }
-
-    val backgroundColor = if (isOnYAxis) {
-        MaterialTheme.colorScheme.onTertiary
-    } else {
-        MaterialTheme.colorScheme.tertiary
-    }
-
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .clip(MaterialTheme.shapes.extraLarge)
-            .background(backgroundColor)
+            .background(
+                if (isOnYAxis) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.tertiary
+            )
             .size(dimensionResource(R.dimen.padding_medium2))
-
     ) {
         Text(
             text = letter,
             color = Color.White,
-            fontSize = 16.sp, // Adjust font size as needed
+            fontSize = 16.sp,
             fontWeight = FontWeight.Bold
         )
     }

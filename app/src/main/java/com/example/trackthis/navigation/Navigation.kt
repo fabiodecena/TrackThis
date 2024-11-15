@@ -15,7 +15,7 @@ import com.example.trackthis.screen.ActiveTrackScreen
 import com.example.trackthis.screen.StatisticsScreen
 import com.example.trackthis.screen.HomeScreen
 import com.example.trackthis.screen.InactiveTrackScreen
-import com.example.trackthis.screen.LocationScreen
+import com.example.trackthis.screen.BuildScreen
 import com.example.trackthis.screen.ProfileScreen
 import com.example.trackthis.screen.SettingsScreen
 
@@ -43,7 +43,7 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
             StatisticsScreen(topics = listOfStartedTopic)
         }
         composable(NavigationItem.Build.route) {
-            LocationScreen()
+            BuildScreen()
         }
         composable(NavigationItem.Settings.route) {
             SettingsScreen()

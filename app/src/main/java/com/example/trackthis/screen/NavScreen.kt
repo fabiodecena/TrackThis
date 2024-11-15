@@ -38,12 +38,14 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.trackthis.R
+import com.example.trackthis.component.BuildTracking
 import com.example.trackthis.component.StartedTopic
 import com.example.trackthis.component.TopicCard
 import com.example.trackthis.component.TopicListItem
 import com.example.trackthis.component.bars.BottomBar
 import com.example.trackthis.component.bars.TopAppBar
 import com.example.trackthis.data.StartedTopicElement
+import com.example.trackthis.data.listOfStartedTopic
 import com.example.trackthis.data.listOfVisualizedTopicListItem
 import com.example.trackthis.data.pointsData
 import com.example.trackthis.data.trackNavigationItems
@@ -64,32 +66,6 @@ fun MainScreen() {
 }
 
 @Composable
-fun HomeScreen(
-    modifier: Modifier = Modifier,
-    appViewModel: AppViewModel = viewModel(),
-    navController: NavController
-) {
-    val appUiState by appViewModel.appUiState.collectAsState()
-
-    LazyVerticalGrid(
-        modifier = modifier,
-        columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(dimensionResource(R.dimen.padding_small)),
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)),
-        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
-    ) {
-        items(appViewModel.updateTopicList()) { it ->
-            TopicCard(
-                navController = navController,
-                topic = it,
-                appUiState = appUiState,
-                onCardButtonClick = { appViewModel.toggleExpanded(it) },
-            )
-        }
-    }
-}
-
-@Composable
 fun SettingsScreen() {
     val navController = rememberNavController()
     Scaffold(
@@ -98,10 +74,10 @@ fun SettingsScreen() {
         NavigationSelectionScreen(navController = navController, modifier = Modifier.padding(innerPadding))
     }
 }
+
 @Composable
 fun TopRowSelectionScreen(modifier: Modifier = Modifier, navController: NavController) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
-
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -133,6 +109,7 @@ fun TopRowSelectionScreen(modifier: Modifier = Modifier, navController: NavContr
         }
     }
 }
+
 @Composable
 fun ActiveTrackScreen() {
     LazyColumn(modifier = Modifier) {
@@ -150,23 +127,7 @@ fun InactiveTrackScreen() {
         }
     }
 }
-@Composable
-fun StatisticsScreen(
-    modifier: Modifier = Modifier,
-    topics: List<StartedTopicElement>
-) {
-    val topicList = remember { mutableStateListOf<StartedTopicElement>().apply { addAll(topics) } }
 
-    LazyColumn(modifier = modifier) {
-        items(topicList) { topic ->
-            StartedTopic(
-                topicElement = topic,
-                onDelete = { topicList.remove(topic) },
-                pointsData = pointsData
-            )
-        }
-    }
-}
 @Composable
 fun ProfileScreen(modifier: Modifier = Modifier) {
     Column(
@@ -187,20 +148,56 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun LocationScreen(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(colorResource(id = R.color.purple_500))
-            .wrapContentSize(Alignment.Center)
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    appViewModel: AppViewModel = viewModel(),
+    navController: NavController
+) {
+    val appUiState by appViewModel.appUiState.collectAsState()
+
+    LazyVerticalGrid(
+        modifier = modifier,
+        columns = GridCells.Fixed(2),
+        contentPadding = PaddingValues(dimensionResource(R.dimen.padding_small)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)),
+        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
     ) {
-        Text(
-            text = "Profile View",
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 25.sp
-        )
+        items(appViewModel.updateTopicList()) { it ->
+            TopicCard(
+                navController = navController,
+                topic = it,
+                appUiState = appUiState,
+                onCardButtonClick = { appViewModel.toggleExpanded(it) },
+            )
+        }
+    }
+}
+
+@Composable
+fun StatisticsScreen(
+    modifier: Modifier = Modifier,
+    topics: List<StartedTopicElement>
+) {
+    val topicList = remember { mutableStateListOf<StartedTopicElement>().apply { addAll(topics) } }
+
+    LazyColumn(modifier = modifier) {
+        items(topicList) { topic ->
+            StartedTopic(
+                topicElement = topic,
+                onDelete = { topicList.remove(topic) },
+                pointsData = pointsData
+            )
+        }
+    }
+}
+
+@Composable
+fun BuildScreen(
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(modifier = modifier) {
+        items(listOfStartedTopic) { topic ->
+            BuildTracking(topic)
+        }
     }
 }
