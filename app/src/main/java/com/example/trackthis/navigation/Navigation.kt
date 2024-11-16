@@ -41,7 +41,7 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
             }
         }
         composable(NavigationItem.Statistics.route) {
-            StatisticsScreen(topics = listOfStartedTopic)
+            StatisticsScreen()
         }
         composable(NavigationItem.Build.route) {
             BuildScreen(timerViewModel = TimerViewModel())

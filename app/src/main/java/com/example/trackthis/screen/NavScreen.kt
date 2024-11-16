@@ -22,8 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,7 +43,6 @@ import com.example.trackthis.component.TopicListItem
 import com.example.trackthis.component.bars.BottomBar
 import com.example.trackthis.component.bars.TopAppBar
 import com.example.trackthis.component.charts.ChartViewModel
-import com.example.trackthis.data.StartedTopicElement
 import com.example.trackthis.data.listOfStartedTopic
 import com.example.trackthis.data.listOfVisualizedTopicListItem
 import com.example.trackthis.data.pointsData
@@ -181,16 +178,17 @@ fun HomeScreen(
 @Composable
 fun StatisticsScreen(
     modifier: Modifier = Modifier,
-    topics: List<StartedTopicElement>
+    chartViewModel: ChartViewModel = viewModel(),
 ) {
-    val topicList = remember { mutableStateListOf<StartedTopicElement>().apply { addAll(topics) } }
+    val chartUiState by chartViewModel.chartUiState.collectAsState()
 
     LazyColumn(modifier = modifier) {
-        items(topicList) { topic ->
+        items(chartViewModel.updateStartedTopicList()) { topic ->
             StartedTopic(
+                viewModel = chartViewModel,
                 topicElement = topic,
-                onDelete = { topicList.remove(topic) },
-                pointsData = pointsData
+                onDelete = { chartViewModel.removeStartedTopicElementFromList(topic.name) },
+                pointsData = pointsData/*TODO*/ //Cambiare riferimento con viewmodel
             )
         }
     }

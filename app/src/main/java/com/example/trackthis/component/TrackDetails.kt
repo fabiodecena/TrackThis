@@ -48,9 +48,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.navigation.NavController
 import com.example.trackthis.R
+import com.example.trackthis.component.charts.ChartViewModel
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.Topic
-import com.example.trackthis.data.addStartedTopicElementToList
 import java.util.Date
 import java.util.Locale
 
@@ -59,7 +59,7 @@ import java.util.Locale
 fun TrackDetails(
     modifier: Modifier = Modifier,
     topic: Topic,
-    navController: NavController
+    navController: NavController,
 ) {
     var studyNameInput = topic.name
     var dailyEffortInput by remember { mutableStateOf("") }
@@ -134,7 +134,7 @@ fun TrackDetails(
                         popUpTo(route)
                     }
                 }
-                addStartedTopicElementToList(studyNameInput)
+                ChartViewModel().addStartedTopicElementToList(studyNameInput)
             },
             modifier = Modifier
                 .padding(dimensionResource(R.dimen.padding_medium2))
