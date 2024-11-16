@@ -44,6 +44,7 @@ import com.example.trackthis.component.TopicCard
 import com.example.trackthis.component.TopicListItem
 import com.example.trackthis.component.bars.BottomBar
 import com.example.trackthis.component.bars.TopAppBar
+import com.example.trackthis.component.charts.ChartViewModel
 import com.example.trackthis.data.StartedTopicElement
 import com.example.trackthis.data.listOfStartedTopic
 import com.example.trackthis.data.listOfVisualizedTopicListItem
@@ -220,6 +221,6 @@ fun BuildScreen(
         timerValue = timerValue,
         onStartClick = { timerViewModel.startTimer() },
         onPauseClick = { timerViewModel.pauseTimer() },
-        onStopClick = { timerViewModel.stopTimer() }
+        onStopClick = { timerViewModel.stopTimer(ChartViewModel()) }
     )
 }

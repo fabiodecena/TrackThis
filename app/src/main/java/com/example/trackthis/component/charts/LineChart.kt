@@ -8,9 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import co.yml.charts.axis.AxisData
 import co.yml.charts.ui.linechart.LineChart
 import co.yml.charts.ui.linechart.model.IntersectionPoint
@@ -28,15 +28,15 @@ import com.example.trackthis.data.steps
 
 
 @Composable
-fun LineChartScreen() {
+fun LineChartScreen(viewModel: ChartViewModel = viewModel()) {
     val yLabels = listOf(
-        stringResource(R.string.monday),
-        stringResource(R.string.tuesday),
-        stringResource(R.string.wednesday),
-        stringResource(R.string.thursday),
-        stringResource(R.string.friday),
-        stringResource(R.string.saturday),
-        stringResource(R.string.sunday)
+        viewModel.getIndexForDay(viewModel._yLabels[0]),
+        viewModel.getIndexForDay(viewModel._yLabels[1]),
+        viewModel.getIndexForDay(viewModel._yLabels[2]),
+        viewModel.getIndexForDay(viewModel._yLabels[3]),
+        viewModel.getIndexForDay(viewModel._yLabels[4]),
+        viewModel.getIndexForDay(viewModel._yLabels[5]),
+        viewModel.getIndexForDay(viewModel._yLabels[6])
     )
 
     val xAxisData = AxisData.Builder()

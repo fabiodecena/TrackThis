@@ -3,6 +3,7 @@ package com.example.trackthis.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.trackthis.component.charts.ChartViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,10 +34,15 @@ class TimerViewModel : ViewModel() {
         timerJob?.cancel()
     }
 
-    fun stopTimer() {
+
+
+    fun stopTimer(viewModel: ChartViewModel): Int {
+        val currentDay = saveCurrentDay()
+        val index = viewModel.getIndexForDay(currentDay)
         _timer.value = 0
         timerJob?.cancel()
-        saveCurrentDay()
+        return index
+
     }
 
     private fun saveCurrentDay(): String {

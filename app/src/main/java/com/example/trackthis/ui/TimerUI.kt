@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.trackthis.component.charts.ChartViewModel
 
 
 @Composable
@@ -47,5 +48,6 @@ fun TimerScreen(
                 Text("Stop")
             }
         }
+        Text(text = TimerViewModel().stopTimer(ChartViewModel()).toString())
     }
 }
