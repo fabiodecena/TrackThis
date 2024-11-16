@@ -42,7 +42,7 @@ class TimerViewModel : ViewModel() {
         if(index in pointsData.indices) {
             pointsData[index] = pointsData[index].copy(y = currentValue.toFloat())
         }
-
+        _timer.value = 0
         timerJob?.cancel()
         return index
 
