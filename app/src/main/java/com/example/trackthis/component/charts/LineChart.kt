@@ -10,7 +10,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import co.yml.charts.axis.AxisData
 import co.yml.charts.ui.linechart.LineChart
 import co.yml.charts.ui.linechart.model.IntersectionPoint
@@ -22,13 +21,12 @@ import co.yml.charts.ui.linechart.model.LineType
 import co.yml.charts.ui.linechart.model.SelectionHighlightPoint
 import co.yml.charts.ui.linechart.model.SelectionHighlightPopUp
 import co.yml.charts.ui.linechart.model.ShadowUnderLine
-import com.example.trackthis.R
 import com.example.trackthis.data.pointsData
 import com.example.trackthis.data.steps
 
 
 @Composable
-fun LineChartScreen(viewModel: ChartViewModel = viewModel()) {
+fun LineChartScreen() {
     val yLabels = listOf(
         "Mon",
         "Tue",
