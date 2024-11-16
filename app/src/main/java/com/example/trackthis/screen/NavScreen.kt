@@ -219,7 +219,6 @@ fun BuildScreen(
 
     TimerScreen(
         timerValue = timerValue,
-        onStartClick = { timerViewModel.startTimer() },
         onPauseClick = { timerViewModel.pauseTimer() },
         onStopClick = { timerViewModel.stopTimer(ChartViewModel()) }
     )

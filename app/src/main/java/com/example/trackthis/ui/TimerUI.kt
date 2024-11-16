@@ -21,7 +21,6 @@ import com.example.trackthis.component.charts.ChartViewModel
 @Composable
 fun TimerScreen(
     timerValue: Long,
-    onStartClick: () -> Unit,
     onPauseClick: () -> Unit,
     onStopClick: () -> Unit
 ) {
@@ -45,6 +44,5 @@ fun TimerScreen(
                 Text("Stop")
             }
         }
-        Text(text = TimerViewModel().stopTimer(ChartViewModel()).toString())
     }
 }

@@ -38,11 +38,11 @@ class TimerViewModel : ViewModel() {
     fun stopTimer(viewModel: ChartViewModel): Int {
         val currentDay = saveCurrentDay()
         val index = viewModel.getIndexForDay(currentDay)
-        val currentValue = _timer.value
+        val currentValue = timer.value
         if(index in pointsData.indices) {
             pointsData[index] = pointsData[index].copy(y = currentValue.toFloat())
         }
-        _timer.value = 0
+
         timerJob?.cancel()
         return index
 

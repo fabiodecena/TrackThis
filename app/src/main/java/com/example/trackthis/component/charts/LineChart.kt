@@ -30,13 +30,13 @@ import com.example.trackthis.data.steps
 @Composable
 fun LineChartScreen(viewModel: ChartViewModel = viewModel()) {
     val yLabels = listOf(
-        viewModel.getIndexForDay(viewModel._yLabels[0]),
-        viewModel.getIndexForDay(viewModel._yLabels[1]),
-        viewModel.getIndexForDay(viewModel._yLabels[2]),
-        viewModel.getIndexForDay(viewModel._yLabels[3]),
-        viewModel.getIndexForDay(viewModel._yLabels[4]),
-        viewModel.getIndexForDay(viewModel._yLabels[5]),
-        viewModel.getIndexForDay(viewModel._yLabels[6])
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Sun"
     )
 
     val xAxisData = AxisData.Builder()

@@ -147,7 +147,7 @@ fun StartedTopic(
 
 @Composable
 fun CircleWithLetter(letter: String, pointData: Point) {
-    val isOnYAxis = pointsData.any { it.y == 0f  }
+    val isOnYAxis = pointsData.any { it.y == 0f && it.x == pointData.x }
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier

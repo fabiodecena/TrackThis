@@ -10,10 +10,10 @@ data class LineChartDataClass(
 const val steps = 6
 var pointsData = mutableStateListOf(
     Point(0f, 0f),
-    Point(1f, 0f),
-    Point(2f, 0f),
-    Point(3f, 0f),
+    Point(1f, 10f),
+    Point(2f, 50f),
+    Point(3f, 30f),
     Point(4f, 0f),
     Point(5f, 0f),
-    Point(6f, 0f),
+    Point(6f, 60f),
 )
