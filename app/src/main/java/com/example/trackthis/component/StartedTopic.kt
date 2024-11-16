@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import co.yml.charts.common.model.Point
 import com.example.trackthis.R
-import com.example.trackthis.component.charts.ChartViewModel
 import com.example.trackthis.component.charts.LineChartScreen
 import com.example.trackthis.data.StartedTopicElement
 import com.example.trackthis.data.pointsData
@@ -45,7 +44,6 @@ import com.example.trackthis.data.pointsData
 fun StartedTopic(
     topicElement: StartedTopicElement,
     onDelete: () -> Unit,
-    viewModel: ChartViewModel,
     modifier: Modifier = Modifier,
     pointsData: List<Point>
 ) {
@@ -80,7 +78,6 @@ fun StartedTopic(
             FloatingActionButton(
                 onClick = {
                     onDelete()
-                    viewModel.removeStartedTopicElementFromList(topicElement.name)
                 },
                 modifier = Modifier
                     .padding(dimensionResource(R.dimen.padding_medium2))

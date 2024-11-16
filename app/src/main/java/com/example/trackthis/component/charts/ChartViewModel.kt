@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 
 class ChartViewModel: ViewModel() {
-    private val _chartUiState = MutableStateFlow(ChartUiState())
+    private val _chartUiState = MutableStateFlow(ChartUiState(startedTopicList = listOfStartedTopic))
     val chartUiState: StateFlow<ChartUiState> = _chartUiState.asStateFlow()
 
     fun updateStartedTopicList(): List<StartedTopicElement> {
@@ -25,9 +25,9 @@ class ChartViewModel: ViewModel() {
         if (StartedTopicElement(topicName) !in listOfStartedTopic)// avoid to add the same Topic more than once
             listOfStartedTopic.add(StartedTopicElement(topicName))
     }
-    fun removeStartedTopicElementFromList(topicName: Int): MutableList<StartedTopicElement> {// remove one element from the list
+    fun removeStartedTopicElementFromList(topicName: Int){// remove one element from the list
         listOfStartedTopic.remove(StartedTopicElement(topicName))
-        return listOfStartedTopic
+        updateStartedTopicList()
     }
 
     fun updatePointsDataList(): List<Point> {

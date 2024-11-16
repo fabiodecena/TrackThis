@@ -183,12 +183,11 @@ fun StatisticsScreen(
     val chartUiState by chartViewModel.chartUiState.collectAsState()
 
     LazyColumn(modifier = modifier) {
-        items(chartViewModel.updateStartedTopicList()) { topic ->
+        items(chartUiState.startedTopicList) { topic ->
             StartedTopic(
-                viewModel = chartViewModel,
                 topicElement = topic,
                 onDelete = { chartViewModel.removeStartedTopicElementFromList(topic.name) },
-                pointsData = pointsData/*TODO*/ //Cambiare riferimento con viewmodel
+                pointsData = chartUiState.pointsData,
             )
         }
     }

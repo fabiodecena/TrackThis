@@ -46,6 +46,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.trackthis.R
 import com.example.trackthis.component.charts.ChartViewModel
@@ -60,8 +61,8 @@ fun TrackDetails(
     modifier: Modifier = Modifier,
     topic: Topic,
     navController: NavController,
+    chartViewModel: ChartViewModel = viewModel()
 ) {
-    var studyNameInput = topic.name
     var dailyEffortInput by remember { mutableStateOf("") }
     var finalGoalInput by remember { mutableStateOf("") }
     var startingDateInput by remember { mutableStateOf("") }
@@ -129,12 +130,12 @@ fun TrackDetails(
         )
         FloatingActionButton(
             onClick = {
+                chartViewModel.addStartedTopicElementToList(topic.name)
                 navController.navigate(NavigationItem.Statistics.route) {
                     navController.graph.startDestinationRoute?.let { route ->
                         popUpTo(route)
                     }
                 }
-                ChartViewModel().addStartedTopicElementToList(studyNameInput)
             },
             modifier = Modifier
                 .padding(dimensionResource(R.dimen.padding_medium2))
