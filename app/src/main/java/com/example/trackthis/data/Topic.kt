@@ -13,7 +13,7 @@ var listOfVisualizedTopics = mutableListOf(
     Topic(R.string.automotive, R.drawable.automotive),
     Topic(R.string.biology, R.drawable.biology),
     Topic(R.string.business, R.drawable.business),
-    Topic(R.string.crafts, R.drawable.crafts,),
+    Topic(R.string.crafts, R.drawable.crafts),
     Topic(R.string.culinary, R.drawable.culinary),
     Topic(R.string.design, R.drawable.design),
     Topic(R.string.drawing, R.drawable.drawing),

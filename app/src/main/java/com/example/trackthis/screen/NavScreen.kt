@@ -45,7 +45,6 @@ import com.example.trackthis.component.bars.TopAppBar
 import com.example.trackthis.component.charts.ChartViewModel
 import com.example.trackthis.data.listOfStartedTopic
 import com.example.trackthis.data.listOfVisualizedTopicListItem
-import com.example.trackthis.data.pointsData
 import com.example.trackthis.data.trackNavigationItems
 import com.example.trackthis.navigation.Navigation
 import com.example.trackthis.navigation.NavigationSelectionScreen
