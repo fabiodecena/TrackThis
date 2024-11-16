@@ -36,9 +36,6 @@ fun TimerScreen(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            Button(onClick = onStartClick) {
-                Text("Start")
-            }
             Spacer(modifier = Modifier.width(16.dp))
             Button(onClick = onPauseClick) {
                 Text("Pause")

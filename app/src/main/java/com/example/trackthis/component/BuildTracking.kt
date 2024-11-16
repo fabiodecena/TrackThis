@@ -30,7 +30,6 @@ fun BuildTracking(
 ) {
     Column(
         modifier = modifier
-
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center

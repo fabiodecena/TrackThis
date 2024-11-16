@@ -1,5 +1,6 @@
 package com.example.trackthis.data
 
+import androidx.compose.runtime.mutableStateListOf
 import co.yml.charts.common.model.Point
 
 data class LineChartDataClass(
@@ -7,7 +8,7 @@ data class LineChartDataClass(
     val steps: Int,
 )
 const val steps = 6
-var pointsData = listOf(
+var pointsData = mutableStateListOf(
     Point(0f, 0f),
     Point(1f, 0f),
     Point(2f, 0f),
