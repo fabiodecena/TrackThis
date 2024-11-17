@@ -65,16 +65,28 @@ fun LineChartScreen() {
         .axisLineColor(MaterialTheme.colorScheme.onSecondaryContainer)
         .axisLabelColor(MaterialTheme.colorScheme.onSecondaryContainer)
         .build()
-    val normalizedPointsData: List<Point> = pointsData.map { point ->
-        val maxValue = pointsData.maxOf { it.y } // Get the maximum data value
-        val normalizedY = (point.y / maxValue) * 24 // Normalize y-value to 0-24 range
-        Point(point.x, normalizedY) // Create a new point with the normalized y-value
-    }
+
+    val dailyEffort = listOf(
+        Point(0f,4f),
+        Point(1f,4f),
+        Point(2f,4f),
+        Point(3f,4f),
+        Point(4f,4f),
+        Point(5f,4f),
+        Point(6f,4f)
+    )
     val lineChartData = LineChartData(
         linePlotData = LinePlotData(
             lines = listOf(
                 Line(
-                    dataPoints = normalizedPointsData,
+                    dataPoints = dailyEffort,
+                    LineStyle(
+                        color = Color.Red,
+                        lineType = LineType.Straight(isDotted = true)
+                    )
+                ),
+                Line(
+                    dataPoints = pointsData,
                     LineStyle(
                         color = MaterialTheme.colorScheme.primary,
                         lineType = LineType.SmoothCurve(isDotted = false)
@@ -93,7 +105,6 @@ fun LineChartScreen() {
                                 Color.Transparent
                             )
                         )
-
                     ),
                     SelectionHighlightPopUp()
                 )

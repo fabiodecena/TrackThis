@@ -35,6 +35,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,10 +64,11 @@ fun TrackDetails(
     navController: NavController,
     chartViewModel: ChartViewModel = viewModel()
 ) {
-    var dailyEffortInput by remember { mutableStateOf("") }
-    var finalGoalInput by remember { mutableStateOf("") }
-    var startingDateInput by remember { mutableStateOf("") }
-    var endingDateInput by remember { mutableStateOf("") }
+    var topicName = topic.name
+    var dailyEffortInput by rememberSaveable { mutableStateOf("") }
+    var finalGoalInput by rememberSaveable { mutableStateOf("") }
+    var startingDateInput by rememberSaveable { mutableStateOf("") }
+    var endingDateInput by rememberSaveable { mutableStateOf("") }
 
     Column(
         modifier = modifier

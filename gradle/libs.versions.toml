@@ -12,6 +12,7 @@ navigationRuntimeKtx = "2.7.7"
 navigationCompose = "2.7.7"
 materialIconsExtended = "1.7.0-beta02"
 ycharts = "2.1.0"
+composeCharts = "latest_version"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,6 +33,7 @@ androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navig
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "materialIconsExtended" }
 ycharts = { group = "co.yml", name = "ycharts", version.ref = "ycharts" }
+compose-charts = { group = "io.github.ehsannarmani", name = "compose-charts", version = "0.0.18" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
