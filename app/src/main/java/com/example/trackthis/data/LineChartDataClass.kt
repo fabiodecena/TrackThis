@@ -1,6 +1,7 @@
 package com.example.trackthis.data
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import co.yml.charts.common.model.Point
 
 data class LineChartDataClass(
@@ -16,4 +17,13 @@ var pointsData = mutableStateListOf(
     Point(4f, 0f),
     Point(5f, 0f),
     Point(6f, 0f),
+)
+var listOfPointsData = listOf(
+    0.0,
+    2.0,
+    8.0,
+    8.5,
+    7.0,
+    3.0,
+    6.0
 )
