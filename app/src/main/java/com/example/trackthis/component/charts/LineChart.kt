@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import co.yml.charts.axis.AxisData
+import co.yml.charts.common.model.Point
 import co.yml.charts.ui.linechart.LineChart
 import co.yml.charts.ui.linechart.model.IntersectionPoint
 import co.yml.charts.ui.linechart.model.Line
@@ -25,6 +26,7 @@ import com.example.trackthis.data.pointsData
 import com.example.trackthis.data.steps
 
 
+
 @Composable
 fun LineChartScreen() {
     val yLabels = listOf(
@@ -36,6 +38,7 @@ fun LineChartScreen() {
         "Sat",
         "Sun"
     )
+
 
     val xAxisData = AxisData.Builder()
         .axisStepSize(47.dp)
@@ -55,18 +58,23 @@ fun LineChartScreen() {
         .backgroundColor(Color.Transparent)
         .labelAndAxisLinePadding(18.dp)
         .labelData { i ->
-            val yScale = 24 / steps
-            (i * yScale).toString()
+            val maxValue = pointsData.maxOf { it.y } // Get the maximum data value
+            val yScale = maxValue / steps
+            (i * yScale).toInt().toString()
         }
         .axisLineColor(MaterialTheme.colorScheme.onSecondaryContainer)
         .axisLabelColor(MaterialTheme.colorScheme.onSecondaryContainer)
         .build()
-
+    val normalizedPointsData: List<Point> = pointsData.map { point ->
+        val maxValue = pointsData.maxOf { it.y } // Get the maximum data value
+        val normalizedY = (point.y / maxValue) * 24 // Normalize y-value to 0-24 range
+        Point(point.x, normalizedY) // Create a new point with the normalized y-value
+    }
     val lineChartData = LineChartData(
         linePlotData = LinePlotData(
             lines = listOf(
                 Line(
-                    dataPoints = pointsData,
+                    dataPoints = normalizedPointsData,
                     LineStyle(
                         color = MaterialTheme.colorScheme.primary,
                         lineType = LineType.SmoothCurve(isDotted = false)
