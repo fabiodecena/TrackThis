@@ -10,8 +10,3 @@ var listOfStartedTopic = mutableListOf<StartedTopicElement>(
 )
 
 
-
-
-fun resetListOfStartedTopic() {// empty the whole list
-    listOfStartedTopic.clear()
-}

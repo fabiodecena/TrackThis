@@ -1,11 +1,10 @@
 package com.example.trackthis.ui
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trackthis.component.charts.ChartViewModel
-import com.example.trackthis.data.listOfPointsData
-import com.example.trackthis.data.pointsData
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +14,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Locale
 import java.time.format.TextStyle
+
 
 class TimerViewModel : ViewModel() {
     private val _timer = MutableStateFlow(0L)
@@ -36,19 +36,13 @@ class TimerViewModel : ViewModel() {
         timerJob?.cancel()
     }
 
-    fun stopTimer(viewModel: ChartViewModel): Int {
+    fun stopTimer(viewModel: ChartViewModel) {
         val currentDay = saveCurrentDay()
         val index = viewModel.getIndexForDay(currentDay)
         val currentValue = timer.value
-        if(index in listOfPointsData.indices) {
-            listOfPointsData = listOfPointsData.also {
-                it[index] = currentValue.toDouble()
-            }
-        }
+        viewModel.updatePointsDataList(index, currentValue)
         _timer.value = 0
         timerJob?.cancel()
-        return index
-
     }
 
     private fun saveCurrentDay(): String {

@@ -1,6 +1,7 @@
 package com.example.trackthis.component
 
 
+import android.util.Log
 import androidx.compose.animation.core.EaseInOutCubic
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -36,10 +37,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import co.yml.charts.common.model.Point
 import com.example.trackthis.R
+import com.example.trackthis.component.charts.ChartUiState
 import com.example.trackthis.data.StartedTopicElement
-import com.example.trackthis.data.listOfPointsData
 import ir.ehsannarmani.compose_charts.LineChart
 import ir.ehsannarmani.compose_charts.models.AnimationMode
 import ir.ehsannarmani.compose_charts.models.DotProperties
@@ -56,6 +56,7 @@ fun StartedTopic(
     topicElement: StartedTopicElement,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
+    chartUiState: ChartUiState,
 ) {
     Card(
         modifier = modifier
@@ -129,7 +130,7 @@ fun StartedTopic(
                             ),
                             Line(
                                 label = "User Name2",
-                                values = listOfPointsData,
+                                values = chartUiState.defaultPointsData,
                                 color = SolidColor(Color(0xFF23af92)),
                                 dotProperties = DotProperties(
                                     enabled = true,
@@ -158,7 +159,6 @@ fun StartedTopic(
                         color = SolidColor(MaterialTheme.colorScheme.error),
                     ),
                     maxValue = 24.0,
-
                     animationMode = AnimationMode.Together(delayBuilder = {
                         it * 500L
                     }),
@@ -206,14 +206,14 @@ fun StartedTopic(
 
 @Composable
 fun CircleWithLetter(letter: String, index: Int) {
-    val isOnYAxis = listOfPointsData.getOrNull(index)?.let { it > 0.0 } == false
+//    val isOnYAxis = listOfPointsData.getOrNull(index)?.let { it > 0.0 } == false
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .clip(MaterialTheme.shapes.extraLarge)
-            .background(
-                if (isOnYAxis) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.tertiary
-            )
+//            .background(
+//                if (isOnYAxis) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.tertiary
+//            )
             .size(dimensionResource(R.dimen.padding_medium2))
     ) {
         Text(

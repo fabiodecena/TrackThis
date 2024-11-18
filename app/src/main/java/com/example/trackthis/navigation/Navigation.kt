@@ -2,12 +2,14 @@ package com.example.trackthis.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.trackthis.component.TrackDetails
+import com.example.trackthis.component.charts.ChartViewModel
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.listOfVisualizedTopics
 import com.example.trackthis.screen.ActiveTrackScreen
@@ -21,6 +23,7 @@ import com.example.trackthis.ui.TimerViewModel
 
 @Composable
 fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) {
+    val chartViewModel: ChartViewModel = viewModel()
     NavHost(
         modifier = modifier,
         navController = navController,
@@ -40,7 +43,8 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
             }
         }
         composable(NavigationItem.Statistics.route) {
-            StatisticsScreen()
+
+            StatisticsScreen(chartViewModel = chartViewModel)
         }
         composable(NavigationItem.Build.route) {
             BuildScreen(timerViewModel = TimerViewModel())
