@@ -2,12 +2,8 @@ package com.example.trackthis.component.charts
 
 
 import androidx.lifecycle.ViewModel
-import co.yml.charts.common.model.Point
 import com.example.trackthis.data.StartedTopicElement
 import com.example.trackthis.data.listOfStartedTopic
-
-import com.example.trackthis.data.pointsData
-
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,12 +25,6 @@ class ChartViewModel: ViewModel() {
         listOfStartedTopic.remove(StartedTopicElement(topicName))
         updateStartedTopicList()
     }
-
-    fun updatePointsDataList(): List<Point> {
-        _chartUiState.value = ChartUiState(pointsData = pointsData)
-        return _chartUiState.value.pointsData
-    }
-
 
     val _yLabels = listOf(
         "Monday",

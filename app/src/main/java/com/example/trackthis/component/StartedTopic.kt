@@ -38,10 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import co.yml.charts.common.model.Point
 import com.example.trackthis.R
-import com.example.trackthis.component.charts.LineChartScreen
 import com.example.trackthis.data.StartedTopicElement
 import com.example.trackthis.data.listOfPointsData
-import com.example.trackthis.data.pointsData
 import ir.ehsannarmani.compose_charts.LineChart
 import ir.ehsannarmani.compose_charts.models.AnimationMode
 import ir.ehsannarmani.compose_charts.models.DotProperties
@@ -49,7 +47,6 @@ import ir.ehsannarmani.compose_charts.models.DrawStyle
 import ir.ehsannarmani.compose_charts.models.GridProperties
 import ir.ehsannarmani.compose_charts.models.LabelProperties
 import ir.ehsannarmani.compose_charts.models.Line
-import ir.ehsannarmani.compose_charts.models.LineProperties
 import ir.ehsannarmani.compose_charts.models.StrokeStyle
 import ir.ehsannarmani.compose_charts.models.ZeroLineProperties
 
@@ -59,7 +56,6 @@ fun StartedTopic(
     topicElement: StartedTopicElement,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
-    pointsData: List<Point>
 ) {
     Card(
         modifier = modifier
