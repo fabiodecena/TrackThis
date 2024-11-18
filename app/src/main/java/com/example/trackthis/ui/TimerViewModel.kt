@@ -4,6 +4,7 @@ package com.example.trackthis.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trackthis.component.charts.ChartViewModel
+import com.example.trackthis.data.listOfPointsData
 import com.example.trackthis.data.pointsData
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -39,8 +40,10 @@ class TimerViewModel : ViewModel() {
         val currentDay = saveCurrentDay()
         val index = viewModel.getIndexForDay(currentDay)
         val currentValue = timer.value
-        if(index in pointsData.indices) {
-            pointsData[index] = pointsData[index].copy(y = currentValue.toFloat())
+        if(index in listOfPointsData.indices) {
+            listOfPointsData = listOfPointsData.also {
+                it[index] = currentValue.toDouble()
+            }
         }
         _timer.value = 0
         timerJob?.cancel()

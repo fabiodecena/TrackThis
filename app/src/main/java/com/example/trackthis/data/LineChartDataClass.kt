@@ -18,12 +18,12 @@ var pointsData = mutableStateListOf(
     Point(5f, 0f),
     Point(6f, 0f),
 )
-var listOfPointsData = listOf(
+var listOfPointsData = mutableStateListOf(
     0.0,
-    2.0,
-    8.0,
-    8.5,
-    7.0,
-    3.0,
-    6.0
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
 )

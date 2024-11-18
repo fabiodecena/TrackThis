@@ -150,6 +150,10 @@ fun StartedTopic(
                             )
                         )
                     },
+                    labelProperties = LabelProperties(
+                        enabled = true,
+                        labels = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
+                    ),
                     gridProperties = GridProperties(
                         enabled = false
                     ),
@@ -189,13 +193,13 @@ fun StartedTopic(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
                 ) {
-                    CircleWithLetter("M", pointData = pointsData[0])
-                    CircleWithLetter("T", pointData = pointsData[1])
-                    CircleWithLetter("W", pointData = pointsData[2])
-                    CircleWithLetter("T", pointData = pointsData[3])
-                    CircleWithLetter("F", pointData = pointsData[4])
-                    CircleWithLetter("S", pointData = pointsData[5])
-                    CircleWithLetter("S", pointData = pointsData[6])
+                    CircleWithLetter("M", index = 0)
+                    CircleWithLetter("T", index = 1)
+                    CircleWithLetter("W", index = 2)
+                    CircleWithLetter("T", index = 3)
+                    CircleWithLetter("F", index = 4)
+                    CircleWithLetter("S", index = 5)
+                    CircleWithLetter("S", index = 6)
                     }
                 }
             }
@@ -205,8 +209,8 @@ fun StartedTopic(
 
 
 @Composable
-fun CircleWithLetter(letter: String, pointData: Point) {
-    val isOnYAxis = pointsData.any { it.y == 0f && it.x == pointData.x }
+fun CircleWithLetter(letter: String, index: Int) {
+    val isOnYAxis = listOfPointsData.getOrNull(index)?.let { it > 0.0 } == false
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
