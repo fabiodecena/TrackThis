@@ -1,7 +1,6 @@
 package com.example.trackthis.ui
 
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trackthis.component.charts.ChartUiState
@@ -14,8 +13,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.ZoneId
-import java.util.Locale
 import java.time.format.TextStyle
+import java.util.Locale
 
 
 class TimerViewModel : ViewModel() {
@@ -39,7 +38,7 @@ class TimerViewModel : ViewModel() {
     fun startTimer() {
         if (timerJob == null || timerJob?.isCancelled == true)
             _isPaused.value = false
-            timerJob = viewModelScope.launch {
+        timerJob = viewModelScope.launch {
             while (true) {
                 delay(1000)
                 _timer.value++
