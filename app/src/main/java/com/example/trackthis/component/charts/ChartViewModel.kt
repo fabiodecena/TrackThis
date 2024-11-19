@@ -1,8 +1,6 @@
 package com.example.trackthis.component.charts
 
 
-
-
 import androidx.lifecycle.ViewModel
 import com.example.trackthis.data.StartedTopicElement
 import com.example.trackthis.data.listOfStartedTopic
@@ -17,7 +15,7 @@ class ChartViewModel: ViewModel() {
     val chartUiState: StateFlow<ChartUiState> = _chartUiState.asStateFlow()
 
 init {
-    _chartUiState.value = ChartUiState(startedTopicList = listOfStartedTopic, defaultPointsData = defaultPointsData)
+    _chartUiState.value = ChartUiState(startedTopicList = listOfStartedTopic, pointsData = defaultPointsData)
 }
 
     fun updateStartedTopicList(): List<StartedTopicElement> {

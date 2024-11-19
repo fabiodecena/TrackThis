@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.trackthis.R
 import com.example.trackthis.component.charts.ChartUiState
+import com.example.trackthis.component.charts.defaultPointsData
 import com.example.trackthis.data.StartedTopicElement
 import ir.ehsannarmani.compose_charts.LineChart
 import ir.ehsannarmani.compose_charts.models.AnimationMode
@@ -118,7 +119,6 @@ fun StartedTopic(
                 LineChart(
                     modifier = Modifier.fillMaxSize().padding(horizontal = 22.dp),
                     data = remember {
-                        Log.d("chartUiState", "ChartViewModel hashCode: ${chartUiState.hashCode()}")
                         listOf(
                             Line(
                               label = "Min Daily Effort",
@@ -208,14 +208,14 @@ fun StartedTopic(
 
 @Composable
 fun CircleWithLetter(letter: String, index: Int) {
-//    val isOnYAxis = listOfPointsData.getOrNull(index)?.let { it > 0.0 } == false
+    val isOnYAxis = defaultPointsData.getOrNull(index)?.let { it > 0.0 } == false
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .clip(MaterialTheme.shapes.extraLarge)
-//            .background(
-//                if (isOnYAxis) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.tertiary
-//            )
+            .background(
+                if (isOnYAxis) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.tertiary
+            )
             .size(dimensionResource(R.dimen.padding_medium2))
     ) {
         Text(

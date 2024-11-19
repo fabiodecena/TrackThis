@@ -26,7 +26,7 @@ class TimerViewModel : ViewModel() {
     val chartUiState = _chartUiState.asStateFlow()
 
     init {
-        _chartUiState.value.defaultPointsData.toMutableList()
+        _chartUiState.value.pointsData.toMutableList()
     }
 
     private var timerJob: Job? = null
@@ -60,14 +60,12 @@ class TimerViewModel : ViewModel() {
         return dayOfWeek
     }
     fun updatePointsDataList(index: Int, value: Long) {
-        Log.d("ChartViewModel", "before change: ${_chartUiState.value.defaultPointsData.joinToString()}")
-        var updatedList = _chartUiState.value.defaultPointsData.toMutableList()
+        var updatedList = _chartUiState.value.pointsData.toMutableList()
         updatedList = defaultPointsData
         updatedList[index] = value.toDouble()
         _chartUiState.update { currentState ->
-            currentState.copy(defaultPointsData = updatedList)
+            currentState.copy(pointsData = updatedList)
         }
-        Log.d("ChartViewModel", "after change: ${_chartUiState.value.defaultPointsData.joinToString()}")
     }
 
     fun getIndexForDay(day: String): Int {

@@ -21,7 +21,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -183,9 +182,7 @@ fun StatisticsScreen(
     chartViewModel: ChartViewModel,
 ) {
     val chartUiState by chartViewModel.chartUiState.collectAsState()
-    val cacheData = remember(chartUiState) { chartUiState.defaultPointsData }
-
-    Log.d("StatisticsScreen", "Observed chart data: $chartUiState")
+    val cacheData = remember(chartUiState) { chartUiState.pointsData }
 
     LazyColumn(modifier = modifier) {
         items(chartUiState.startedTopicList) { topic ->

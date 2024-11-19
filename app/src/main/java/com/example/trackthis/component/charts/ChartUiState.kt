@@ -5,7 +5,7 @@ import com.example.trackthis.data.StartedTopicElement
 
 data class ChartUiState (
     val startedTopicList: List<StartedTopicElement> = emptyList(),
-    val defaultPointsData: List<Double> = emptyList(),
+    val pointsData: List<Double> = emptyList(),
     val yLabels: List<String> = listOf(
         "Monday",
         "Tuesday",
