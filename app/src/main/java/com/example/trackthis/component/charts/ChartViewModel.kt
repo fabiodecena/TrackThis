@@ -2,14 +2,14 @@ package com.example.trackthis.component.charts
 
 
 
-import android.util.Log
+
 import androidx.lifecycle.ViewModel
 import com.example.trackthis.data.StartedTopicElement
 import com.example.trackthis.data.listOfStartedTopic
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+
 
 
 class ChartViewModel: ViewModel() {
@@ -33,17 +33,4 @@ init {
         updateStartedTopicList()
     }
 
-    fun updatePointsDataList(index: Int, value: Long) {
-        Log.d("ChartViewModel", "afbefore change: ${_chartUiState.value.defaultPointsData.joinToString()}")
-        val updatedList = _chartUiState.value.defaultPointsData.toMutableList()
-        updatedList[index] = value.toDouble()
-        _chartUiState.update { currentState ->
-            currentState.copy(defaultPointsData = updatedList)
-        }
-        Log.d("ChartViewModel", "after change: ${_chartUiState.value.defaultPointsData.joinToString()}")
-    }
-
-    fun getIndexForDay(day: String): Int {
-        return chartUiState.value.yLabels.indexOf(day)
-    }
 }
