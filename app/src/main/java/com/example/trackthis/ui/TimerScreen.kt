@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -18,10 +20,10 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun TimerScreen(
-    timerValue: Long,
-    onPauseClick: () -> Unit,
-    onStopClick: () -> Unit
+    timerViewModel: TimerViewModel
 ) {
+    val timerValue by timerViewModel.timer.collectAsState()
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -34,11 +36,11 @@ fun TimerScreen(
             horizontalArrangement = Arrangement.Center
         ) {
             Spacer(modifier = Modifier.width(16.dp))
-            Button(onClick = onPauseClick) {
+            Button(onClick = { timerViewModel.pauseTimer() }) {
                 Text("Pause")
             }
             Spacer(modifier = Modifier.width(16.dp))
-            Button(onClick = onStopClick) {
+            Button(onClick = { timerViewModel.stopTimer() }) {
                 Text("Stop")
             }
         }

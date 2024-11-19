@@ -22,7 +22,11 @@ import com.example.trackthis.screen.StatisticsScreen
 import com.example.trackthis.ui.TimerViewModel
 
 @Composable
-fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) {
+fun Navigation(
+    navController: NavHostController,
+    timerViewModel: TimerViewModel,
+    modifier: Modifier = Modifier
+) {
     val chartViewModel: ChartViewModel = viewModel()
     NavHost(
         modifier = modifier,
@@ -47,7 +51,7 @@ fun Navigation(navController: NavHostController, modifier: Modifier = Modifier) 
             StatisticsScreen(chartViewModel = chartViewModel)
         }
         composable(NavigationItem.Build.route) {
-            BuildScreen(timerViewModel = TimerViewModel())
+            BuildScreen(timerViewModel = timerViewModel)
         }
         composable(NavigationItem.Settings.route) {
             SettingsScreen()

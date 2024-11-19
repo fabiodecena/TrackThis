@@ -32,8 +32,8 @@ class TimerViewModel : ViewModel() {
     private var timerJob: Job? = null
 
     fun startTimer() {
-        timerJob?.cancel()
-        timerJob = viewModelScope.launch {
+        if (timerJob == null || timerJob?.isCancelled == true) // Prevent multiple timers
+            timerJob = viewModelScope.launch {
             while (true) {
                 delay(1000)
                 _timer.value++
@@ -50,8 +50,9 @@ class TimerViewModel : ViewModel() {
         val index = getIndexForDay(currentDay)
         val currentValue = timer.value
         updatePointsDataList(index, currentValue)
-        _timer.value = 0
         timerJob?.cancel()
+        _timer.value = 0
+
     }
 
     private fun saveCurrentDay(): String {

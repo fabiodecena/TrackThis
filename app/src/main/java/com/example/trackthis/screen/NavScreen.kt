@@ -57,12 +57,18 @@ import com.example.trackthis.ui.TimerViewModel
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
+    val timerViewModel: TimerViewModel = viewModel()
+
     Scaffold(
         topBar = { TopAppBar(navController = navController) },
         bottomBar = { BottomBar(navController = navController) },
         containerColor = MaterialTheme.colorScheme.inverseOnSurface,
     ) { innerPadding ->
-        Navigation(navController = navController, modifier = Modifier.padding(innerPadding))
+        Navigation(
+            navController = navController,
+            modifier = Modifier.padding(innerPadding),
+            timerViewModel = timerViewModel
+        )
     }
 }
 
@@ -201,7 +207,7 @@ fun BuildScreen(
     modifier: Modifier = Modifier,
     timerViewModel: TimerViewModel
 ) {
-    val timerValue by timerViewModel.timer.collectAsState()
+
 
     LazyColumn(
         modifier = modifier
@@ -218,8 +224,6 @@ fun BuildScreen(
     }
 
     TimerScreen(
-        timerValue = timerValue,
-        onPauseClick = { timerViewModel.pauseTimer() },
-        onStopClick = { timerViewModel.stopTimer() }
+        timerViewModel = timerViewModel
     )
 }
