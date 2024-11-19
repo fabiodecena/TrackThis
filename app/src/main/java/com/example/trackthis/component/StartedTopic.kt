@@ -57,6 +57,7 @@ fun StartedTopic(
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
     chartUiState: ChartUiState,
+    data: List<Double>
 ) {
     Card(
         modifier = modifier
@@ -117,6 +118,7 @@ fun StartedTopic(
                 LineChart(
                     modifier = Modifier.fillMaxSize().padding(horizontal = 22.dp),
                     data = remember {
+                        Log.d("chartUiState", "ChartViewModel hashCode: ${chartUiState.hashCode()}")
                         listOf(
                             Line(
                               label = "Min Daily Effort",
@@ -130,7 +132,7 @@ fun StartedTopic(
                             ),
                             Line(
                                 label = "User Name2",
-                                values = chartUiState.defaultPointsData,
+                                values = data,
                                 color = SolidColor(Color(0xFF23af92)),
                                 dotProperties = DotProperties(
                                     enabled = true,

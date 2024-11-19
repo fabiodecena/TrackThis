@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -182,6 +183,7 @@ fun StatisticsScreen(
     chartViewModel: ChartViewModel,
 ) {
     val chartUiState by chartViewModel.chartUiState.collectAsState()
+    val cacheData = remember(chartUiState) { chartUiState.defaultPointsData }
 
     Log.d("StatisticsScreen", "Observed chart data: $chartUiState")
 
@@ -190,7 +192,8 @@ fun StatisticsScreen(
             StartedTopic(
                 topicElement = topic,
                 onDelete = { chartViewModel.removeStartedTopicElementFromList(topic.name) },
-                chartUiState = chartUiState
+                chartUiState = chartUiState,
+                data = cacheData
             )
         }
     }
