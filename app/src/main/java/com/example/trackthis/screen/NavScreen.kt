@@ -207,8 +207,6 @@ fun BuildScreen(
     modifier: Modifier = Modifier,
     timerViewModel: TimerViewModel
 ) {
-
-
     LazyColumn(
         modifier = modifier
             .fillMaxWidth()

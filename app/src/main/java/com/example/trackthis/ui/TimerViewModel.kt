@@ -25,14 +25,20 @@ class TimerViewModel : ViewModel() {
     private val _chartUiState = MutableStateFlow(ChartUiState())
     val chartUiState = _chartUiState.asStateFlow()
 
+    private val _isPaused = MutableStateFlow(false)
+    val isPaused = _isPaused.asStateFlow()
+
+    var timerJob: Job? = null
+
     init {
         _chartUiState.value.pointsData.toMutableList()
     }
 
-    private var timerJob: Job? = null
+
 
     fun startTimer() {
-        if (timerJob == null || timerJob?.isCancelled == true) // Prevent multiple timers
+        if (timerJob == null || timerJob?.isCancelled == true)
+            _isPaused.value = false
             timerJob = viewModelScope.launch {
             while (true) {
                 delay(1000)
@@ -43,6 +49,7 @@ class TimerViewModel : ViewModel() {
 
     fun pauseTimer() {
         timerJob?.cancel()
+        _isPaused.value = true
     }
 
     fun stopTimer() {
@@ -51,6 +58,7 @@ class TimerViewModel : ViewModel() {
         val currentValue = timer.value
         updatePointsDataList(index, currentValue)
         timerJob?.cancel()
+        _isPaused.value = false
         _timer.value = 0
 
     }
