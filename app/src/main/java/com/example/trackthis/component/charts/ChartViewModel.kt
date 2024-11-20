@@ -4,10 +4,11 @@ package com.example.trackthis.component.charts
 import androidx.lifecycle.ViewModel
 import com.example.trackthis.data.StartedTopicElement
 import com.example.trackthis.data.listOfStartedTopic
+import com.example.trackthis.ui.TimerViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-
+import kotlinx.coroutines.flow.update
 
 
 class ChartViewModel: ViewModel() {
@@ -15,7 +16,7 @@ class ChartViewModel: ViewModel() {
     val chartUiState: StateFlow<ChartUiState> = _chartUiState.asStateFlow()
 
 init {
-    _chartUiState.value = ChartUiState(startedTopicList = listOfStartedTopic, pointsData = defaultPointsData)
+    _chartUiState.value = ChartUiState(startedTopicList = listOfStartedTopic, defaultPointsData = pointsData)
 }
 
     fun updateStartedTopicList(): List<StartedTopicElement> {
@@ -30,5 +31,15 @@ init {
         listOfStartedTopic.remove(StartedTopicElement(topicName))
         updateStartedTopicList()
     }
-
+    fun resetPointsData() {
+        var updatedList = _chartUiState.value.defaultPointsData.toMutableList()
+        updatedList = defaultPoints
+        _chartUiState.update { currentState ->
+            currentState.copy(defaultPointsData = updatedList)
+        }
+    }
+    fun clearList(){
+        listOfStartedTopic.clear()
+        TimerViewModel().stopTimer()
+    }
 }

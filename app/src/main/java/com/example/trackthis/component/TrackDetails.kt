@@ -1,6 +1,7 @@
 package com.example.trackthis.component
 
 import android.icu.text.SimpleDateFormat
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -50,6 +51,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.trackthis.R
+import com.example.trackthis.component.charts.ChartUiState
 import com.example.trackthis.component.charts.ChartViewModel
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.Topic
@@ -131,12 +133,15 @@ fun TrackDetails(
         )
         FloatingActionButton(
             onClick = {
+                Log.d("Before", "pointsData: ${chartViewModel.chartUiState.value.defaultPointsData.joinToString()}")
+                if (!chartViewModel.chartUiState.value.startedTopicList.isEmpty()) chartViewModel.clearList()
                 chartViewModel.addStartedTopicElementToList(topic.name)
                 navController.navigate(NavigationItem.Statistics.route) {
                     navController.graph.startDestinationRoute?.let { route ->
                         popUpTo(route)
                     }
                 }
+                Log.d("After", "pointsData: ${chartViewModel.chartUiState.value.defaultPointsData.joinToString()}")
             },
             modifier = Modifier
                 .padding(dimensionResource(R.dimen.padding_medium2))

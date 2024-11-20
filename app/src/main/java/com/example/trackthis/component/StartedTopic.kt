@@ -38,8 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.trackthis.R
-import com.example.trackthis.component.charts.ChartUiState
-import com.example.trackthis.component.charts.defaultPointsData
+import com.example.trackthis.component.charts.pointsData
 import com.example.trackthis.data.StartedTopicElement
 import ir.ehsannarmani.compose_charts.LineChart
 import ir.ehsannarmani.compose_charts.models.AnimationMode
@@ -118,6 +117,7 @@ fun StartedTopic(
                 LineChart(
                     modifier = Modifier.fillMaxSize().padding(horizontal = 22.dp),
                     data = remember {
+                        Log.d("pointsData", "StartedTopic: $data")
                         listOf(
                             Line(
                               label = "Min Daily Effort",
@@ -207,7 +207,7 @@ fun StartedTopic(
 
 @Composable
 fun CircleWithLetter(letter: String, index: Int) {
-    val isOnYAxis = defaultPointsData.getOrNull(index)?.let { it > 0.0 } == false
+    val isOnYAxis = pointsData.getOrNull(index)?.let { it > 0.0 } == false
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier

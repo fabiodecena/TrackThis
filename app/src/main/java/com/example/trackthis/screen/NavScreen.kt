@@ -188,7 +188,7 @@ fun StatisticsScreen(
     timerViewModel: TimerViewModel
 ) {
     val chartUiState by chartViewModel.chartUiState.collectAsState()
-    val cacheData = remember(chartUiState) { chartUiState.pointsData }
+    val cacheData = chartUiState.defaultPointsData
 
     LazyColumn(modifier = modifier) {
         items(chartUiState.startedTopicList) { topic ->

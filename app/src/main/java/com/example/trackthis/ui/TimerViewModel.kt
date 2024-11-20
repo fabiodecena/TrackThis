@@ -1,10 +1,12 @@
 package com.example.trackthis.ui
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trackthis.component.charts.ChartUiState
-import com.example.trackthis.component.charts.defaultPointsData
+import com.example.trackthis.component.charts.defaultPoints
+import com.example.trackthis.component.charts.pointsData
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +32,7 @@ class TimerViewModel : ViewModel() {
     var timerJob: Job? = null
 
     init {
-        _chartUiState.value.pointsData.toMutableList()
+        _chartUiState.value.defaultPointsData.toMutableList()
     }
 
     fun startTimer() {
@@ -50,10 +52,12 @@ class TimerViewModel : ViewModel() {
     }
 
     fun stopTimer() {
+        Log.d("Before press Stop", "stopTimer: ${_chartUiState.value.defaultPointsData}")
         val currentDay = saveCurrentDay()
         val index = getIndexForDay(currentDay)
         val currentValue = timer.value
         updatePointsDataList(index, currentValue)
+        Log.d("After press Stop", "stopTimer: ${_chartUiState.value.defaultPointsData}")
         timerJob?.cancel()
         _isPaused.value = false
         _timer.value = 0
@@ -66,11 +70,11 @@ class TimerViewModel : ViewModel() {
         return dayOfWeek
     }
     fun updatePointsDataList(index: Int, value: Long) {
-        var updatedList = _chartUiState.value.pointsData.toMutableList()
-        updatedList = defaultPointsData
+        var updatedList = _chartUiState.value.defaultPointsData.toMutableList()
+        updatedList = pointsData
         updatedList[index] = value.toDouble()
         _chartUiState.update { currentState ->
-            currentState.copy(pointsData = updatedList)
+            currentState.copy(defaultPointsData = updatedList)
         }
     }
 
