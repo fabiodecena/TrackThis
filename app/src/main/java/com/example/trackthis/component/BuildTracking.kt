@@ -29,8 +29,9 @@ fun BuildTracking(
     modifier: Modifier = Modifier,
     timerViewModel: TimerViewModel
 ) {
-    val timerValue = timerViewModel.timer.collectAsState().value
-    val isPaused = timerViewModel.isPaused.collectAsState().value
+    val timerValue = timerViewModel.timer.collectAsState()
+    val isPaused = timerViewModel.isPaused.collectAsState()
+
     Column(
         modifier = modifier
             .fillMaxWidth(),
@@ -51,7 +52,7 @@ fun BuildTracking(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(
-                    enabled = timerValue == 0L || isPaused,
+                    enabled = timerValue.value == 0L || isPaused.value,
                     onClick = { timerViewModel.startTimer() },
                     modifier = Modifier
                         .padding(start = dimensionResource(R.dimen.padding_medium))
@@ -59,7 +60,7 @@ fun BuildTracking(
                     Icon(
                         painterResource(R.drawable.play_circle_24dp_fill0_wght400_grad0_opsz24),
                         contentDescription = null,
-                        tint = if (timerValue == 0L || isPaused) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onTertiary // Optional: Show a disabled color
+                        tint = if (timerValue.value == 0L || isPaused.value) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onTertiary // Optional: Show a disabled color
                     )
                 }
                 Text(
