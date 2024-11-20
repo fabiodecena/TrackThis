@@ -57,7 +57,6 @@ fun StartedTopic(
     topicElement: StartedTopicElement,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
-    chartUiState: ChartUiState,
     data: List<Double>
 ) {
     Card(

@@ -194,7 +194,6 @@ fun StatisticsScreen(
             StartedTopic(
                 topicElement = topic,
                 onDelete = { chartViewModel.removeStartedTopicElementFromList(topic.name) },
-                chartUiState = chartUiState,
                 data = cacheData
             )
         }
