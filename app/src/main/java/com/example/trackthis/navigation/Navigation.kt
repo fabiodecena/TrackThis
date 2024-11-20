@@ -47,8 +47,7 @@ fun Navigation(
             }
         }
         composable(NavigationItem.Statistics.route) {
-
-            StatisticsScreen(chartViewModel = chartViewModel)
+            StatisticsScreen(chartViewModel = chartViewModel, timerViewModel = timerViewModel)
         }
         composable(NavigationItem.Build.route) {
             BuildScreen(timerViewModel = timerViewModel)

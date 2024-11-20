@@ -33,8 +33,6 @@ class TimerViewModel : ViewModel() {
         _chartUiState.value.pointsData.toMutableList()
     }
 
-
-
     fun startTimer() {
         if (timerJob == null || timerJob?.isCancelled == true)
             _isPaused.value = false

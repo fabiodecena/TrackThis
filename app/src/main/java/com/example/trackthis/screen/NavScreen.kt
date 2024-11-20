@@ -185,6 +185,7 @@ fun HomeScreen(
 fun StatisticsScreen(
     modifier: Modifier = Modifier,
     chartViewModel: ChartViewModel,
+    timerViewModel: TimerViewModel
 ) {
     val chartUiState by chartViewModel.chartUiState.collectAsState()
     val cacheData = remember(chartUiState) { chartUiState.pointsData }
@@ -195,6 +196,13 @@ fun StatisticsScreen(
                 topicElement = topic,
                 onDelete = { chartViewModel.removeStartedTopicElementFromList(topic.name) },
                 data = cacheData
+            )
+            BuildTracking(
+                    timerViewModel = timerViewModel,
+            topicElement = topic
+            )
+            TimerScreen(
+                timerViewModel = timerViewModel
             )
         }
     }
@@ -212,14 +220,7 @@ fun BuildScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         items(listOfStartedTopic) { topic ->
-            BuildTracking(
-                timerViewModel = timerViewModel,
-                topicElement = topic
-            )
+
         }
     }
-
-    TimerScreen(
-        timerViewModel = timerViewModel
-    )
 }

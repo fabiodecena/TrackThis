@@ -64,7 +64,6 @@ fun TrackDetails(
     navController: NavController,
     chartViewModel: ChartViewModel = viewModel()
 ) {
-    var topicName = topic.name
     var dailyEffortInput by rememberSaveable { mutableStateOf("") }
     var finalGoalInput by rememberSaveable { mutableStateOf("") }
     var startingDateInput by rememberSaveable { mutableStateOf("") }
