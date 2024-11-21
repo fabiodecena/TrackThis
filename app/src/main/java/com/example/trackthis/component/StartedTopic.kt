@@ -37,8 +37,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.trackthis.R
 import com.example.trackthis.component.charts.pointsData
+import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.StartedTopicElement
 import ir.ehsannarmani.compose_charts.LineChart
 import ir.ehsannarmani.compose_charts.models.AnimationMode
@@ -56,7 +58,8 @@ fun StartedTopic(
     topicElement: StartedTopicElement,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
-    data: List<Double>
+    data: List<Double>,
+    navController: NavController
 ) {
     Card(
         modifier = modifier
@@ -89,6 +92,11 @@ fun StartedTopic(
             FloatingActionButton(
                 onClick = {
                     onDelete()
+                    navController.navigate(NavigationItem.Statistics.route) {
+                        navController.graph.startDestinationRoute?.let { route ->
+                            popUpTo(route)
+                        }
+                    }
                 },
                 modifier = Modifier
                     .padding(dimensionResource(R.dimen.padding_medium2))
