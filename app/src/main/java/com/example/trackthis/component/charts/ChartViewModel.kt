@@ -31,15 +31,8 @@ init {
         listOfStartedTopic.remove(StartedTopicElement(topicName))
         updateStartedTopicList()
     }
-    fun resetPointsData() {
-        var updatedList = _chartUiState.value.defaultPointsData.toMutableList()
-        updatedList = defaultPoints
-        _chartUiState.update { currentState ->
-            currentState.copy(defaultPointsData = updatedList)
-        }
-    }
     fun clearList(){
         listOfStartedTopic.clear()
-        TimerViewModel().stopTimer()
+        TimerViewModel().resetData()
     }
 }

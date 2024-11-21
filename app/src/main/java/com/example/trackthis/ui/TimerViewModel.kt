@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trackthis.component.charts.ChartUiState
-import com.example.trackthis.component.charts.defaultPoints
 import com.example.trackthis.component.charts.pointsData
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -85,6 +84,17 @@ class TimerViewModel : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         timerJob?.cancel()
+    }
+
+    fun resetData() {
+        var updatedList = _chartUiState.value.defaultPointsData.toMutableList()
+        updatedList = pointsData
+        updatedList.indices.forEach() { index ->
+            updatedList[index] = 0.0
+        }
+        _chartUiState.update { currentState ->
+            currentState.copy(defaultPointsData = updatedList)
+        }
     }
 }
 fun Long.formatTime(): String {

@@ -17,5 +17,4 @@ data class ChartUiState (
     )
 )
 
-val defaultPoints = mutableListOf(0.0,0.0,0.0,0.0,0.0,0.0,0.0)
 var pointsData = mutableListOf(0.0,0.0,0.0,0.0,0.0,0.0,0.0)
