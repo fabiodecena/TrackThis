@@ -89,7 +89,7 @@ class TimerViewModel : ViewModel() {
     fun resetData() {
         var updatedList = _chartUiState.value.defaultPointsData.toMutableList()
         updatedList = pointsData
-        updatedList.indices.forEach() { index ->
+        updatedList.indices.forEach { index ->
             updatedList[index] = 0.0
         }
         _chartUiState.update { currentState ->
