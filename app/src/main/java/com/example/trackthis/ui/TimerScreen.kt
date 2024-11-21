@@ -40,7 +40,10 @@ fun TimerScreen(
                 Text("Pause")
             }
             Spacer(modifier = Modifier.width(16.dp))
-            Button(onClick = { timerViewModel.stopTimer() }) {
+            Button(
+                onClick = { timerViewModel.stopTimer() },
+                enabled = timerValue > 0L
+            ) {
                 Text("Stop")
             }
         }
