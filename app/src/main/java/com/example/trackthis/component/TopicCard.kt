@@ -113,7 +113,7 @@ fun TopicCard(
                                     restoreState = true
                                 }
                             } else {
-                                navController.navigate(NavigationItem.Build.route) {
+                                navController.navigate(NavigationItem.Statistics.route) {
                                     navController.graph.startDestinationRoute?.let { route ->
                                         popUpTo(route) {
                                             saveState = true
