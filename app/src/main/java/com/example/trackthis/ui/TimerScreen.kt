@@ -1,5 +1,6 @@
 package com.example.trackthis.ui
 
+import android.app.Activity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,14 +16,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 @Composable
 fun TimerScreen(
-    timerViewModel: TimerViewModel
+    timerViewModel: TimerViewModel,
+    navController: NavController
 ) {
     val timerValue by timerViewModel.timer.collectAsState()
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -41,7 +46,7 @@ fun TimerScreen(
             }
             Spacer(modifier = Modifier.width(16.dp))
             Button(
-                onClick = { timerViewModel.stopTimer() },
+                onClick = { timerViewModel.stopTimer(context, navController) },
                 enabled = timerValue > 0L
             ) {
                 Text("Stop")

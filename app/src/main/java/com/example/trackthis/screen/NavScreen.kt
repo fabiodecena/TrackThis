@@ -185,7 +185,8 @@ fun HomeScreen(
 fun StatisticsScreen(
     modifier: Modifier = Modifier,
     chartViewModel: ChartViewModel,
-    timerViewModel: TimerViewModel
+    timerViewModel: TimerViewModel,
+    navController: NavController
 ) {
     val chartUiState by chartViewModel.chartUiState.collectAsState()
     val cacheData = chartUiState.defaultPointsData
@@ -202,7 +203,8 @@ fun StatisticsScreen(
             topicElement = topic
             )
             TimerScreen(
-                timerViewModel = timerViewModel
+                timerViewModel = timerViewModel,
+                navController = navController
             )
         }
     }

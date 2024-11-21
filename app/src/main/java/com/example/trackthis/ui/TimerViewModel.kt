@@ -1,11 +1,14 @@
 package com.example.trackthis.ui
 
-
+import android.app.AlertDialog
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.example.trackthis.component.charts.ChartUiState
 import com.example.trackthis.component.charts.pointsData
+import com.example.trackthis.data.NavigationItem
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,17 +53,42 @@ class TimerViewModel : ViewModel() {
         _isPaused.value = true
     }
 
-    fun stopTimer() {
+    fun stopTimer(context: Context, navController: NavController) {
         Log.d("Before press Stop", "stopTimer: ${_chartUiState.value.defaultPointsData}")
         val currentDay = saveCurrentDay()
         val index = getIndexForDay(currentDay)
         val currentValue = timer.value
-        updatePointsDataList(index, currentValue)
-        Log.d("After press Stop", "stopTimer: ${_chartUiState.value.defaultPointsData}")
         timerJob?.cancel()
         _isPaused.value = false
-        _timer.value = 0
 
+        // Build the alert dialog
+        _isPaused.value = true// Pause the timer during the alert dialog
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Confirm Update")
+        builder.setMessage("Are you sure you want to update the data list?")
+
+        builder.setPositiveButton("Yes") { dialog, _ ->
+            updatePointsDataList(index, currentValue)
+            Log.d("After press Stop", "stopTimer: ${_chartUiState.value.defaultPointsData}")
+
+            _timer.value = 0// Reset the timer
+
+            dialog.dismiss()
+
+            navController.navigate(NavigationItem.Statistics.route) {
+                navController.graph.startDestinationRoute?.let { route ->
+                    popUpTo(route)
+                }
+            }
+        }
+        builder.setNegativeButton("No") { dialog, _ ->
+            // Resume the timer
+            _isPaused.value = false
+            startTimer() // Restart the timer when the user chooses "No"
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
     }
 
     private fun saveCurrentDay(): String {
