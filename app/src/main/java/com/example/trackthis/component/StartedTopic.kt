@@ -60,6 +60,7 @@ fun StartedTopic(
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
     data: List<Double>,
+    dailyEffort: List<Double>,
     timerViewModel: TimerViewModel,
     navController: NavController
 ) {
@@ -132,7 +133,7 @@ fun StartedTopic(
                         listOf(
                             Line(
                               label = "Min Daily Effort",
-                                values = listOf(5.0,5.0,5.0,5.0,5.0,5.0,5.0),
+                                values = dailyEffort,
                                 color = SolidColor(Color.Red),
                                 drawStyle = DrawStyle.Stroke(
                                     strokeStyle = StrokeStyle.Dashed(

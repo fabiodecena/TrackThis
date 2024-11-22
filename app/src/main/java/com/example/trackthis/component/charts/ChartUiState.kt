@@ -6,7 +6,8 @@ import com.example.trackthis.data.StartedTopicElement
 data class ChartUiState (
     val startedTopicList: List<StartedTopicElement> = emptyList(),
     val defaultPointsData: List<Double> = emptyList(),
-    val yLabels: List<String> = listOf(
+    val dailyEffort: List<Double> = emptyList(),
+    val xLabels: List<String> = listOf(
         "Monday",
         "Tuesday",
         "Wednesday",
@@ -18,3 +19,4 @@ data class ChartUiState (
 )
 
 var pointsData = mutableListOf(0.0,0.0,0.0,0.0,0.0,0.0,0.0)
+var dailyEffortList = mutableListOf(0.0,0.0,0.0,0.0,0.0,0.0,0.0)

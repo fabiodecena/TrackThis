@@ -50,7 +50,6 @@ class TimerViewModel : ViewModel() {
     }
 
     fun stopTimer(context: Context, navController: NavController) {
-        Log.d("Before press Stop", "stopTimer: ${_chartUiState.value.defaultPointsData}")
         val currentDay = saveCurrentDay()
         val index = getIndexForDay(currentDay)
         val currentValue = timer.value
@@ -65,7 +64,6 @@ class TimerViewModel : ViewModel() {
 
         builder.setPositiveButton("Yes") { dialog, _ ->
             updatePointsDataList(index, currentValue)
-            Log.d("After press Stop", "stopTimer: ${_chartUiState.value.defaultPointsData}")
             if (currentDay != saveCurrentDay()) {
                 _timer.value = 0// Reset the timer
             }
@@ -104,7 +102,7 @@ class TimerViewModel : ViewModel() {
     }
 
     fun getIndexForDay(day: String): Int {
-        return chartUiState.value.yLabels.indexOf(day)
+        return chartUiState.value.xLabels.indexOf(day)
     }
 
     override fun onCleared() {
@@ -117,7 +115,6 @@ class TimerViewModel : ViewModel() {
         _timer.value = 0L
         _isPaused.value = false
     }
-
 
     fun resetData() {
         var updatedList = _chartUiState.value.defaultPointsData.toMutableList()

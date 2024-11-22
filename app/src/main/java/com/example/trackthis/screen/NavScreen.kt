@@ -189,6 +189,7 @@ fun StatisticsScreen(
 ) {
     val chartUiState by chartViewModel.chartUiState.collectAsState()
     val pointsData = chartUiState.defaultPointsData
+    val dailyEffort = chartUiState.dailyEffort
 
     LazyColumn(modifier = modifier) {
         items(chartUiState.startedTopicList) { topic ->
@@ -196,6 +197,7 @@ fun StatisticsScreen(
                 topicElement = topic,
                 onDelete = { chartViewModel.clearList() },
                 data = pointsData,
+                dailyEffort = dailyEffort,
                 navController = navController,
                 timerViewModel = timerViewModel
             )

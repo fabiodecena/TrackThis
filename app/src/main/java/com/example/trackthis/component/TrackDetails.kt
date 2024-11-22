@@ -134,7 +134,7 @@ fun TrackDetails(
         )
         FloatingActionButton(
             onClick = {
-                Log.d("Before", "pointsData: ${chartViewModel.chartUiState.value.defaultPointsData.joinToString()}")
+                chartViewModel.updateDailyEffort(dailyEffortInput.toDouble())
                 if (!chartViewModel.chartUiState.value.startedTopicList.isEmpty()) {
                     chartViewModel.clearList()
                     timerViewModel.resetTimer()
@@ -145,7 +145,6 @@ fun TrackDetails(
                         popUpTo(route)
                     }
                 }
-                Log.d("After", "pointsData: ${chartViewModel.chartUiState.value.defaultPointsData.joinToString()}")
             },
             modifier = Modifier
                 .padding(dimensionResource(R.dimen.padding_medium2))
