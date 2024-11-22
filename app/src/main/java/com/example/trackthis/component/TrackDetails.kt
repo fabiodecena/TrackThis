@@ -54,6 +54,7 @@ import com.example.trackthis.R
 import com.example.trackthis.component.charts.ChartViewModel
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.Topic
+import com.example.trackthis.ui.TimerViewModel
 import java.util.Date
 import java.util.Locale
 
@@ -63,7 +64,8 @@ fun TrackDetails(
     modifier: Modifier = Modifier,
     topic: Topic,
     navController: NavController,
-    chartViewModel: ChartViewModel = viewModel()
+    chartViewModel: ChartViewModel = viewModel(),
+    timerViewModel: TimerViewModel
 ) {
     var dailyEffortInput by rememberSaveable { mutableStateOf("") }
     var finalGoalInput by rememberSaveable { mutableStateOf("") }
@@ -133,7 +135,10 @@ fun TrackDetails(
         FloatingActionButton(
             onClick = {
                 Log.d("Before", "pointsData: ${chartViewModel.chartUiState.value.defaultPointsData.joinToString()}")
-                if (!chartViewModel.chartUiState.value.startedTopicList.isEmpty()) chartViewModel.clearList()
+                if (!chartViewModel.chartUiState.value.startedTopicList.isEmpty()) {
+                    chartViewModel.clearList()
+                    timerViewModel.resetTimer()
+                }
                 chartViewModel.addStartedTopicElementToList(topic.name)
                 navController.navigate(NavigationItem.Statistics.route) {
                     navController.graph.startDestinationRoute?.let { route ->

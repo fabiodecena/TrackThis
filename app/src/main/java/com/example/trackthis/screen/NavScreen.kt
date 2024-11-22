@@ -188,15 +188,16 @@ fun StatisticsScreen(
     navController: NavController
 ) {
     val chartUiState by chartViewModel.chartUiState.collectAsState()
-    val cacheData = chartUiState.defaultPointsData
+    val pointsData = chartUiState.defaultPointsData
 
     LazyColumn(modifier = modifier) {
         items(chartUiState.startedTopicList) { topic ->
             StartedTopic(
                 topicElement = topic,
                 onDelete = { chartViewModel.clearList() },
-                data = cacheData,
-                navController = navController
+                data = pointsData,
+                navController = navController,
+                timerViewModel = timerViewModel
             )
             BuildTracking(
                     timerViewModel = timerViewModel,

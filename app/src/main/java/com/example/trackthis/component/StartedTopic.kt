@@ -42,6 +42,7 @@ import com.example.trackthis.R
 import com.example.trackthis.component.charts.pointsData
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.StartedTopicElement
+import com.example.trackthis.ui.TimerViewModel
 import ir.ehsannarmani.compose_charts.LineChart
 import ir.ehsannarmani.compose_charts.models.AnimationMode
 import ir.ehsannarmani.compose_charts.models.DotProperties
@@ -59,6 +60,7 @@ fun StartedTopic(
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
     data: List<Double>,
+    timerViewModel: TimerViewModel,
     navController: NavController
 ) {
     Card(
@@ -92,6 +94,7 @@ fun StartedTopic(
             FloatingActionButton(
                 onClick = {
                     onDelete()
+                    timerViewModel.resetTimer()
                     navController.navigate(NavigationItem.Statistics.route) {
                         navController.graph.startDestinationRoute?.let { route ->
                             popUpTo(route)

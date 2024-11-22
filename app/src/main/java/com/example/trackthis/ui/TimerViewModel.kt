@@ -70,8 +70,10 @@ class TimerViewModel : ViewModel() {
         builder.setPositiveButton("Yes") { dialog, _ ->
             updatePointsDataList(index, currentValue)
             Log.d("After press Stop", "stopTimer: ${_chartUiState.value.defaultPointsData}")
+            if (currentDay != saveCurrentDay()) {
+                _timer.value = 0// Reset the timer
+            }
 
-            _timer.value = 0// Reset the timer
 
             dialog.dismiss()
 
@@ -113,6 +115,13 @@ class TimerViewModel : ViewModel() {
         super.onCleared()
         timerJob?.cancel()
     }
+
+    fun resetTimer() {
+        timerJob?.cancel()
+        _timer.value = 0L
+        _isPaused.value = false
+    }
+
 
     fun resetData() {
         var updatedList = _chartUiState.value.defaultPointsData.toMutableList()
