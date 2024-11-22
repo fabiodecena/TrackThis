@@ -67,7 +67,7 @@ fun TrackDetails(
     chartViewModel: ChartViewModel = viewModel(),
     timerViewModel: TimerViewModel
 ) {
-    var dailyEffortInput by rememberSaveable { mutableStateOf("") }
+
     var finalGoalInput by rememberSaveable { mutableStateOf("") }
     var startingDateInput by rememberSaveable { mutableStateOf("") }
     var endingDateInput by rememberSaveable { mutableStateOf("") }
@@ -102,8 +102,8 @@ fun TrackDetails(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next
             ),
-            value = dailyEffortInput,
-            onValueChanged = { dailyEffortInput = it }
+            value = chartViewModel.dailyEffortInput,
+            onValueChanged = { chartViewModel.dailyEffortInput = it }
         )
         EditField(
             modifier = Modifier
@@ -134,7 +134,7 @@ fun TrackDetails(
         )
         FloatingActionButton(
             onClick = {
-                chartViewModel.updateDailyEffort(dailyEffortInput.toDouble())
+                chartViewModel.updateDailyEffort(chartViewModel.dailyEffortInput.toDouble())
                 if (!chartViewModel.chartUiState.value.startedTopicList.isEmpty()) {
                     chartViewModel.clearList()
                     timerViewModel.resetTimer()
