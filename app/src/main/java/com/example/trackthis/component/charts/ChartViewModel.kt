@@ -18,18 +18,11 @@ init {
     _chartUiState.value = ChartUiState(startedTopicList = listOfStartedTopic, defaultPointsData = pointsData)
 }
 
-    fun updateStartedTopicList(): List<StartedTopicElement> {
-        _chartUiState.value = ChartUiState(startedTopicList = listOfStartedTopic)
-        return _chartUiState.value.startedTopicList
-    }
     fun addStartedTopicElementToList(topicName: Int) {
         if (StartedTopicElement(topicName) !in listOfStartedTopic)// avoid to add the same Topic more than once
             listOfStartedTopic.add(StartedTopicElement(topicName))
     }
-    fun removeStartedTopicElementFromList(topicName: Int){// remove one element from the list
-        listOfStartedTopic.remove(StartedTopicElement(topicName))
-        updateStartedTopicList()
-    }
+
     fun clearList(){
         listOfStartedTopic.clear()
         TimerViewModel().resetData()

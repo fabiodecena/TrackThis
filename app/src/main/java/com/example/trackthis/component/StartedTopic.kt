@@ -236,9 +236,3 @@ fun CircleWithLetter(letter: String, index: Int) {
         )
     }
 }
-
-/*@Composable
-@Preview
-fun StartedTopicPreview() {
-    StartedTopic(topicElement = StartedTopicElement(R.string.architecture))
-}*/
