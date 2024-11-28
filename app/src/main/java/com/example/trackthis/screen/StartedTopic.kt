@@ -1,4 +1,4 @@
-package com.example.trackthis.component
+package com.example.trackthis.screen
 
 
 import android.util.Log
@@ -39,10 +39,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.trackthis.R
-import com.example.trackthis.component.charts.pointsData
+import com.example.trackthis.ui.charts.pointsData
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.StartedTopicElement
-import com.example.trackthis.ui.TimerViewModel
+import com.example.trackthis.ui.timer.TimerViewModel
 import ir.ehsannarmani.compose_charts.LineChart
 import ir.ehsannarmani.compose_charts.models.AnimationMode
 import ir.ehsannarmani.compose_charts.models.DotProperties

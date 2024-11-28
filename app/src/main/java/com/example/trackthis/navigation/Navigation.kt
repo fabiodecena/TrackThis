@@ -8,8 +8,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.trackthis.component.TrackDetails
-import com.example.trackthis.component.charts.ChartViewModel
+import com.example.trackthis.screen.TrackDetails
+import com.example.trackthis.ui.charts.ChartViewModel
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.listOfVisualizedTopics
 import com.example.trackthis.screen.ActiveTrackScreen
@@ -19,7 +19,7 @@ import com.example.trackthis.screen.InactiveTrackScreen
 import com.example.trackthis.screen.ProfileScreen
 import com.example.trackthis.screen.SettingsScreen
 import com.example.trackthis.screen.StatisticsScreen
-import com.example.trackthis.ui.TimerViewModel
+import com.example.trackthis.ui.timer.TimerViewModel
 
 @Composable
 fun Navigation(

@@ -36,21 +36,17 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.trackthis.R
-import com.example.trackthis.component.BuildTracking
-import com.example.trackthis.component.StartedTopic
-import com.example.trackthis.component.TopicCard
-import com.example.trackthis.component.TopicListItem
-import com.example.trackthis.component.bars.BottomBar
-import com.example.trackthis.component.bars.TopAppBar
-import com.example.trackthis.component.charts.ChartViewModel
+import com.example.trackthis.screen.bars.BottomBar
+import com.example.trackthis.screen.bars.TopAppBar
+import com.example.trackthis.ui.charts.ChartViewModel
 import com.example.trackthis.data.listOfStartedTopic
 import com.example.trackthis.data.listOfVisualizedTopicListItem
 import com.example.trackthis.data.trackNavigationItems
 import com.example.trackthis.navigation.Navigation
 import com.example.trackthis.navigation.NavigationSelectionScreen
 import com.example.trackthis.ui.AppViewModel
-import com.example.trackthis.ui.TimerScreen
-import com.example.trackthis.ui.TimerViewModel
+import com.example.trackthis.ui.timer.TimerScreen
+import com.example.trackthis.ui.timer.TimerViewModel
 
 @Composable
 fun MainScreen() {

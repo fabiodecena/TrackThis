@@ -1,7 +1,6 @@
-package com.example.trackthis.component
+package com.example.trackthis.screen
 
 import android.icu.text.SimpleDateFormat
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -51,10 +50,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.trackthis.R
-import com.example.trackthis.component.charts.ChartViewModel
+import com.example.trackthis.ui.charts.ChartViewModel
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.Topic
-import com.example.trackthis.ui.TimerViewModel
+import com.example.trackthis.ui.timer.TimerViewModel
 import java.util.Date
 import java.util.Locale
 

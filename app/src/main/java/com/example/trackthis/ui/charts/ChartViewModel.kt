@@ -1,4 +1,4 @@
-package com.example.trackthis.component.charts
+package com.example.trackthis.ui.charts
 
 
 import androidx.compose.runtime.mutableStateOf
@@ -7,7 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.trackthis.data.StartedTopicElement
 import com.example.trackthis.data.listOfStartedTopic
-import com.example.trackthis.ui.TimerViewModel
+import com.example.trackthis.ui.timer.TimerViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -1,4 +1,4 @@
-package com.example.trackthis.component
+package com.example.trackthis.screen
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring

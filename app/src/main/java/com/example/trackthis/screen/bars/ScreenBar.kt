@@ -1,4 +1,4 @@
-package com.example.trackthis.component.bars
+package com.example.trackthis.screen.bars
 
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api

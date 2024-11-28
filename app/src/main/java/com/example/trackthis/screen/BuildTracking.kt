@@ -1,4 +1,4 @@
-package com.example.trackthis.component
+package com.example.trackthis.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.trackthis.R
 import com.example.trackthis.data.StartedTopicElement
-import com.example.trackthis.ui.TimerViewModel
+import com.example.trackthis.ui.timer.TimerViewModel
 
 
 @Composable
