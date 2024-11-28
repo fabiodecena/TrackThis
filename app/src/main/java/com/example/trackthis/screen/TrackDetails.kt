@@ -19,11 +19,11 @@ import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircleOutline
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -66,10 +66,19 @@ fun TrackDetails(
     chartViewModel: ChartViewModel = viewModel(),
     timerViewModel: TimerViewModel
 ) {
-
+    val dailyEffort = chartViewModel.dailyEffortInput
     var finalGoalInput by rememberSaveable { mutableStateOf("") }
     var startingDateInput by rememberSaveable { mutableStateOf("") }
     var endingDateInput by rememberSaveable { mutableStateOf("") }
+
+
+
+    val isFormValid =
+                dailyEffort.isNotBlank() &&
+                finalGoalInput.isNotBlank() &&
+                finalGoalInput.toInt() > dailyEffort.toInt() &&
+                startingDateInput.isNotBlank() &&
+                endingDateInput.isNotBlank()
 
     Column(
         modifier = modifier
@@ -111,7 +120,7 @@ fun TrackDetails(
             label = R.string.final_goal,
             leadingIcon = Icons.Filled.CheckCircleOutline,
             keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Text,
+                keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next
             ),
             value = finalGoalInput,
@@ -131,10 +140,10 @@ fun TrackDetails(
             label = R.string.ending_date,
             onValueChanged = { endingDateInput = it }
         )
-        FloatingActionButton(
+        Button(
             onClick = {
                 chartViewModel.updateDailyEffort(chartViewModel.dailyEffortInput.toDouble())
-                if (!chartViewModel.chartUiState.value.startedTopicList.isEmpty()) {
+                if (chartViewModel.chartUiState.value.startedTopicList.isNotEmpty()) {
                     chartViewModel.clearList()
                     timerViewModel.resetTimer()
                 }
@@ -147,7 +156,8 @@ fun TrackDetails(
             },
             modifier = Modifier
                 .padding(dimensionResource(R.dimen.padding_medium2))
-                .align(Alignment.End)
+                .align(Alignment.End),
+            enabled = isFormValid
         ) {
             Icon(
                 Icons.Filled.Add,
@@ -193,10 +203,14 @@ fun DatePickerFieldToModal(
 ) {
     var selectedDate by remember { mutableStateOf<Long?>(null) }
     var showModal by remember { mutableStateOf(false) }
+    var selectedDateString by remember { mutableStateOf("") }
 
     TextField(
-        value = selectedDate?.let { convertMillisToDate(it) } ?: "",
-        onValueChange = onValueChanged,
+        value = selectedDateString,
+        onValueChange = {
+            selectedDateString = it
+            onValueChanged(it)
+        },
         label = { Text(stringResource(label)) },
         leadingIcon = { Icon(Icons.Default.DateRange, contentDescription = "Select date") },
         modifier = modifier
@@ -224,7 +238,11 @@ fun DatePickerFieldToModal(
 
     if (showModal) {
         DatePickerModal(
-            onDateSelected = { selectedDate = it },
+            onDateSelected = { millis ->
+                selectedDate = millis
+                selectedDateString = millis?.let { convertMillisToDate(it) } ?: ""
+                onValueChanged(selectedDateString)
+            },
             onDismiss = { showModal = false }
         )
     }

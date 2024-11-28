@@ -66,6 +66,13 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.ycharts)
     implementation(libs.compose.charts)
+
+    //Room
+    implementation("androidx.room:room-runtime:${rootProject.extra["room_version"]}")
+    annotationProcessor("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
+    implementation("androidx.room:room-ktx:${rootProject.extra["room_version"]}")
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
