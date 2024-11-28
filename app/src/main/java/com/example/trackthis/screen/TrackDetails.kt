@@ -71,7 +71,9 @@ fun TrackDetails(
     var startingDateInput by rememberSaveable { mutableStateOf("") }
     var endingDateInput by rememberSaveable { mutableStateOf("") }
 
-
+    val isDailyEffortGreaterThanFinalGoal =
+        dailyEffort.isNotBlank() && finalGoalInput.isNotBlank() &&
+                dailyEffort.toInt() >= finalGoalInput.toInt()
 
     val isFormValid =
                 dailyEffort.isNotBlank() &&
@@ -100,6 +102,13 @@ fun TrackDetails(
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_medium2)),
         ) { }
+        if (isDailyEffortGreaterThanFinalGoal) {
+            Text(
+                text = stringResource(R.string.daily_effort_error), // Add your error message string resource
+                color = Color.Red,
+                modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
+            )
+        }
         EditField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -111,7 +120,8 @@ fun TrackDetails(
                 imeAction = ImeAction.Next
             ),
             value = chartViewModel.dailyEffortInput,
-            onValueChanged = { chartViewModel.dailyEffortInput = it }
+            onValueChanged = { chartViewModel.dailyEffortInput = it },
+            isError = isDailyEffortGreaterThanFinalGoal
         )
         EditField(
             modifier = Modifier
@@ -124,7 +134,8 @@ fun TrackDetails(
                 imeAction = ImeAction.Next
             ),
             value = finalGoalInput,
-            onValueChanged = { finalGoalInput = it }
+            onValueChanged = { finalGoalInput = it },
+            isError = isDailyEffortGreaterThanFinalGoal
         )
         DatePickerFieldToModal(
             modifier = Modifier
@@ -176,7 +187,13 @@ fun EditField(
     keyboardOptions: KeyboardOptions,
     value: String,
     onValueChanged: (String) -> Unit,
+    isError: Boolean = false
 ) {
+    val borderColor = if (isError) {
+        Color.Red
+    } else {
+        Color.Transparent // Or your default border color
+    }
     TextField(
         value = value,
         singleLine = true,
@@ -189,8 +206,8 @@ fun EditField(
         colors = TextFieldDefaults.colors(
             focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
             unfocusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent
+            focusedIndicatorColor = borderColor,
+            unfocusedIndicatorColor = borderColor
         )
     )
 }
