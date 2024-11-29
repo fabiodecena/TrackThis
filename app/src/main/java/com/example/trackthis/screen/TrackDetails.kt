@@ -54,6 +54,7 @@ import com.example.trackthis.ui.charts.ChartViewModel
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.Topic
 import com.example.trackthis.ui.timer.TimerViewModel
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -142,14 +143,18 @@ fun TrackDetails(
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_medium2)),
             label = R.string.starting_date,
-            onValueChanged = { startingDateInput = it }
+            onValueChanged = { startingDateInput = it },
+            isStartDatePicker = true,
+            startingDate = startingDateInput
         )
         DatePickerFieldToModal(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_medium2)),
             label = R.string.ending_date,
-            onValueChanged = { endingDateInput = it }
+            onValueChanged = { endingDateInput = it },
+            isStartDatePicker = false,
+            startingDate = startingDateInput
         )
         Button(
             onClick = {
@@ -217,6 +222,8 @@ fun DatePickerFieldToModal(
     modifier: Modifier = Modifier,
     @StringRes label: Int,
     onValueChanged: (String) -> Unit,
+    isStartDatePicker: Boolean,
+    startingDate: String
 ) {
     var selectedDate by remember { mutableStateOf<Long?>(null) }
     var showModal by remember { mutableStateOf(false) }
@@ -254,23 +261,38 @@ fun DatePickerFieldToModal(
     )
 
     if (showModal) {
-        DatePickerModal(
-            onDateSelected = { millis ->
-                selectedDate = millis
-                selectedDateString = millis?.let { convertMillisToDate(it) } ?: ""
-                onValueChanged(selectedDateString)
-            },
-            onDismiss = { showModal = false }
-        )
+        if (isStartDatePicker) { // Use the parameter to decide which modal to show
+            StartDatePickerModal(
+                onDateSelected = { millis ->
+                    selectedDate = millis
+                    selectedDateString = millis?.let { convertMillisToDate(it) } ?: ""
+                    onValueChanged(selectedDateString)
+                },
+                onDismiss = { showModal = false }
+            )
+        } else {
+            EndDatePickerModal(
+                onDateSelected = { millis ->
+                    selectedDate = millis
+                    selectedDateString = millis?.let { convertMillisToDate(it) } ?: ""
+                    onValueChanged(selectedDateString)
+                },
+                onDismiss = { showModal = false },
+                startingDate = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).parse(startingDate)?.time ?: 0
+            )
+        }
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DatePickerModal(
+fun StartDatePickerModal(
     onDateSelected: (Long?) -> Unit,
     onDismiss: () -> Unit
 ) {
-    val datePickerState = rememberDatePickerState()
+    val today = Calendar.getInstance().timeInMillis
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = today
+    )
 
     DatePickerDialog(
         onDismissRequest = onDismiss,
@@ -288,7 +310,48 @@ fun DatePickerModal(
             }
         }
     ) {
-        DatePicker(state = datePickerState)
+        DatePicker(
+            state = datePickerState,
+            dateValidator = { timestamp ->
+                timestamp >= today
+            }
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun EndDatePickerModal(
+    onDateSelected: (Long?) -> Unit,
+    onDismiss: () -> Unit,
+    startingDate: Long
+) {
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = startingDate
+    )
+
+    DatePickerDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(onClick = {
+                onDateSelected(datePickerState.selectedDateMillis)
+                onDismiss()
+            }) {
+                Text("OK")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        }
+    ) {
+        DatePicker(
+            state = datePickerState,
+            dateValidator = { timestamp ->
+                timestamp > startingDate
+            }
+        )
     }
 }
 
