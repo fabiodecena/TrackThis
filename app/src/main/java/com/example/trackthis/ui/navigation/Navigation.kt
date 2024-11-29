@@ -1,4 +1,4 @@
-package com.example.trackthis.navigation
+package com.example.trackthis.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -8,18 +8,18 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.trackthis.screen.TrackDetails
-import com.example.trackthis.ui.charts.ChartViewModel
+import com.example.trackthis.ui.insert_track.TrackDetails
+import com.example.trackthis.ui.statistics.charts.ChartViewModel
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.listOfVisualizedTopics
-import com.example.trackthis.screen.ActiveTrackScreen
-import com.example.trackthis.screen.BuildScreen
-import com.example.trackthis.screen.HomeScreen
-import com.example.trackthis.screen.InactiveTrackScreen
-import com.example.trackthis.screen.ProfileScreen
-import com.example.trackthis.screen.SettingsScreen
-import com.example.trackthis.screen.StatisticsScreen
-import com.example.trackthis.ui.timer.TimerViewModel
+import com.example.trackthis.ui.history.History
+import com.example.trackthis.ui.home.HomeScreen
+import com.example.trackthis.ui.profile.ProfileScreen
+import com.example.trackthis.ui.settings.ActiveTrackScreen
+import com.example.trackthis.ui.settings.InactiveTrackScreen
+import com.example.trackthis.ui.settings.SettingsScreen
+import com.example.trackthis.ui.statistics.StatisticsScreen
+import com.example.trackthis.ui.statistics.timer.TimerViewModel
 
 @Composable
 fun Navigation(
@@ -50,7 +50,7 @@ fun Navigation(
             StatisticsScreen(chartViewModel = chartViewModel, timerViewModel = timerViewModel, navController = navController)
         }
         composable(NavigationItem.Build.route) {
-            BuildScreen(timerViewModel = timerViewModel)
+            History(timerViewModel = timerViewModel)
         }
         composable(NavigationItem.Settings.route) {
             SettingsScreen()

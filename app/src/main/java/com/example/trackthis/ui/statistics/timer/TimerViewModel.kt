@@ -1,12 +1,12 @@
-package com.example.trackthis.ui.timer
+package com.example.trackthis.ui.statistics.timer
 
 import android.app.AlertDialog
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.example.trackthis.ui.charts.ChartUiState
-import com.example.trackthis.ui.charts.pointsData
+import com.example.trackthis.ui.statistics.charts.ChartUiState
+import com.example.trackthis.ui.statistics.charts.pointsData
 import com.example.trackthis.data.NavigationItem
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

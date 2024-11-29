@@ -1,4 +1,4 @@
-package com.example.trackthis.screen
+package com.example.trackthis.ui.insert_track
 
 import android.icu.text.SimpleDateFormat
 import androidx.annotation.StringRes
@@ -50,10 +50,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.trackthis.R
-import com.example.trackthis.ui.charts.ChartViewModel
+import com.example.trackthis.ui.statistics.charts.ChartViewModel
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.Topic
-import com.example.trackthis.ui.timer.TimerViewModel
+import com.example.trackthis.ui.statistics.timer.TimerViewModel
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -76,12 +76,19 @@ fun TrackDetails(
         dailyEffort.isNotBlank() && finalGoalInput.isNotBlank() &&
                 dailyEffort.toInt() >= finalGoalInput.toInt()
 
+    val isStartingDateGreaterThanEndingDate =
+        startingDateInput.isNotBlank() && endingDateInput.isNotBlank() &&
+                (SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).parse(startingDateInput)?.time
+                    ?: 0) >=
+                SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).parse(endingDateInput)?.time!!
+
     val isFormValid =
                 dailyEffort.isNotBlank() &&
                 finalGoalInput.isNotBlank() &&
                 finalGoalInput.toInt() > dailyEffort.toInt() &&
                 startingDateInput.isNotBlank() &&
-                endingDateInput.isNotBlank()
+                endingDateInput.isNotBlank() &&
+                isStartingDateGreaterThanEndingDate.not()
 
     Column(
         modifier = modifier
@@ -105,7 +112,14 @@ fun TrackDetails(
         ) { }
         if (isDailyEffortGreaterThanFinalGoal) {
             Text(
-                text = stringResource(R.string.daily_effort_error), // Add your error message string resource
+                text = stringResource(R.string.daily_effort_error),
+                color = Color.Red,
+                modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
+            )
+        }
+        else if (isStartingDateGreaterThanEndingDate) {
+            Text(
+                text = stringResource(R.string.dates_error),
                 color = Color.Red,
                 modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
             )
@@ -145,7 +159,8 @@ fun TrackDetails(
             label = R.string.starting_date,
             onValueChanged = { startingDateInput = it },
             isStartDatePicker = true,
-            startingDate = startingDateInput
+            startingDate = startingDateInput,
+            isError = isStartingDateGreaterThanEndingDate
         )
         DatePickerFieldToModal(
             modifier = Modifier
@@ -154,7 +169,8 @@ fun TrackDetails(
             label = R.string.ending_date,
             onValueChanged = { endingDateInput = it },
             isStartDatePicker = false,
-            startingDate = startingDateInput
+            startingDate = startingDateInput,
+            isError = isStartingDateGreaterThanEndingDate
         )
         Button(
             onClick = {
@@ -223,11 +239,18 @@ fun DatePickerFieldToModal(
     @StringRes label: Int,
     onValueChanged: (String) -> Unit,
     isStartDatePicker: Boolean,
-    startingDate: String
+    startingDate: String,
+    isError: Boolean
 ) {
     var selectedDate by remember { mutableStateOf<Long?>(null) }
     var showModal by remember { mutableStateOf(false) }
     var selectedDateString by remember { mutableStateOf("") }
+
+    val borderColor = if (isError) {
+        Color.Red
+    } else {
+        Color.Transparent
+    }
 
     TextField(
         value = selectedDateString,
@@ -255,8 +278,8 @@ fun DatePickerFieldToModal(
         colors = TextFieldDefaults.colors(
             focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
             unfocusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent
+            focusedIndicatorColor = borderColor,
+            unfocusedIndicatorColor = borderColor
         )
     )
 

@@ -1,5 +1,4 @@
-package com.example.trackthis.screen
-
+package com.example.trackthis.ui.statistics
 
 import android.util.Log
 import androidx.compose.animation.core.EaseInOutCubic
@@ -16,15 +15,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -39,10 +44,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.trackthis.R
-import com.example.trackthis.ui.charts.pointsData
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.StartedTopicElement
-import com.example.trackthis.ui.timer.TimerViewModel
+import com.example.trackthis.ui.statistics.charts.ChartViewModel
+import com.example.trackthis.ui.statistics.charts.pointsData
+import com.example.trackthis.ui.statistics.timer.TimerScreen
+import com.example.trackthis.ui.statistics.timer.TimerViewModel
 import ir.ehsannarmani.compose_charts.LineChart
 import ir.ehsannarmani.compose_charts.models.AnimationMode
 import ir.ehsannarmani.compose_charts.models.DotProperties
@@ -53,6 +60,38 @@ import ir.ehsannarmani.compose_charts.models.Line
 import ir.ehsannarmani.compose_charts.models.StrokeStyle
 import ir.ehsannarmani.compose_charts.models.ZeroLineProperties
 
+@Composable
+fun StatisticsScreen(
+    modifier: Modifier = Modifier,
+    chartViewModel: ChartViewModel,
+    timerViewModel: TimerViewModel,
+    navController: NavController
+) {
+    val chartUiState by chartViewModel.chartUiState.collectAsState()
+    val pointsData = chartUiState.defaultPointsData
+    val dailyEffort = chartUiState.dailyEffort
+
+    LazyColumn(modifier = modifier) {
+        items(chartUiState.startedTopicList) { topic ->
+            StartedTopic(
+                topicElement = topic,
+                onDelete = { chartViewModel.clearList() },
+                data = pointsData,
+                dailyEffort = dailyEffort,
+                navController = navController,
+                timerViewModel = timerViewModel
+            )
+            BuildTracking(
+                timerViewModel = timerViewModel,
+                topicElement = topic
+            )
+            TimerScreen(
+                timerViewModel = timerViewModel,
+                navController = navController
+            )
+        }
+    }
+}
 
 @Composable
 fun StartedTopic(
@@ -132,7 +171,7 @@ fun StartedTopic(
                         Log.d("pointsData", "StartedTopic: $data")
                         listOf(
                             Line(
-                              label = "Min Daily Effort",
+                                label = "Min Daily Effort",
                                 values = dailyEffort,
                                 color = SolidColor(Color.Red),
                                 drawStyle = DrawStyle.Stroke(
@@ -199,16 +238,16 @@ fun StartedTopic(
                         .wrapContentSize(Alignment.Center)
                 ){
                     Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
-                ) {
-                    CircleWithLetter("M", index = 0)
-                    CircleWithLetter("T", index = 1)
-                    CircleWithLetter("W", index = 2)
-                    CircleWithLetter("T", index = 3)
-                    CircleWithLetter("F", index = 4)
-                    CircleWithLetter("S", index = 5)
-                    CircleWithLetter("S", index = 6)
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
+                    ) {
+                        CircleWithLetter("M", index = 0)
+                        CircleWithLetter("T", index = 1)
+                        CircleWithLetter("W", index = 2)
+                        CircleWithLetter("T", index = 3)
+                        CircleWithLetter("F", index = 4)
+                        CircleWithLetter("S", index = 5)
+                        CircleWithLetter("S", index = 6)
                     }
                 }
             }
@@ -235,5 +274,58 @@ fun CircleWithLetter(letter: String, index: Int) {
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold
         )
+    }
+}
+
+
+@Composable
+fun BuildTracking(
+    topicElement: StartedTopicElement,
+    modifier: Modifier = Modifier,
+    timerViewModel: TimerViewModel
+) {
+    val timerValue = timerViewModel.timer.collectAsState()
+    val isPaused = timerViewModel.isPaused.collectAsState()
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Card(
+            modifier = modifier
+                .padding(dimensionResource(R.dimen.padding_medium))
+                .fillMaxWidth(),
+            shape = MaterialTheme.shapes.large
+        ) {
+            Row(
+                modifier = Modifier
+                    .padding(start = dimensionResource(R.dimen.padding_medium))
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(
+                    enabled = timerValue.value == 0L || isPaused.value,
+                    onClick = { timerViewModel.startTimer() },
+                    modifier = Modifier
+                        .padding(start = dimensionResource(R.dimen.padding_medium))
+                ) {
+                    Icon(
+                        painterResource(R.drawable.play_circle_24dp_fill0_wght400_grad0_opsz24),
+                        contentDescription = null,
+                        tint = if (timerValue.value == 0L || isPaused.value) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onTertiary // Optional: Show a disabled color
+                    )
+                }
+                Text(
+                    modifier = Modifier
+                        .padding(end = dimensionResource(R.dimen.padding_medium2)),
+                    text = stringResource(topicElement.name),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.headlineMedium
+                )
+            }
+        }
     }
 }

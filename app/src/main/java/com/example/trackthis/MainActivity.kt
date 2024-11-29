@@ -9,7 +9,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.trackthis.data.Topic
 import com.example.trackthis.data.TopicListElement
-import com.example.trackthis.screen.MainScreen
 import com.example.trackthis.ui.theme.TrackThisTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,7 +20,7 @@ class MainActivity : ComponentActivity() {
                 Surface(modifier = Modifier
                     .fillMaxSize()
                 ) {
-                    MainScreen()
+                    TrackApp()
                 }
             }
         }

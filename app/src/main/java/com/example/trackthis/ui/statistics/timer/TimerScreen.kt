@@ -1,4 +1,4 @@
-package com.example.trackthis.ui.timer
+package com.example.trackthis.ui.statistics.timer
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

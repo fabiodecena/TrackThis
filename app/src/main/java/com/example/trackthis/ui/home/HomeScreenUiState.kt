@@ -1,8 +1,8 @@
-package com.example.trackthis.ui
+package com.example.trackthis.ui.home
 
 import com.example.trackthis.data.Topic
 
-data class AppUiState(
+data class HomeScreenUiState(
     val topicList: List<Topic> = emptyList(),
     val expandedTopicName: Int = 0
 )

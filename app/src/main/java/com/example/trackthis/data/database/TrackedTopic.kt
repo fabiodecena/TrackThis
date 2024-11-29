@@ -1,10 +1,10 @@
-package com.example.trackthis.data
+package com.example.trackthis.data.database
 
 import androidx.annotation.StringRes
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
+
 
 
 @Entity(tableName = "tracked_topics")

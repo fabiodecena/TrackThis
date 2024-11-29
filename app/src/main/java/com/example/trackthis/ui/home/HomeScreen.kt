@@ -1,4 +1,4 @@
-package com.example.trackthis.screen
+package com.example.trackthis.ui.home
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
@@ -6,10 +6,14 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
@@ -21,6 +25,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -33,35 +39,61 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.trackthis.R
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.StartedTopicElement
 import com.example.trackthis.data.Topic
 import com.example.trackthis.data.listOfStartedTopic
-import com.example.trackthis.ui.AppUiState
+
+@Composable
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    homeScreenViewModel: HomeScreenViewModel = viewModel(),
+    navController: NavController
+) {
+    val appUiState by homeScreenViewModel.homeScreenUiState.collectAsState()
+
+    LazyVerticalGrid(
+        modifier = modifier,
+        columns = GridCells.Fixed(2),
+        contentPadding = PaddingValues(dimensionResource(R.dimen.padding_small)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)),
+        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
+    ) {
+        items(homeScreenViewModel.updateTopicList()) { it ->
+            TopicCard(
+                navController = navController,
+                topic = it,
+                homeScreenUiState = appUiState,
+                onCardButtonClick = { homeScreenViewModel.toggleExpanded(it) },
+            )
+        }
+    }
+}
 
 @Composable
 fun TopicCard(
     topic: Topic,
-    appUiState: AppUiState,
+    homeScreenUiState: HomeScreenUiState,
     onCardButtonClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
-    val expanded = appUiState.expandedTopicName == topic.name
+    val expanded = homeScreenUiState.expandedTopicName == topic.name
 
     Card(
         shape = if (expanded) MaterialTheme.shapes.medium
-            else RoundedCornerShape(bottomEnd = 16.dp, topStart = 16.dp),
+        else RoundedCornerShape(bottomEnd = 16.dp, topStart = 16.dp),
         // animation when the  card is expanded or collapsed through modifier
         modifier = modifier
-                .animateContentSize(
-                    animationSpec = spring(
+            .animateContentSize(
+                animationSpec = spring(
                     dampingRatio = Spring.DampingRatioMediumBouncy,
                     stiffness = Spring.StiffnessLow
-                    )
                 )
+            )
     ) {
         Row(
             modifier = modifier.fillMaxWidth(),

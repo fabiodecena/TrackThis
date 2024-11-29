@@ -1,4 +1,4 @@
-package com.example.trackthis.ui.charts
+package com.example.trackthis.ui.statistics.charts
 
 import com.example.trackthis.data.StartedTopicElement
 
