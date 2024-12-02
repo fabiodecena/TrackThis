@@ -12,8 +12,9 @@ import com.example.trackthis.ui.insert_track.TrackDetails
 import com.example.trackthis.ui.statistics.charts.ChartViewModel
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.listOfVisualizedTopics
-import com.example.trackthis.ui.history.History
+import com.example.trackthis.ui.history.HistoryScreen
 import com.example.trackthis.ui.home.HomeScreen
+import com.example.trackthis.ui.insert_track.TrackEntryViewModel
 import com.example.trackthis.ui.profile.ProfileScreen
 import com.example.trackthis.ui.settings.ActiveTrackScreen
 import com.example.trackthis.ui.settings.InactiveTrackScreen
@@ -25,9 +26,11 @@ import com.example.trackthis.ui.statistics.timer.TimerViewModel
 fun Navigation(
     navController: NavHostController,
     timerViewModel: TimerViewModel,
+    trackEntryViewModel: TrackEntryViewModel = viewModel(factory = TrackEntryViewModel.factory),
     modifier: Modifier = Modifier
 ) {
     val chartViewModel: ChartViewModel = viewModel()
+
     NavHost(
         modifier = modifier,
         navController = navController,
@@ -43,14 +46,14 @@ fun Navigation(
             val topicId = backStackEntry.arguments?.getInt("topicId")
             val topic = listOfVisualizedTopics.find { it.name == topicId }
             topic?.let {
-                TrackDetails(topic = topic, navController = navController, timerViewModel = timerViewModel)
+                TrackDetails(topic = topic, navController = navController, timerViewModel = timerViewModel, trackEntryViewModel = trackEntryViewModel)
             }
         }
         composable(NavigationItem.Statistics.route) {
             StatisticsScreen(chartViewModel = chartViewModel, timerViewModel = timerViewModel, navController = navController)
         }
         composable(NavigationItem.Build.route) {
-            History(timerViewModel = timerViewModel)
+            HistoryScreen(trackEntryViewModel = trackEntryViewModel)
         }
         composable(NavigationItem.Settings.route) {
             SettingsScreen()

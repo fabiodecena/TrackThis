@@ -35,6 +35,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -53,7 +54,9 @@ import com.example.trackthis.R
 import com.example.trackthis.ui.statistics.charts.ChartViewModel
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.Topic
+import com.example.trackthis.data.database.TrackedTopic
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -65,12 +68,14 @@ fun TrackDetails(
     topic: Topic,
     navController: NavController,
     chartViewModel: ChartViewModel = viewModel(),
-    timerViewModel: TimerViewModel
+    timerViewModel: TimerViewModel,
+    trackEntryViewModel: TrackEntryViewModel
 ) {
     val dailyEffort = chartViewModel.dailyEffortInput
     var finalGoalInput by rememberSaveable { mutableStateOf("") }
     var startingDateInput by rememberSaveable { mutableStateOf("") }
     var endingDateInput by rememberSaveable { mutableStateOf("") }
+    val coroutineScope = rememberCoroutineScope()
 
     val isDailyEffortGreaterThanFinalGoal =
         dailyEffort.isNotBlank() && finalGoalInput.isNotBlank() &&
@@ -180,6 +185,17 @@ fun TrackDetails(
                     timerViewModel.resetTimer()
                 }
                 chartViewModel.addStartedTopicElementToList(topic.name)
+                coroutineScope.launch {
+                    trackEntryViewModel.addNewItem(
+                        TrackedTopic(
+                            name = topic.name,
+                            dailyEffort = dailyEffort.toDouble(),
+                            finalGoal = finalGoalInput.toInt(),
+                            startingDate = startingDateInput,
+                            endingDate = endingDateInput
+                        )
+                    )
+                }
                 navController.navigate(NavigationItem.Statistics.route) {
                     navController.graph.startDestinationRoute?.let { route ->
                         popUpTo(route)

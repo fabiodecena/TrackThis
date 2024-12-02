@@ -21,9 +21,10 @@ class ChartViewModel: ViewModel() {
 
     var dailyEffortInput by mutableStateOf("")
 
-init {
+    init {
     _chartUiState.value = ChartUiState(startedTopicList = listOfStartedTopic, defaultPointsData = pointsData, dailyEffort = dailyEffortList)
-}
+    }
+
     fun addStartedTopicElementToList(topicName: Int) {
         if (StartedTopicElement(topicName) !in listOfStartedTopic)// avoid to add the same Topic more than once
             listOfStartedTopic.add(StartedTopicElement(topicName))

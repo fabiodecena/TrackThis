@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase
 @Database(entities = [TrackedTopic::class], version = 1, exportSchema = false)
 abstract class HistoryDatabase : RoomDatabase() {
 
-    abstract fun itemDao(): TrackedTopicDao
+    abstract fun trackedTopicDao(): TrackedTopicDao
 
     companion object {
         @Volatile
@@ -19,11 +19,7 @@ abstract class HistoryDatabase : RoomDatabase() {
             // if the Instance is not null, return it, otherwise create a new database instance.
             return Instance ?: synchronized(this) {
                 Room.databaseBuilder(context, HistoryDatabase::class.java, "history_database")
-                    /**
-                     * Setting this option in your app's database builder means that Room
-                     * permanently deletes all data from the tables in your database when it
-                     * attempts to perform a migration with no defined migration path.
-                     */
+//                    .createFromAsset("database/history.db")
                     .fallbackToDestructiveMigration()
                     .build()
                     .also { Instance = it }

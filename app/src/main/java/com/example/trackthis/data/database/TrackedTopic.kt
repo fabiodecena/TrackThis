@@ -13,6 +13,8 @@ data class TrackedTopic(
     val id: Int = 0,
     @ColumnInfo(name = "topic_name")
     @StringRes val name: Int,
+    @ColumnInfo(name = "daily_effort")
+    val dailyEffort: Double,
     @ColumnInfo(name = "final_goal")
     val finalGoal: Int,
     @ColumnInfo(name = "starting_date")
