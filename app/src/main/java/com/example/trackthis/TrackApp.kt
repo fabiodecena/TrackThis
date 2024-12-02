@@ -15,7 +15,7 @@ import com.example.trackthis.ui.statistics.timer.TimerViewModel
 @Composable
 fun TrackApp() {
     val navController = rememberNavController()
-    val timerViewModel: TimerViewModel = viewModel()
+    val timerViewModel: TimerViewModel = viewModel(factory = TimerViewModel.factory)
 
     Scaffold(
         topBar = { TopAppBar(navController = navController) },

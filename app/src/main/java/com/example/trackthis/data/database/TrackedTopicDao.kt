@@ -17,6 +17,9 @@ interface TrackedTopicDao {
     @Query("SELECT * from tracked_topics WHERE id = :id")
     fun getItem(id: Int): Flow<TrackedTopic>
 
+    @Query("SELECT * from tracked_topics WHERE topic_name = :nameId")
+    fun getItemByName(nameId: Int): Flow<TrackedTopic>
+
     // Specify the conflict strategy as IGNORE, when the user tries to add an
     // existing Item into the database Room ignores the conflict.
     @Insert(onConflict = OnConflictStrategy.IGNORE)

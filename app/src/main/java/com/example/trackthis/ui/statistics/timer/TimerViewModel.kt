@@ -2,16 +2,27 @@ package com.example.trackthis.ui.statistics.timer
 
 import android.app.AlertDialog
 import android.content.Context
+import android.util.Log
+import androidx.compose.animation.core.copy
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavController
+import com.example.trackthis.TrackApplication
 import com.example.trackthis.ui.statistics.charts.ChartUiState
 import com.example.trackthis.ui.statistics.charts.pointsData
 import com.example.trackthis.data.NavigationItem
+import com.example.trackthis.data.database.TrackedTopicDao
+import com.example.trackthis.ui.insert_track.TrackEntryViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -20,7 +31,17 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 
-class TimerViewModel : ViewModel() {
+class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel() {
+
+    companion object {
+        val factory : ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = this[APPLICATION_KEY] as TrackApplication
+                TimerViewModel(application.database.trackedTopicDao())
+            }
+        }
+    }
+
     private val _timer = MutableStateFlow(0L)
     val timer = _timer.asStateFlow()
 
@@ -48,7 +69,7 @@ class TimerViewModel : ViewModel() {
         _isPaused.value = true
     }
 
-    fun stopTimer(context: Context, navController: NavController) {
+    fun stopTimer(context: Context, navController: NavController, topicId: Int) {
         val currentDay = saveCurrentDay()
         val index = getIndexForDay(currentDay)
         val currentValue = timer.value
@@ -67,8 +88,13 @@ class TimerViewModel : ViewModel() {
                 _timer.value = 0// Reset the timer
             }
 
-
             dialog.dismiss()
+
+            viewModelScope.launch {
+                val topic =  trackedTopicDao.getItemByName(topicId).first()
+                val updatedTopic = topic.copy(timeSpent = timer.value.toInt())
+                trackedTopicDao.update(updatedTopic)
+            }
 
             navController.navigate(NavigationItem.Statistics.route) {
                 navController.graph.startDestinationRoute?.let { route ->
@@ -132,3 +158,4 @@ fun Long.formatTime(): String {
     val remainingSeconds = this % 60
     return String.format(locale = Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, remainingSeconds)
 }
+

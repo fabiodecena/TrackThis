@@ -88,7 +88,8 @@ fun StatisticsScreen(
             )
             TimerScreen(
                 timerViewModel = timerViewModel,
-                navController = navController
+                navController = navController,
+                topicId = topic.name
             )
         }
     }
@@ -316,7 +317,8 @@ fun BuildTracking(
                     Icon(
                         painterResource(R.drawable.play_circle_24dp_fill0_wght400_grad0_opsz24),
                         contentDescription = null,
-                        tint = if (timerValue.value == 0L || isPaused.value) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onTertiary // Optional: Show a disabled color
+                        tint = if (timerValue.value == 0L || isPaused.value) MaterialTheme.colorScheme.tertiary
+                            else MaterialTheme.colorScheme.onTertiary
                     )
                 }
                 Text(

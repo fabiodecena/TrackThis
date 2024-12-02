@@ -192,7 +192,8 @@ fun TrackDetails(
                             dailyEffort = dailyEffort.toDouble(),
                             finalGoal = finalGoalInput.toInt(),
                             startingDate = startingDateInput,
-                            endingDate = endingDateInput
+                            endingDate = endingDateInput,
+                            timeSpent = 0
                         )
                     )
                 }

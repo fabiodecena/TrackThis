@@ -23,7 +23,8 @@ import androidx.navigation.NavController
 @Composable
 fun TimerScreen(
     timerViewModel: TimerViewModel,
-    navController: NavController
+    navController: NavController,
+    topicId: Int
 ) {
     val timerValue by timerViewModel.timer.collectAsState()
     val context = LocalContext.current
@@ -45,7 +46,7 @@ fun TimerScreen(
             }
             Spacer(modifier = Modifier.width(16.dp))
             Button(
-                onClick = { timerViewModel.stopTimer(context, navController) },
+                onClick = { timerViewModel.stopTimer(context, navController, topicId) },
                 enabled = timerValue > 0L
             ) {
                 Text("Stop")

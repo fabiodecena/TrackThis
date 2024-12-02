@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 //Database class with a singleton Instance object.
-@Database(entities = [TrackedTopic::class], version = 1, exportSchema = false)
+@Database(entities = [TrackedTopic::class], version = 2, exportSchema = false)
 abstract class HistoryDatabase : RoomDatabase() {
 
     abstract fun trackedTopicDao(): TrackedTopicDao

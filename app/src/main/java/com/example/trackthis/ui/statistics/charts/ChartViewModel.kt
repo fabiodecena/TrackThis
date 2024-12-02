@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.trackthis.TrackApplication
 import com.example.trackthis.data.StartedTopicElement
 import com.example.trackthis.data.listOfStartedTopic
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
@@ -43,6 +44,6 @@ class ChartViewModel: ViewModel() {
 
     fun clearList(){
         listOfStartedTopic.clear()
-        TimerViewModel().resetData()
+        TimerViewModel(TrackApplication().database.trackedTopicDao()).resetData()
     }
 }

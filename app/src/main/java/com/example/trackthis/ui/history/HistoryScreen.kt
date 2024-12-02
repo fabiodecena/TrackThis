@@ -51,6 +51,7 @@ fun HistoryElement(
             .padding(dimensionResource(R.dimen.padding_small))
     ){
         Text(trackedTopic.name.toString())
+        Text("Total Time Spent: ${trackedTopic.timeSpent}")
     }
 }
 
