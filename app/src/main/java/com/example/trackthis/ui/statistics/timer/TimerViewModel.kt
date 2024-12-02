@@ -89,7 +89,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
             }
 
             dialog.dismiss()
-
+            // Save time spent into the corresponding field on Database
             viewModelScope.launch {
                 val topic =  trackedTopicDao.getItemByName(topicId).first()
                 val updatedTopic = topic.copy(timeSpent = timer.value.toInt())
