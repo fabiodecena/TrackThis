@@ -257,13 +257,34 @@ fun StartedTopic(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
                     ) {
-                        CircleWithLetter("M", index = 0)
-                        CircleWithLetter("T", index = 1)
-                        CircleWithLetter("W", index = 2)
-                        CircleWithLetter("T", index = 3)
-                        CircleWithLetter("F", index = 4)
-                        CircleWithLetter("S", index = 5)
-                        CircleWithLetter("S", index = 6)
+                        CircleWithLetter(
+                            "M", index = 0,
+                            topicElement = topicElement
+                        )
+                        CircleWithLetter(
+                            "T", index = 1,
+                            topicElement = topicElement
+                        )
+                        CircleWithLetter(
+                            "W", index = 2,
+                            topicElement = topicElement
+                        )
+                        CircleWithLetter(
+                            "T", index = 3,
+                            topicElement = topicElement
+                        )
+                        CircleWithLetter(
+                            "F", index = 4,
+                            topicElement = topicElement
+                        )
+                        CircleWithLetter(
+                            "S", index = 5,
+                            topicElement = topicElement
+                        )
+                        CircleWithLetter(
+                            "S", index = 6,
+                            topicElement = topicElement
+                        )
                     }
                 }
             }
@@ -273,14 +294,14 @@ fun StartedTopic(
 
 
 @Composable
-fun CircleWithLetter(letter: String, index: Int) {
-    val isOnYAxis = pointsData.getOrNull(index)?.let { it > 0.0 } == false
+fun CircleWithLetter(letter: String, index: Int, topicElement: TrackedTopic) {
+    val isOnYAxis = topicElement.index == index && topicElement.index > 0
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .clip(MaterialTheme.shapes.extraLarge)
             .background(
-                if (isOnYAxis) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.tertiary
+                if (!isOnYAxis) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.tertiary
             )
             .size(dimensionResource(R.dimen.padding_medium2))
     ) {
