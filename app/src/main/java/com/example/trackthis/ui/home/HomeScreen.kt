@@ -43,9 +43,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.trackthis.R
 import com.example.trackthis.data.NavigationItem
-import com.example.trackthis.data.StartedTopicElement
 import com.example.trackthis.data.Topic
-import com.example.trackthis.data.listOfStartedTopic
 
 @Composable
 fun HomeScreen(
@@ -134,26 +132,14 @@ fun TopicCard(
                     modifier = Modifier
                         .padding(end = dimensionResource(R.dimen.padding_medium))
                         .clickable {
-                            if (!listOfStartedTopic.contains(StartedTopicElement(topic.name))){
-                                navController.navigate("${NavigationItem.TrackDetails.route}/${topic.name}") {
-                                    navController.graph.startDestinationRoute?.let { route ->
-                                        popUpTo(route) {
-                                            saveState = true
-                                        }
+                            navController.navigate("${NavigationItem.TrackDetails.route}/${topic.name}") {
+                                navController.graph.startDestinationRoute?.let { route ->
+                                    popUpTo(route) {
+                                        saveState = true
                                     }
-                                    launchSingleTop = true
-                                    restoreState = true
                                 }
-                            } else {
-                                navController.navigate(NavigationItem.Statistics.route) {
-                                    navController.graph.startDestinationRoute?.let { route ->
-                                        popUpTo(route) {
-                                            saveState = true
-                                        }
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
                         }
                 )

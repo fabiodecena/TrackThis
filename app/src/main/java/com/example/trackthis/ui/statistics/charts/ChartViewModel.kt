@@ -6,8 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.trackthis.TrackApplication
-import com.example.trackthis.data.StartedTopicElement
-import com.example.trackthis.data.listOfStartedTopic
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,13 +21,9 @@ class ChartViewModel: ViewModel() {
     var dailyEffortInput by mutableStateOf("")
 
     init {
-    _chartUiState.value = ChartUiState(startedTopicList = listOfStartedTopic, defaultPointsData = pointsData, dailyEffort = dailyEffortList)
+    _chartUiState.value = ChartUiState(defaultPointsData = pointsData, dailyEffort = dailyEffortList)
     }
 
-    fun addStartedTopicElementToList(topicName: Int) {
-        if (StartedTopicElement(topicName) !in listOfStartedTopic)// avoid to add the same Topic more than once
-            listOfStartedTopic.add(StartedTopicElement(topicName))
-    }
 
     fun updateDailyEffort(dailyEffort: Double) {
         val updatedList: MutableList<Double> = dailyEffortList
@@ -42,7 +36,6 @@ class ChartViewModel: ViewModel() {
     }
 
     fun clearList(){
-        listOfStartedTopic.clear()
         TimerViewModel(TrackApplication().database.trackedTopicDao()).resetData()
     }
 }

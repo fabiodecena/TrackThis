@@ -179,12 +179,6 @@ fun TrackDetails(
         )
         Button(
             onClick = {
-                chartViewModel.updateDailyEffort(chartViewModel.dailyEffortInput.toDouble())
-                if (chartViewModel.chartUiState.value.startedTopicList.isNotEmpty()) {
-                    chartViewModel.clearList()
-                    timerViewModel.resetTimer()
-                }
-                chartViewModel.addStartedTopicElementToList(topic.name)
                 coroutineScope.launch {
                     trackEntryViewModel.addNewItem(
                         TrackedTopic(
