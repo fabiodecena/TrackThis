@@ -73,9 +73,11 @@ fun HistoryElement(
     ){
         Text("Name: ${stringResource(trackedTopic.name)}")
         Text("Total Time Spent: ${trackedTopic.timeSpent}")
+        Text("Daily Effort: ${trackedTopic.dailyEffort}")
         Text("Final Goal: ${trackedTopic.finalGoal}")
         Text("Starting Date: ${trackedTopic.startingDate}")
         Text("Ending Date: ${trackedTopic.endingDate}")
+
         Button(
             onClick = {
                 coroutineScope.launch {

@@ -32,8 +32,7 @@ class ChartViewModel: ViewModel() {
     }
 
     fun updateDailyEffort(dailyEffort: Double) {
-        var updatedList = _chartUiState.value.dailyEffort.toMutableList()
-        updatedList = dailyEffortList
+        val updatedList: MutableList<Double> = dailyEffortList
         updatedList.indices.forEach { index ->
             updatedList[index] = dailyEffort
         }

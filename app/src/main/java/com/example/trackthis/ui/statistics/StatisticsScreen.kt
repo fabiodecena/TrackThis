@@ -45,7 +45,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.trackthis.R
 import com.example.trackthis.data.NavigationItem
-import com.example.trackthis.data.StartedTopicElement
+import com.example.trackthis.data.database.TrackedTopic
+import com.example.trackthis.ui.insert_track.TrackEntryViewModel
 import com.example.trackthis.ui.statistics.charts.ChartViewModel
 import com.example.trackthis.ui.statistics.charts.pointsData
 import com.example.trackthis.ui.statistics.timer.TimerScreen
@@ -66,19 +67,27 @@ fun StatisticsScreen(
     modifier: Modifier = Modifier,
     chartViewModel: ChartViewModel,
     timerViewModel: TimerViewModel,
+    trackEntryViewModel: TrackEntryViewModel,
     navController: NavController
 ) {
     val chartUiState by chartViewModel.chartUiState.collectAsState()
     val pointsData = chartUiState.defaultPointsData
     val dailyEffort = chartUiState.dailyEffort
 
+    val trackedTopics by trackEntryViewModel.retrieveAllItems().collectAsState(emptyList())
+
+
     LazyColumn(modifier = modifier) {
-        items(chartUiState.startedTopicList) { topic ->
+        items(
+            items = trackedTopics,
+            key = { it.id }
+        ) { topic ->
+            val trackedDailyEffort = dailyEffort.map { topic.dailyEffort }
             StartedTopic(
                 topicElement = topic,
                 onDelete = { chartViewModel.clearList() },
                 data = pointsData,
-                dailyEffort = dailyEffort,
+                dailyEffort = trackedDailyEffort,
                 navController = navController,
                 timerViewModel = timerViewModel
             )
@@ -97,7 +106,7 @@ fun StatisticsScreen(
 
 @Composable
 fun StartedTopic(
-    topicElement: StartedTopicElement,
+    topicElement: TrackedTopic,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
     data: List<Double>,
@@ -282,7 +291,7 @@ fun CircleWithLetter(letter: String, index: Int) {
 
 @Composable
 fun BuildTracking(
-    topicElement: StartedTopicElement,
+    topicElement: TrackedTopic,
     modifier: Modifier = Modifier,
     timerViewModel: TimerViewModel
 ) {

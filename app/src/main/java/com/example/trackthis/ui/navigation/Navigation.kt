@@ -46,11 +46,17 @@ fun Navigation(
             val topicId = backStackEntry.arguments?.getInt("topicId")
             val topic = listOfVisualizedTopics.find { it.name == topicId }
             topic?.let {
-                TrackDetails(topic = topic, navController = navController, timerViewModel = timerViewModel, trackEntryViewModel = trackEntryViewModel)
+                TrackDetails(
+                    topic = topic, navController = navController,
+                    timerViewModel = timerViewModel, trackEntryViewModel = trackEntryViewModel
+                )
             }
         }
         composable(NavigationItem.Statistics.route) {
-            StatisticsScreen(chartViewModel = chartViewModel, timerViewModel = timerViewModel, navController = navController)
+            StatisticsScreen(
+                chartViewModel = chartViewModel, timerViewModel = timerViewModel,
+                navController = navController, trackEntryViewModel = trackEntryViewModel
+            )
         }
         composable(NavigationItem.Build.route) {
             HistoryScreen(trackEntryViewModel = trackEntryViewModel)

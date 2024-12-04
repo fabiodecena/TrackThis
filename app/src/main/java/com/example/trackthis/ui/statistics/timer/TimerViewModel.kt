@@ -126,7 +126,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         }
     }
 
-    fun getIndexForDay(day: String): Int {
+    private fun getIndexForDay(day: String): Int {
         return chartUiState.value.xLabels.indexOf(day)
     }
 
@@ -142,8 +142,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
     }
 
     fun resetData() {
-        var updatedList = _chartUiState.value.defaultPointsData.toMutableList()
-        updatedList = pointsData
+        val updatedList: MutableList<Double> = pointsData
         updatedList.indices.forEach { index ->
             updatedList[index] = 0.0
         }
