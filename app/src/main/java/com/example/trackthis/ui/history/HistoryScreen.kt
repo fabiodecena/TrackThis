@@ -121,27 +121,29 @@ fun ShowProgress(score : Int){
         .background(Color.Transparent),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Button(
-            contentPadding = PaddingValues(1.dp),
-            onClick = { },
-            modifier = Modifier
-                .fillMaxWidth(progressFactor)
-                .background(brush = gradient),
-            enabled = false,
-            elevation = null,
-            colors = buttonColors(
-                containerColor = Color.Transparent,
-                disabledContainerColor = Color.Transparent
-            )
-        ) {
-            Text(text = (score).toString()+"%",
+        if (score > 0) {
+            Button(
+                contentPadding = PaddingValues(1.dp),
+                onClick = { },
                 modifier = Modifier
-                    .clip(shape = RoundedCornerShape(23.dp))
-                    .fillMaxHeight(0.87f)
-                    .fillMaxWidth()
-                    .padding(7.dp),
-                color = Color.White,
-                textAlign = TextAlign.Center)
+                    .fillMaxWidth(progressFactor)
+                    .background(brush = gradient),
+                enabled = false,
+                elevation = null,
+                colors = buttonColors(
+                    containerColor = Color.Transparent,
+                    disabledContainerColor = Color.Transparent
+                )
+            ) {
+                Text(text = (score).toString()+"%",
+                    modifier = Modifier
+                        .clip(shape = RoundedCornerShape(23.dp))
+                        .fillMaxHeight(0.87f)
+                        .fillMaxWidth()
+                        .padding(7.dp),
+                    color = Color.White,
+                    textAlign = TextAlign.Center)
+            }
         }
     }
 }
