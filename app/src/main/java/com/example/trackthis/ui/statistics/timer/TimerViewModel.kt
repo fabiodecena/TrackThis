@@ -113,9 +113,8 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         val dayOfWeek = currentDate.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
         return dayOfWeek
     }
-    fun updatePointsDataList(index: Int, value: Long) {
-        var updatedList = _chartUiState.value.defaultPointsData.toMutableList()
-        updatedList = pointsData
+    private fun updatePointsDataList(index: Int, value: Long) {
+        val updatedList: MutableList<Double> = pointsData
         updatedList[index] = value.toDouble()
         _chartUiState.update { currentState ->
             currentState.copy(defaultPointsData = updatedList)
