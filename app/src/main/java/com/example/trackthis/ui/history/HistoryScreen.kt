@@ -32,7 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.trackthis.R
-import com.example.trackthis.data.database.TrackedTopic
+import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.ui.insert_track.TrackEntryViewModel
 import kotlinx.coroutines.launch
 

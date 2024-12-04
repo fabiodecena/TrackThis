@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.trackthis.TrackApplication
-import com.example.trackthis.data.database.TrackedTopic
-import com.example.trackthis.data.database.TrackedTopicDao
+import com.example.trackthis.data.database.tracked_topic.TrackedTopic
+import com.example.trackthis.data.database.tracked_topic.TrackedTopicDao
 import kotlinx.coroutines.flow.Flow
 
 

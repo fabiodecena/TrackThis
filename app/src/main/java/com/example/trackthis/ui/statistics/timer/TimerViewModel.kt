@@ -13,7 +13,7 @@ import com.example.trackthis.TrackApplication
 import com.example.trackthis.ui.statistics.charts.ChartUiState
 import com.example.trackthis.ui.statistics.charts.pointsData
 import com.example.trackthis.data.NavigationItem
-import com.example.trackthis.data.database.TrackedTopicDao
+import com.example.trackthis.data.database.tracked_topic.TrackedTopicDao
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,7 +1,7 @@
 package com.example.trackthis
 
 import android.app.Application
-import com.example.trackthis.data.database.HistoryDatabase
+import com.example.trackthis.data.database.tracked_topic.HistoryDatabase
 
 
 class TrackApplication : Application() {

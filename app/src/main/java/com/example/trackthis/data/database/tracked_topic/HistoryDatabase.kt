@@ -1,4 +1,4 @@
-package com.example.trackthis.data.database
+package com.example.trackthis.data.database.tracked_topic
 
 import android.content.Context
 import androidx.room.Database

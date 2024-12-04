@@ -1,4 +1,4 @@
-package com.example.trackthis.data.database
+package com.example.trackthis.data.database.tracked_topic
 
 import androidx.room.Dao
 import androidx.room.Delete
