@@ -76,29 +76,26 @@ fun StatisticsScreen(
 
     val trackedTopics by trackEntryViewModel.retrieveAllItems().collectAsState(emptyList())
 
+    val firstTopic = trackedTopics.firstOrNull() // Get the first topic
 
-    LazyColumn(modifier = modifier) {
-        items(
-            items = trackedTopics,
-            key = { it.id }
-        ) { topic ->
-            val trackedDailyEffort = dailyEffort.map { topic.dailyEffort }
+    if (firstTopic != null) { // Conditionally render UI for the first topic
+        Column(modifier = modifier) {
             StartedTopic(
-                topicElement = topic,
+                topicElement = firstTopic,
                 onDelete = { chartViewModel.clearList() },
                 data = pointsData,
-                dailyEffort = trackedDailyEffort,
+                dailyEffort = dailyEffort.map { firstTopic.dailyEffort }, // Use firstTopic's dailyEffort
                 navController = navController,
                 timerViewModel = timerViewModel
             )
             BuildTracking(
                 timerViewModel = timerViewModel,
-                topicElement = topic
+                topicElement = firstTopic
             )
             TimerScreen(
                 timerViewModel = timerViewModel,
                 navController = navController,
-                topicId = topic.name
+                topicId = firstTopic.name
             )
         }
     }

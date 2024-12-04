@@ -1,10 +1,8 @@
 package com.example.trackthis.ui.statistics.charts
 
-import com.example.trackthis.data.StartedTopicElement
 
-
-data class ChartUiState (
-    val startedTopicList: List<StartedTopicElement> = emptyList(),
+data class ChartUiState(
+    val startedTopicList: List<Any> = emptyList(),
     val defaultPointsData: List<Double> = emptyList(),
     val dailyEffort: List<Double> = emptyList(),
     val xLabels: List<String> = listOf(

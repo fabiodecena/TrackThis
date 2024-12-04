@@ -2,8 +2,6 @@ package com.example.trackthis.ui.statistics.timer
 
 import android.app.AlertDialog
 import android.content.Context
-import android.util.Log
-import androidx.compose.animation.core.copy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -16,13 +14,11 @@ import com.example.trackthis.ui.statistics.charts.ChartUiState
 import com.example.trackthis.ui.statistics.charts.pointsData
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.database.TrackedTopicDao
-import com.example.trackthis.ui.insert_track.TrackEntryViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
