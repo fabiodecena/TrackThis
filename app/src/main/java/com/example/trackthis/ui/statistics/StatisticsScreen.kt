@@ -2,6 +2,7 @@ package com.example.trackthis.ui.statistics
 
 import android.util.Log
 import androidx.compose.animation.core.EaseInOutCubic
+import androidx.compose.animation.core.copy
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -76,12 +77,21 @@ fun StatisticsScreen(
 
     val firstTopic = trackedTopics.firstOrNull() // Get the first topic
 
+    val updatedPointsData = pointsData.toMutableList().also { list ->
+        val index = firstTopic?.index
+        pointsData.forEachIndexed { it, _ ->
+            if (it == index) {
+                list[index] = firstTopic.timeSpent.toDouble()
+            }
+        }
+    }
+
     if (firstTopic != null) { // Conditionally render UI for the first topic
         Column(modifier = modifier) {
             StartedTopic(
                 topicElement = firstTopic,
                 onDelete = { chartViewModel.clearList() },
-                data = pointsData,
+                data = updatedPointsData,
                 dailyEffort = dailyEffort.map { firstTopic.dailyEffort }, // Use firstTopic's dailyEffort
                 navController = navController,
                 timerViewModel = timerViewModel

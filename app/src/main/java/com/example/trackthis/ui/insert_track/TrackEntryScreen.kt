@@ -187,7 +187,8 @@ fun TrackDetails(
                             finalGoal = finalGoalInput.toInt(),
                             startingDate = startingDateInput,
                             endingDate = endingDateInput,
-                            timeSpent = 0
+                            timeSpent = 0,
+                            index = 0
                         )
                     )
                 }

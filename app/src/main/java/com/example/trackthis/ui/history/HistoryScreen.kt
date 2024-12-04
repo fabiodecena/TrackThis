@@ -77,6 +77,7 @@ fun HistoryElement(
         Text("Final Goal: ${trackedTopic.finalGoal}")
         Text("Starting Date: ${trackedTopic.startingDate}")
         Text("Ending Date: ${trackedTopic.endingDate}")
+        Text("Index: ${trackedTopic.index}")
 
         Button(
             onClick = {

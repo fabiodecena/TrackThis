@@ -42,12 +42,12 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
     val timer = _timer.asStateFlow()
 
     private val _chartUiState = MutableStateFlow(ChartUiState())
-    val chartUiState = _chartUiState.asStateFlow()
+    private val chartUiState = _chartUiState.asStateFlow()
 
     private val _isPaused = MutableStateFlow(false)
     val isPaused = _isPaused.asStateFlow()
 
-    var timerJob: Job? = null
+    private var timerJob: Job? = null
 
     fun startTimer() {
         if (timerJob == null || timerJob?.isCancelled == true)
@@ -68,7 +68,6 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
     fun stopTimer(context: Context, navController: NavController, topicId: Int) {
         val currentDay = saveCurrentDay()
         val index = getIndexForDay(currentDay)
-        val currentValue = timer.value
         timerJob?.cancel()
         _isPaused.value = false
 
@@ -79,7 +78,6 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         builder.setMessage("Are you sure you want to update the data list?")
 
         builder.setPositiveButton("Yes") { dialog, _ ->
-            updatePointsDataList(index, currentValue)
             if (currentDay != saveCurrentDay()) {
                 _timer.value = 0// Reset the timer
             }
@@ -88,8 +86,9 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
             // Save time spent into the corresponding field on Database
             viewModelScope.launch {
                 val topic =  trackedTopicDao.getItemByName(topicId).first()
-                val updatedTopic = topic.copy(timeSpent = timer.value.toInt())
+                val updatedTopic = topic.copy(timeSpent = timer.value.toInt(), index = index)
                 trackedTopicDao.update(updatedTopic)
+                updatePointsDataList(index, updatedTopic.timeSpent.toLong())
             }
 
             navController.navigate(NavigationItem.Statistics.route) {
@@ -107,6 +106,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         val dialog = builder.create()
         dialog.show()
     }
+
 
     private fun saveCurrentDay(): String {
         val currentDate = LocalDate.now(ZoneId.systemDefault())
