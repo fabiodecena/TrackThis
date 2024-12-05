@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 
 //Database class with a singleton Instance object.
 @Database(entities = [TrackedTopic::class], version = 1, exportSchema = false)
+@TypeConverters(DailyTimeSpentConverter::class)
 abstract class HistoryDatabase : RoomDatabase() {
 
     abstract fun trackedTopicDao(): TrackedTopicDao

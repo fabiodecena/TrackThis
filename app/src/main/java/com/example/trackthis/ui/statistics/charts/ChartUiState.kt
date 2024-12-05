@@ -2,7 +2,7 @@ package com.example.trackthis.ui.statistics.charts
 
 
 data class ChartUiState(
-    val defaultPointsData: List<Double> = emptyList(),
+    val defaultPointsData: MutableList<Double> = mutableListOf(),
     val dailyEffort: List<Double> = emptyList(),
     val xLabels: List<String> = listOf(
         "Monday",

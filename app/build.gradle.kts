@@ -69,7 +69,7 @@ dependencies {
     ksp("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
     annotationProcessor("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
     implementation("androidx.compose.material:material-icons-extended-android:1.7.5")
-
+    implementation("com.google.code.gson:gson:2.10.1")
 
 
 

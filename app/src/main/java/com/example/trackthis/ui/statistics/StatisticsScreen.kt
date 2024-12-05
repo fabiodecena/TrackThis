@@ -77,21 +77,24 @@ fun StatisticsScreen(
 
     val firstTopic = trackedTopics.firstOrNull() // Get the first topic
 
-    val updatedPointsData = pointsData.toMutableList().also { list ->
-        val index = firstTopic?.index
-        pointsData.forEachIndexed { it, _ ->
-            if (it == index) {
-                list[index] = firstTopic.timeSpent.toDouble()
+    chartUiState.xLabels.forEachIndexed { index, day ->
+        // Get the timeSpent for the current day
+        val timeSpent = firstTopic?.dailyTimeSpent?.get(day)
+        if (timeSpent != null) {
+            // Only update if the value exists in the map
+            if (index < pointsData.size) {
+                pointsData[index] = timeSpent.toDouble()
             }
         }
     }
 
-    if (firstTopic != null) { // Conditionally render UI for the first topic
+
+    if (firstTopic != null) {
         Column(modifier = modifier) {
             StartedTopic(
                 topicElement = firstTopic,
                 onDelete = { chartViewModel.clearList() },
-                data = updatedPointsData,
+                data = pointsData,
                 dailyEffort = dailyEffort.map { firstTopic.dailyEffort }, // Use firstTopic's dailyEffort
                 navController = navController,
                 timerViewModel = timerViewModel
