@@ -88,7 +88,8 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
                 val topic =  trackedTopicDao.getItemByName(topicId).first()
                 val updatedTopic = topic.copy(timeSpent = timer.value.toInt(), index = index)
                 trackedTopicDao.update(updatedTopic)
-                updatePointsDataList(index, updatedTopic.timeSpent.toLong())
+                updatePointsDataList(updatedTopic.index, updatedTopic.timeSpent.toLong())
+                return@launch
             }
 
             navController.navigate(NavigationItem.Statistics.route) {
