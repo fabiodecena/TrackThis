@@ -72,22 +72,10 @@ fun StatisticsScreen(
     val chartUiState by chartViewModel.chartUiState.collectAsState()
     val pointsData = chartUiState.defaultPointsData
     val dailyEffort = chartUiState.dailyEffort
-
     val trackedTopics by trackEntryViewModel.retrieveAllItems().collectAsState(emptyList())
-
     val firstTopic = trackedTopics.firstOrNull() // Get the first topic
 
-    chartUiState.xLabels.forEachIndexed { index, day ->
-        // Get the timeSpent for the current day
-        val timeSpent = firstTopic?.dailyTimeSpent?.get(day)
-        if (timeSpent != null) {
-            // Only update if the value exists in the map
-            if (index < pointsData.size) {
-                pointsData[index] = timeSpent.toDouble()
-            }
-        }
-    }
-
+    timerViewModel.updatePointsDataList(firstTopic)
 
     if (firstTopic != null) {
         Column(modifier = modifier) {

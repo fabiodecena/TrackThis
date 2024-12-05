@@ -67,7 +67,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
     }
 
     fun stopTimer(context: Context, navController: NavController, topicId: Int) {
-        val currentDay = "Wednesday"
+        val currentDay = saveCurrentDay()
         val index = getIndexForDay(currentDay)
         timerJob?.cancel()
         _isPaused.value = false
@@ -84,14 +84,22 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
 //            }
 
             dialog.dismiss()
-            // Save time spent into the corresponding field on Database
+
             viewModelScope.launch {
-                val topic =  trackedTopicDao.getItemByName(topicId).first()
+                val topic = trackedTopicDao.getItemByName(topicId).first()
                 val updatedDailyTimeSpent = topic.dailyTimeSpent.toMutableMap()
-                updatedDailyTimeSpent[currentDay] = timer.value
-                val updatedTopic = topic.copy(index = index, timeSpent = timer.value.toInt(), dailyTimeSpent = updatedDailyTimeSpent)
+                updatedDailyTimeSpent[currentDay] = timer.value // Store time for current day
+                val updatedTopic = topic.copy(dailyTimeSpent = updatedDailyTimeSpent)
                 trackedTopicDao.update(updatedTopic)
-                updatePointsDataList(updatedTopic.index, updatedTopic.timeSpent.toLong(), topic)
+
+                // Update chart data using accumulated time for all days
+                val updatedPointsDataList = mutableListOf<Double>()
+                chartUiState.value.xLabels.forEach { day ->
+                    updatedPointsDataList.add(updatedDailyTimeSpent[day]?.toDouble() ?: 0.0)
+                }
+                _chartUiState.update { currentState ->
+                    currentState.copy(defaultPointsData = updatedPointsDataList)
+                }
                 return@launch
             }
             navController.navigate(NavigationItem.Statistics.route) {
@@ -109,23 +117,34 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         val dialog = builder.create()
         dialog.show()
     }
-
+fun updatePointsDataList(firstTopic: TrackedTopic?) {
+    chartUiState.value.xLabels.forEachIndexed { index, day ->
+        // Get the timeSpent for the current day
+        val timeSpent = firstTopic?.dailyTimeSpent?.get(day)
+        if (timeSpent != null) {
+            // Only update if the value exists in the map
+            if (index < pointsData.size) {
+                pointsData[index] = timeSpent.toDouble()
+            }
+        }
+    }
+}
 
     private fun saveCurrentDay(): String {
         val currentDate = LocalDate.now(ZoneId.systemDefault())
         val dayOfWeek = currentDate.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
         return dayOfWeek
     }
-    private fun updatePointsDataList(index: Int, value: Long, topic: TrackedTopic) {
-        val updatedList: MutableList<Double> = pointsData
-        updatedList[index] = value.toDouble()
-        chartUiState.value.xLabels.forEachIndexed { it, day ->
-            updatedList[it] = topic.dailyTimeSpent[day]?.toDouble() ?: 0.0
-        }
-        _chartUiState.update { currentState ->
-            currentState.copy(defaultPointsData = updatedList)
-        }
-    }
+//    private fun updatePointsDataList(index: Int, value: Long, topic: TrackedTopic) {
+//        val updatedList: MutableList<Double> = pointsData
+//        updatedList[index] = value.toDouble()
+//        chartUiState.value.xLabels.forEachIndexed { it, day ->
+//            updatedList[it] = topic.dailyTimeSpent[day]?.toDouble() ?: 0.0
+//        }
+//        _chartUiState.update { currentState ->
+//            currentState.copy(defaultPointsData = updatedList)
+//        }
+//    }
 
     private fun getIndexForDay(day: String): Int {
         return chartUiState.value.xLabels.indexOf(day)
