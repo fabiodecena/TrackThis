@@ -23,9 +23,11 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.TextStyle
 import java.util.Locale
+import kotlin.time.Duration
 
 
 class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel() {
@@ -152,6 +154,8 @@ fun updatePointsDataList(firstTopic: TrackedTopic?) {
         _timer.value = 0L
         _isPaused.value = false
     }
+
+
 
     fun resetData() {
         val updatedList: MutableList<Double> = pointsData

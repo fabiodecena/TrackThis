@@ -2,7 +2,6 @@ package com.example.trackthis.ui.statistics
 
 import android.util.Log
 import androidx.compose.animation.core.EaseInOutCubic
-import androidx.compose.animation.core.copy
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -47,7 +46,6 @@ import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.ui.insert_track.TrackEntryViewModel
 import com.example.trackthis.ui.statistics.charts.ChartViewModel
-import com.example.trackthis.ui.statistics.charts.pointsData
 import com.example.trackthis.ui.statistics.timer.TimerScreen
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
 import ir.ehsannarmani.compose_charts.LineChart
@@ -358,3 +356,6 @@ fun BuildTracking(
         }
     }
 }
+
+
+
