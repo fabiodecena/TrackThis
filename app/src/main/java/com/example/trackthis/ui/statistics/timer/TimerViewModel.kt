@@ -43,7 +43,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
     val timer = _timer.asStateFlow()
 
     private val _chartUiState = MutableStateFlow(ChartUiState())
-    private val chartUiState = _chartUiState.asStateFlow()
+    val chartUiState = _chartUiState.asStateFlow()
 
     private val _isPaused = MutableStateFlow(false)
     val isPaused = _isPaused.asStateFlow()
@@ -67,8 +67,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
     }
 
     fun stopTimer(context: Context, navController: NavController, topicId: Int) {
-        val currentDay = saveCurrentDay()
-        val index = getIndexForDay(currentDay)
+        val currentDay = "Friday"
         timerJob?.cancel()
         _isPaused.value = false
 
@@ -79,9 +78,6 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         builder.setMessage("Are you sure you want to update the data list?")
 
         builder.setPositiveButton("Yes") { dialog, _ ->
-//            if (currentDay != saveCurrentDay()) {
-//                _timer.value = 0// Reset the timer
-//            }
 
             dialog.dismiss()
 
@@ -145,10 +141,6 @@ fun updatePointsDataList(firstTopic: TrackedTopic?) {
 //            currentState.copy(defaultPointsData = updatedList)
 //        }
 //    }
-
-    private fun getIndexForDay(day: String): Int {
-        return chartUiState.value.xLabels.indexOf(day)
-    }
 
     override fun onCleared() {
         super.onCleared()
