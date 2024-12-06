@@ -4,6 +4,7 @@ plugins {
     id("com.android.application")
     id("com.google.devtools.ksp") version "1.9.0-1.0.13"
     id("org.jetbrains.kotlin.android")
+    kotlin("plugin.serialization") version "2.1.0"
 }
 
 android {
@@ -70,6 +71,8 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
     implementation("androidx.compose.material:material-icons-extended-android:1.7.5")
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 
 
 

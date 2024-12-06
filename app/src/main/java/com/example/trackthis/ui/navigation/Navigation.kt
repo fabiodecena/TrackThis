@@ -2,6 +2,7 @@ package com.example.trackthis.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -11,9 +12,11 @@ import androidx.navigation.navArgument
 import com.example.trackthis.ui.insert_track.TrackDetails
 import com.example.trackthis.ui.statistics.charts.ChartViewModel
 import com.example.trackthis.data.NavigationItem
+import com.example.trackthis.data.TopicListRepository
 import com.example.trackthis.data.listOfVisualizedTopics
 import com.example.trackthis.ui.history.HistoryScreen
 import com.example.trackthis.ui.home.HomeScreen
+import com.example.trackthis.ui.home.HomeScreenViewModel
 import com.example.trackthis.ui.insert_track.TrackEntryViewModel
 import com.example.trackthis.ui.profile.ProfileScreen
 import com.example.trackthis.ui.settings.ActiveTrackScreen
@@ -72,16 +75,18 @@ fun Navigation(
 
 @Composable
 fun NavigationSelectionScreen(navController: NavHostController, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val viewModel = viewModel { HomeScreenViewModel(TopicListRepository(context)) }
     NavHost(
         modifier = modifier,
         navController = navController,
         startDestination = NavigationItem.ActiveTrackSelection.route
     ){
         composable(NavigationItem.ActiveTrackSelection.route) {
-            ActiveTrackScreen()
+            ActiveTrackScreen(viewModel)
         }
         composable(NavigationItem.InactiveTrackSelection.route) {
-            InactiveTrackScreen()
+            InactiveTrackScreen(viewModel)
         }
     }
 }

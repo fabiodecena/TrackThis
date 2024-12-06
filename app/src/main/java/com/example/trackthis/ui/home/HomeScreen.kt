@@ -48,7 +48,7 @@ import com.example.trackthis.data.Topic
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    homeScreenViewModel: HomeScreenViewModel = viewModel(),
+    homeScreenViewModel: HomeScreenViewModel = viewModel( factory = HomeScreenViewModel.factory),
     navController: NavController
 ) {
     val appUiState by homeScreenViewModel.homeScreenUiState.collectAsState()

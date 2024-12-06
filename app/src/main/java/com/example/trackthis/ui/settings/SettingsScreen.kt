@@ -19,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +38,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.trackthis.data.TopicListElement
 import com.example.trackthis.data.listOfVisualizedTopicListItem
 import com.example.trackthis.data.trackNavigationItems
+import com.example.trackthis.ui.home.HomeScreenViewModel
 import com.example.trackthis.ui.navigation.NavigationSelectionScreen
 
 @Composable
@@ -87,31 +89,39 @@ fun TopRowSelectionScreen(modifier: Modifier = Modifier, navController: NavContr
 }
 
 @Composable
-fun ActiveTrackScreen() {
+fun ActiveTrackScreen(viewModel: HomeScreenViewModel) {
+    val topics by viewModel.topics.collectAsState()
+
     LazyColumn(modifier = Modifier) {
-        items(listOfVisualizedTopicListItem.filter { it.selected }) { topic ->
-            TopicListItem(topic)
+        items(topics.filter { it.selected }) { topic ->
+            TopicListItem(topic) {
+                viewModel.onTopicSelected(it)
+            }
         }
     }
 }
 
 @Composable
-fun InactiveTrackScreen() {
+fun InactiveTrackScreen(viewModel: HomeScreenViewModel) {
+    val topics by viewModel.topics.collectAsState()
+
     LazyColumn(modifier = Modifier) {
-        items(listOfVisualizedTopicListItem.filter { !it.selected }) { topic ->
-            TopicListItem(topic)
+        items(topics.filter { !it.selected }) { topic ->
+            TopicListItem(topic) {
+                viewModel.onTopicSelected(it)
+            }
         }
     }
 }
 
+
 @Composable
-fun TopicListItem(topicListItem: TopicListElement) {
-    var checked by remember { mutableStateOf(topicListItem.selected) }
+fun TopicListItem(topicListItem: TopicListElement, onClick: (TopicListElement) -> Unit) {
+    val checked by remember { mutableStateOf(topicListItem.selected) }
     Surface(
         color = MaterialTheme.colorScheme.surface,
         onClick = {
-            topicListItem.selected = !topicListItem.selected
-            checked = topicListItem.selected
+            onClick(topicListItem)
         }
     ) {
         Card(
