@@ -73,7 +73,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
     }
 
     fun stopTimer(context: Context, navController: NavController, topicId: Int) {
-        val currentDay = "Thursday"
+        val currentDay = saveCurrentDay()
         timerJob?.cancel()
         _isPaused.value = false
 
