@@ -43,7 +43,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.trackthis.R
 import com.example.trackthis.data.NavigationItem
-import com.example.trackthis.data.Topic
+import com.example.trackthis.data.TopicListElement
 
 @Composable
 fun HomeScreen(
@@ -51,7 +51,7 @@ fun HomeScreen(
     homeScreenViewModel: HomeScreenViewModel = viewModel( factory = HomeScreenViewModel.factory),
     navController: NavController
 ) {
-    val appUiState by homeScreenViewModel.homeScreenUiState.collectAsState()
+    val topics by homeScreenViewModel.topics.collectAsState() // Observe topics dynamically
 
     LazyVerticalGrid(
         modifier = modifier,
@@ -60,12 +60,12 @@ fun HomeScreen(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)),
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
     ) {
-        items(homeScreenViewModel.updateTopicList()) { it ->
+        items(homeScreenViewModel.updateTopicList()) { topic -> // Use the dynamic list here
             TopicCard(
                 navController = navController,
-                topic = it,
-                homeScreenUiState = appUiState,
-                onCardButtonClick = { homeScreenViewModel.toggleExpanded(it) },
+                topic = topic,
+                homeScreenUiState = homeScreenViewModel.homeScreenUiState.collectAsState().value,
+                onCardButtonClick = { homeScreenViewModel.toggleExpanded(topic.name) },
             )
         }
     }
@@ -73,7 +73,7 @@ fun HomeScreen(
 
 @Composable
 fun TopicCard(
-    topic: Topic,
+    topic: TopicListElement,
     homeScreenUiState: HomeScreenUiState,
     onCardButtonClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -161,7 +161,7 @@ fun TopicCard(
 
 @Composable
 fun TopicCardButton(
-    topic: Topic,
+    topic: TopicListElement,
     expanded: Boolean,
     onButtonClick: (Int) -> Unit,
     modifier: Modifier = Modifier

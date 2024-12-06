@@ -7,11 +7,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.trackthis.TrackApplication
-import com.example.trackthis.data.Topic
 import com.example.trackthis.data.TopicListElement
 import com.example.trackthis.data.TopicListRepository
 import com.example.trackthis.data.listOfVisualizedTopicListItem
-import com.example.trackthis.data.listOfVisualizedTopics
 import com.example.trackthis.visualizeTopics
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,19 +20,16 @@ import kotlinx.coroutines.launch
 class HomeScreenViewModel(private val topicListRepository: TopicListRepository) : ViewModel() {
     private val _homeScreenUiState = MutableStateFlow(HomeScreenUiState())
     val homeScreenUiState: StateFlow<HomeScreenUiState> = _homeScreenUiState.asStateFlow()
-    private val visualizedTopics = visualizeTopics(
-        listOfVisualizedTopic = listOfVisualizedTopics,
-        listOfVisualizedTopicListItem = listOfVisualizedTopicListItem
-    )
+
     private val _topics = MutableStateFlow<List<TopicListElement>>(emptyList())
     val topics: StateFlow<List<TopicListElement>> = _topics
 
     init {
-        // Observe saved topics and update the list
+        // Observe selected topics from repository
         viewModelScope.launch {
-            topicListRepository.selectedTopics.collect { savedSelectedTopics ->
+            topicListRepository.selectedTopics.collect { selectedTopicNames ->
                 val updatedList = listOfVisualizedTopicListItem.map { topic ->
-                    topic.copy(selected = savedSelectedTopics.contains(topic.name.toString()))
+                    topic.copy(selected = selectedTopicNames.contains(topic.name.toString()))
                 }
                 _topics.value = updatedList
             }
@@ -57,9 +52,9 @@ class HomeScreenViewModel(private val topicListRepository: TopicListRepository) 
         }
     }
 
-    fun updateTopicList(): List<Topic> {
-        _homeScreenUiState.value = HomeScreenUiState(topicList = visualizedTopics)
-        return _homeScreenUiState.value.topicList
+    fun updateTopicList(): List<TopicListElement> {
+        // Ensure active topics are reflected dynamically
+        return _topics.value.filter { it.selected }
     }
     fun toggleExpanded(topicName: Int) {
         _homeScreenUiState.update { currentUiState ->

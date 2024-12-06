@@ -25,15 +25,14 @@ class MainActivity : ComponentActivity() {
     }
 }
 fun visualizeTopics(
-    listOfVisualizedTopic: List<Topic>,
     listOfVisualizedTopicListItem: List<TopicListElement>
-): List<Topic> {
+): List<TopicListElement> {
     // Create a map of visualized topics by name
     val visualizedTopicsListItemsMap = listOfVisualizedTopicListItem.associateBy { it.name }
 
     // Filter the list of visualized topic list items to only include those with matching names
-    val matchingVisualizedTopic = listOfVisualizedTopic.filter {
-        visualizedTopicsListItemsMap.containsKey(it.name)
+    val matchingVisualizedTopic = listOfVisualizedTopicListItem.filter {
+
         visualizedTopicsListItemsMap[it.name]?.selected ?: true
     }
     return matchingVisualizedTopic
