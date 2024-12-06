@@ -86,7 +86,7 @@ fun StatisticsScreen(
         Column(modifier = modifier) {
             StartedTopic(
                 topicElement = firstTopic,
-                onDelete = { chartViewModel.clearList() },
+                onDelete = { timerViewModel.resetData() },
                 data = pointsData,
                 dailyEffort = dailyEffort.map { firstTopic.dailyEffort }, // Use firstTopic's dailyEffort
                 navController = navController,
@@ -254,31 +254,31 @@ fun StartedTopic(
                         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
                     ) {
                         CircleWithLetter(
-                            "M", index = 0,
+                            "M", currentDay = "Monday",
                             topicElement = topicElement
                         )
                         CircleWithLetter(
-                            "T", index = 1,
+                            "T", currentDay = "Tuesday",
                             topicElement = topicElement
                         )
                         CircleWithLetter(
-                            "W", index = 2,
+                            "W", currentDay = "Wednesday",
                             topicElement = topicElement
                         )
                         CircleWithLetter(
-                            "T", index = 3,
+                            "T", currentDay = "Thursday",
                             topicElement = topicElement
                         )
                         CircleWithLetter(
-                            "F", index = 4,
+                            "F", currentDay = "Friday",
                             topicElement = topicElement
                         )
                         CircleWithLetter(
-                            "S", index = 5,
+                            "S", currentDay = "Saturday",
                             topicElement = topicElement
                         )
                         CircleWithLetter(
-                            "S", index = 6,
+                            "S", currentDay = "Sunday",
                             topicElement = topicElement
                         )
                     }
@@ -290,8 +290,8 @@ fun StartedTopic(
 
 
 @Composable
-fun CircleWithLetter(letter: String, index: Int, topicElement: TrackedTopic) {
-    val isOnYAxis = topicElement.index == index && topicElement.index > 0
+fun CircleWithLetter(letter: String, currentDay: String, topicElement: TrackedTopic) {
+    val isOnYAxis = topicElement.dailyTimeSpent[currentDay]?.let { it > 0 } ?: false
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier

@@ -59,7 +59,7 @@ fun Navigation(
             )
         }
         composable(NavigationItem.Build.route) {
-            HistoryScreen(trackEntryViewModel = trackEntryViewModel)
+            HistoryScreen(trackEntryViewModel = trackEntryViewModel, timerViewModel = timerViewModel)
         }
         composable(NavigationItem.Settings.route) {
             SettingsScreen()

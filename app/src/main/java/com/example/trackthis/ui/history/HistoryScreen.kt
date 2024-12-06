@@ -34,13 +34,15 @@ import androidx.compose.ui.unit.dp
 import com.example.trackthis.R
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.ui.insert_track.TrackEntryViewModel
+import com.example.trackthis.ui.statistics.timer.TimerViewModel
 import kotlinx.coroutines.launch
 
 
 @Composable
 fun HistoryScreen(
     modifier: Modifier = Modifier,
-    trackEntryViewModel: TrackEntryViewModel
+    trackEntryViewModel: TrackEntryViewModel,
+    timerViewModel: TimerViewModel
 ) {
     val trackedTopics by trackEntryViewModel.retrieveAllItems().collectAsState(emptyList())
 
@@ -54,7 +56,11 @@ fun HistoryScreen(
            items = trackedTopics,
            key = { trackedTopic -> trackedTopic.id }
        ) { trackedTopic ->
-           HistoryElement(trackedTopic = trackedTopic, trackEntryViewModel = trackEntryViewModel)
+           HistoryElement(
+               trackedTopic = trackedTopic,
+               trackEntryViewModel = trackEntryViewModel,
+               timerViewModel = timerViewModel
+           )
        }
     }
 }
@@ -63,7 +69,8 @@ fun HistoryScreen(
 fun HistoryElement(
     modifier: Modifier = Modifier,
     trackedTopic: TrackedTopic,
-    trackEntryViewModel: TrackEntryViewModel
+    trackEntryViewModel: TrackEntryViewModel,
+    timerViewModel: TimerViewModel
 ) {
     val coroutineScope = rememberCoroutineScope()
     Card(
@@ -82,6 +89,7 @@ fun HistoryElement(
 
         Button(
             onClick = {
+                timerViewModel.resetData()
                 coroutineScope.launch {
                 trackEntryViewModel.deleteItem(trackedTopic)
                 }
