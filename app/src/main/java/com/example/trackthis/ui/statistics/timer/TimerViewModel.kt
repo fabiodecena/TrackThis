@@ -10,11 +10,11 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavController
 import com.example.trackthis.TrackApplication
-import com.example.trackthis.ui.statistics.charts.ChartUiState
-import com.example.trackthis.ui.statistics.charts.pointsData
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.data.database.tracked_topic.TrackedTopicDao
+import com.example.trackthis.ui.statistics.charts.ChartUiState
+import com.example.trackthis.ui.statistics.charts.pointsData
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,11 +23,9 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.TextStyle
 import java.util.Locale
-import kotlin.time.Duration
 
 
 class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel() {
@@ -87,7 +85,8 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
                 val topic = trackedTopicDao.getItemByName(topicId).first()
                 val updatedDailyTimeSpent = topic.dailyTimeSpent.toMutableMap()
                 updatedDailyTimeSpent[currentDay] = timer.value // Store time for current day
-                val updatedTopic = topic.copy(dailyTimeSpent = updatedDailyTimeSpent)
+                val totalEffort = updatedDailyTimeSpent.values.sum()// Update total time spent
+                val updatedTopic = topic.copy(dailyTimeSpent = updatedDailyTimeSpent, timeSpent = totalEffort.toInt())
                 trackedTopicDao.update(updatedTopic)
 
                 // Update chart data using accumulated time for all days
@@ -115,18 +114,16 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         val dialog = builder.create()
         dialog.show()
     }
-fun updatePointsDataList(firstTopic: TrackedTopic?) {
-    chartUiState.value.xLabels.forEachIndexed { index, day ->
-        // Get the timeSpent for the current day
-        val timeSpent = firstTopic?.dailyTimeSpent?.get(day)
-        if (timeSpent != null) {
-            // Only update if the value exists in the map
-            if (index < pointsData.size) {
-                pointsData[index] = timeSpent.toDouble()
+    fun updatePointsDataList(firstTopic: TrackedTopic?) {
+        chartUiState.value.xLabels.forEachIndexed { index, day -> // Get the timeSpent for the current day
+            val timeSpent = firstTopic?.dailyTimeSpent?.get(day)
+            if (timeSpent != null) { // Only update if the value exists in the map
+                if (index < pointsData.size) {
+                    pointsData[index] = timeSpent.toDouble()
+                }
             }
         }
     }
-}
 
     private fun saveCurrentDay(): String {
         val currentDate = LocalDate.now(ZoneId.systemDefault())
@@ -155,8 +152,6 @@ fun updatePointsDataList(firstTopic: TrackedTopic?) {
         _isPaused.value = false
     }
 
-
-
     fun resetData() {
         val updatedList: MutableList<Double> = pointsData
         updatedList.indices.forEach { index ->
@@ -167,6 +162,7 @@ fun updatePointsDataList(firstTopic: TrackedTopic?) {
         }
     }
 }
+
 fun Long.formatTime(): String {
     val hours = this / 3600
     val minutes = (this % 3600) / 60

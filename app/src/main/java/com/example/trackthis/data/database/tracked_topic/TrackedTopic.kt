@@ -25,7 +25,7 @@ data class TrackedTopic(
     @ColumnInfo(name = "ending_date")
     val endingDate: String,
     @ColumnInfo(name = "time_spent")
-    val timeSpent: Int, // Change to  LONG // TODO: check if this works
+    val timeSpent: Int,
     @ColumnInfo(name = "index")
     val index: Int,
     @ColumnInfo(name = "daily_time_spent")
