@@ -43,7 +43,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
     val timer = _timer.asStateFlow()
 
     private val _chartUiState = MutableStateFlow(ChartUiState())
-    val chartUiState = _chartUiState.asStateFlow()
+    private val chartUiState = _chartUiState.asStateFlow()
 
     private val _isPaused = MutableStateFlow(false)
     val isPaused = _isPaused.asStateFlow()
@@ -59,6 +59,12 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
                 _timer.value++
             }
         }
+    }
+
+    fun initializeTimer(topic: TrackedTopic?) {
+        val currentDay = saveCurrentDay()
+        val savedTime = topic?.dailyTimeSpent?.get(currentDay) ?: 0L
+        _timer.value = savedTime
     }
 
     fun pauseTimer() {

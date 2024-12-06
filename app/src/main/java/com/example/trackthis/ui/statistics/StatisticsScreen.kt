@@ -25,6 +25,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -74,6 +75,12 @@ fun StatisticsScreen(
     val firstTopic = trackedTopics.firstOrNull() // Get the first topic
 
     timerViewModel.updatePointsDataList(firstTopic)
+
+    LaunchedEffect(firstTopic) {
+        if (firstTopic != null) {
+            timerViewModel.initializeTimer(firstTopic)
+        }
+    }
 
     if (firstTopic != null) {
         Column(modifier = modifier) {
