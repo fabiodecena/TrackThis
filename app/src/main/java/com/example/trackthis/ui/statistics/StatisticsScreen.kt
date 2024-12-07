@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.animation.core.EaseInOutCubic
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
@@ -77,13 +80,16 @@ fun StatisticsScreen(
     timerViewModel.updatePointsDataList(firstTopic)
 
     LaunchedEffect(firstTopic) {
-        if (firstTopic != null) {
+        if (firstTopic != null && timerViewModel.timer.value == 0L) {
             timerViewModel.initializeTimer(firstTopic)
         }
     }
 
     if (firstTopic != null) {
-        Column(modifier = modifier) {
+        Column(
+            modifier = modifier
+                .verticalScroll(rememberScrollState())
+        ) {
             StartedTopic(
                 topicElement = firstTopic,
                 onDelete = { timerViewModel.resetData() },

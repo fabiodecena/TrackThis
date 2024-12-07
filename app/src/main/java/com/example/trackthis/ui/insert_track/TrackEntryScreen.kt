@@ -179,6 +179,7 @@ fun TrackDetails(
         )
         Button(
             onClick = {
+                timerViewModel.resetTimer()
                 timerViewModel.resetData()
                 coroutineScope.launch {
                     trackEntryViewModel.addNewItem(
