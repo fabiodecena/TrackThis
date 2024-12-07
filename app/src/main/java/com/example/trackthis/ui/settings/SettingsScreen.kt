@@ -93,7 +93,7 @@ fun ActiveTrackScreen(viewModel: HomeScreenViewModel) {
     val topics by viewModel.topics.collectAsState()
 
     LazyColumn(modifier = Modifier) {
-        items(topics.filter { it.selected }) { topic ->
+        items(topics.filter { !it.selected }) { topic ->
             TopicListItem(topic) {
                 viewModel.onTopicSelected(it)
             }
@@ -106,7 +106,7 @@ fun InactiveTrackScreen(viewModel: HomeScreenViewModel) {
     val topics by viewModel.topics.collectAsState()
 
     LazyColumn(modifier = Modifier) {
-        items(topics.filter { !it.selected }) { topic ->
+        items(topics.filter { it.selected }) { topic ->
             TopicListItem(topic) {
                 viewModel.onTopicSelected(it)
             }
@@ -128,13 +128,13 @@ fun TopicListItem(topicListItem: TopicListElement, onClick: (TopicListElement) -
             modifier = Modifier
                 .fillMaxWidth()
                 .height(40.dp),
-            colors = if(checked) CardDefaults.cardColors(MaterialTheme.colorScheme.secondaryContainer)
-            else CardDefaults.cardColors(MaterialTheme.colorScheme.onTertiary)
+            colors = if(checked) CardDefaults.cardColors(MaterialTheme.colorScheme.onTertiary)
+            else CardDefaults.cardColors(MaterialTheme.colorScheme.secondaryContainer)
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
@@ -147,11 +147,8 @@ fun TopicListItem(topicListItem: TopicListElement, onClick: (TopicListElement) -
                 Text(
                     text = LocalContext.current.getString(topicListItem.name),
                     style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center
-                )
-                Checkbox(
-                    checked = checked,
-                    onCheckedChange = null
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(1f)
                 )
             }
         }

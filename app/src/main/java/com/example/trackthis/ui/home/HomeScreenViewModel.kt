@@ -1,5 +1,6 @@
 package com.example.trackthis.ui.home
 
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -10,7 +11,6 @@ import com.example.trackthis.TrackApplication
 import com.example.trackthis.data.TopicListElement
 import com.example.trackthis.data.TopicListRepository
 import com.example.trackthis.data.listOfVisualizedTopicListItem
-import com.example.trackthis.visualizeTopics
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,8 +21,8 @@ class HomeScreenViewModel(private val topicListRepository: TopicListRepository) 
     private val _homeScreenUiState = MutableStateFlow(HomeScreenUiState())
     val homeScreenUiState: StateFlow<HomeScreenUiState> = _homeScreenUiState.asStateFlow()
 
-    private val _topics = MutableStateFlow<List<TopicListElement>>(emptyList())
-    val topics: StateFlow<List<TopicListElement>> = _topics
+    private val _topics = MutableStateFlow(HomeScreenUiState().topicList.toMutableList())
+    val topics: StateFlow<List<TopicListElement>> = _topics.asStateFlow()
 
     init {
         // Observe selected topics from repository
@@ -31,7 +31,7 @@ class HomeScreenViewModel(private val topicListRepository: TopicListRepository) 
                 val updatedList = listOfVisualizedTopicListItem.map { topic ->
                     topic.copy(selected = selectedTopicNames.contains(topic.name.toString()))
                 }
-                _topics.value = updatedList
+                _topics.value = updatedList.toMutableList()
             }
         }
     }
@@ -54,7 +54,7 @@ class HomeScreenViewModel(private val topicListRepository: TopicListRepository) 
 
     fun updateTopicList(): List<TopicListElement> {
         // Ensure active topics are reflected dynamically
-        return _topics.value.filter { it.selected }
+        return _topics.value.filter { !it.selected }
     }
     fun toggleExpanded(topicName: Int) {
         _homeScreenUiState.update { currentUiState ->
