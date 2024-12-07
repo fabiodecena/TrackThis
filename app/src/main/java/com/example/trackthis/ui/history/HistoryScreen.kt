@@ -89,7 +89,8 @@ fun HistoryElement(
 
         Button(
             onClick = {
-                timerViewModel.resetData()
+                timerViewModel.pauseTimer()
+                timerViewModel.initializeTimer(trackedTopic)
                 coroutineScope.launch {
                 trackEntryViewModel.deleteItem(trackedTopic)
                 }

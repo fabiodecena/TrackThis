@@ -103,6 +103,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
                 _chartUiState.update { currentState ->
                     currentState.copy(defaultPointsData = updatedPointsDataList)
                 }
+                resetTimer()
                 return@launch
             }
             navController.navigate(NavigationItem.Statistics.route) {
