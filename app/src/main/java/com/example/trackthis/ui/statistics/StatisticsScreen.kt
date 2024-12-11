@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.animation.core.EaseInOutCubic
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,6 +47,7 @@ import androidx.navigation.NavController
 import com.example.trackthis.R
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
+import com.example.trackthis.data.listOfVisualizedTopics
 import com.example.trackthis.ui.insert_track.TrackEntryViewModel
 import com.example.trackthis.ui.statistics.charts.ChartViewModel
 import com.example.trackthis.ui.statistics.timer.TimerScreen
@@ -75,7 +75,10 @@ fun StatisticsScreen(
     val pointsData = chartUiState.defaultPointsData
     val dailyEffort = chartUiState.dailyEffort
     val trackedTopics by trackEntryViewModel.retrieveAllItems().collectAsState(emptyList())
-    val firstTopic = trackedTopics.firstOrNull() // Get the first topic
+    // Find the first topic matching the visualized topics by name
+    val firstTopic = trackedTopics.firstOrNull { trackedTopic ->
+        listOfVisualizedTopics.any { visualizedTopic -> visualizedTopic.name == trackedTopic.name }
+    }
 
     timerViewModel.updatePointsDataList(firstTopic)
 
