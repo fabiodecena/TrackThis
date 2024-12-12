@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.animation.core.EaseInOutCubic
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -244,7 +245,7 @@ fun StartedTopic(
                 modifier = Modifier
                     .padding(dimensionResource(R.dimen.padding_medium))
                     .height(70.dp)
-                    .width(350.dp),
+                    .fillMaxWidth(),
                 shape = MaterialTheme.shapes.large,
                 colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
             ) {
@@ -252,6 +253,7 @@ fun StartedTopic(
                     modifier = Modifier
                         .fillMaxSize()
                         .wrapContentSize(Alignment.Center)
+                        .horizontalScroll(rememberScrollState())
                 ){
                     Row(
                         verticalAlignment = Alignment.CenterVertically,

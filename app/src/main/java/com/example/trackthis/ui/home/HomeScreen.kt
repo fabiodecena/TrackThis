@@ -45,12 +45,14 @@ import androidx.navigation.NavController
 import com.example.trackthis.R
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.TopicListElement
+import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     homeScreenViewModel: HomeScreenViewModel = viewModel( factory = HomeScreenViewModel.factory),
-    navController: NavController
+    navController: NavController,
+    trackedTopics: List<TrackedTopic>
 ) {
     val topics by homeScreenViewModel.topics.collectAsState() // Observe topics dynamically
 
@@ -71,6 +73,7 @@ fun HomeScreen(
                 topic = topic,
                 homeScreenUiState = homeScreenViewModel.homeScreenUiState.collectAsState().value,
                 onCardButtonClick = { homeScreenViewModel.toggleExpanded(topic.name) },
+                trackedTopics = trackedTopics,
             )
         }
     }
@@ -82,9 +85,11 @@ fun TopicCard(
     homeScreenUiState: HomeScreenUiState,
     onCardButtonClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
+    trackedTopics: List<TrackedTopic>,
     navController: NavController
 ) {
     val expanded = homeScreenUiState.expandedTopicName == topic.name
+    val enabled = !trackedTopics.any { it.name == topic.name }
 
     Card(
         shape = if (expanded) MaterialTheme.shapes.medium
@@ -130,29 +135,43 @@ fun TopicCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Icon(
-                    tint = MaterialTheme.colorScheme.tertiary,
-                    painter = painterResource(id = R.drawable.play_circle_24dp_fill0_wght400_grad0_opsz24),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(end = dimensionResource(R.dimen.padding_medium))
-                        .clickable {
-                            navController.navigate("${NavigationItem.TrackDetails.route}/${topic.name}") {
-                                navController.graph.startDestinationRoute?.let { route ->
-                                    popUpTo(route) {
-                                        saveState = true
-                                    }
+                IconButton(
+                    onClick = {
+                        navController.navigate("${NavigationItem.TrackDetails.route}/${topic.name}") {
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                    saveState = true
                                 }
-                                launchSingleTop = true
-                                restoreState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
+                    enabled = enabled
+                ) {
+                    Icon(
+                        tint = if (enabled) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onTertiary,
+                        painter = painterResource(id = R.drawable.play_circle_24dp_fill0_wght400_grad0_opsz24),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(end = dimensionResource(R.dimen.padding_medium))
+                    )
+                }
+                Text(
+                    text =
+                    if (enabled) {
+                        buildAnnotatedString {
+                            append("Start to Track your Progress about ")/*TODO change string*/
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                                append(stringResource(id = topic.name))
                             }
                         }
-                )
-                Text(
-                    text = buildAnnotatedString {
-                        append("Start to Track your Progress about ")/*TODO change string*/
-                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append(stringResource(id = topic.name))
+                    } else {
+                        buildAnnotatedString {
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                                append(stringResource(id = topic.name))
+                            }
+                            append(" is already being tracked!!!")/*TODO change string*/
                         }
                     },
                     textAlign = TextAlign.Left,

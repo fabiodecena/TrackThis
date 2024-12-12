@@ -41,7 +41,7 @@ fun Navigation(
         startDestination = NavigationItem.Home.route
     ){
         composable(NavigationItem.Home.route) {
-            HomeScreen(navController = navController)
+            HomeScreen(navController = navController, trackedTopics = trackedTopics)
         }
         composable(
             route = "${NavigationItem.TrackDetails.route}/{topicId}",
@@ -64,14 +64,11 @@ fun Navigation(
                     firstTopic = null
                 )
             }
-
             composable(
                 route = "${NavigationItem.Statistics.route}/{topicId}",
                 arguments = listOf(navArgument("topicId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val topicId = backStackEntry.arguments?.getInt("topicId")
-
-                // Find the first topic matching the visualized topics by name
                 val topic = trackedTopics.find { it.name == topicId }
                 topic?.let {
                     StatisticsScreen(
@@ -81,9 +78,6 @@ fun Navigation(
                     )
                 }
             }
-
-
-
         composable(NavigationItem.Build.route) {
             HistoryScreen(
                 trackEntryViewModel = trackEntryViewModel, timerViewModel = timerViewModel,
