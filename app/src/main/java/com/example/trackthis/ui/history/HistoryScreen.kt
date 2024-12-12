@@ -2,6 +2,7 @@ package com.example.trackthis.ui.history
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -17,7 +18,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -42,9 +42,10 @@ import kotlinx.coroutines.launch
 fun HistoryScreen(
     modifier: Modifier = Modifier,
     trackEntryViewModel: TrackEntryViewModel,
-    timerViewModel: TimerViewModel
+    timerViewModel: TimerViewModel,
+    trackedTopics: List<TrackedTopic>,
+    navigateOnSelectedClick: (Int) -> Unit
 ) {
-    val trackedTopics by trackEntryViewModel.retrieveAllItems().collectAsState(emptyList())
 
     LazyColumn(
         modifier = modifier
@@ -59,7 +60,13 @@ fun HistoryScreen(
            HistoryElement(
                trackedTopic = trackedTopic,
                trackEntryViewModel = trackEntryViewModel,
-               timerViewModel = timerViewModel
+               timerViewModel = timerViewModel,
+               modifier = modifier
+                   .clickable {
+                       timerViewModel.resetTimer()
+                       timerViewModel.resetData()
+                       navigateOnSelectedClick(trackedTopic.name)
+                   }
            )
        }
     }

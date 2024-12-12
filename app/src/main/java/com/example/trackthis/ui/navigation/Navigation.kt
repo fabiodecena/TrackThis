@@ -1,8 +1,6 @@
 package com.example.trackthis.ui.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -87,7 +85,13 @@ fun Navigation(
 
 
         composable(NavigationItem.Build.route) {
-            HistoryScreen(trackEntryViewModel = trackEntryViewModel, timerViewModel = timerViewModel)
+            HistoryScreen(
+                trackEntryViewModel = trackEntryViewModel, timerViewModel = timerViewModel,
+                trackedTopics = trackedTopics,
+                navigateOnSelectedClick = { topicId ->
+                    navController.navigate("${NavigationItem.Statistics.route}/$topicId")
+                }
+            )
         }
         composable(NavigationItem.Settings.route) {
             SettingsScreen()
