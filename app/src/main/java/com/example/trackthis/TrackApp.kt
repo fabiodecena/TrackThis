@@ -24,7 +24,7 @@ fun TrackApp() {
 
     Scaffold(
         topBar = { TopAppBar(navController = navController) },
-        bottomBar = { BottomBar(navController = navController, trackedTopics = trackedTopics) },
+        bottomBar = { BottomBar(navController = navController, trackedTopics = trackedTopics, timerViewModel = timerViewModel) },
         containerColor = MaterialTheme.colorScheme.inverseOnSurface,
     ) { innerPadding ->
         Navigation(

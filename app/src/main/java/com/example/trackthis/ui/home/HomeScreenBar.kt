@@ -22,6 +22,7 @@ import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.bottomBarNavigationItems
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.data.listOfVisualizedTopics
+import com.example.trackthis.ui.statistics.timer.TimerViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -80,7 +81,8 @@ fun TopAppBar(navController: NavController) {
 @Composable
 fun BottomBar(
     navController: NavController,
-    trackedTopics: List<TrackedTopic>
+    trackedTopics: List<TrackedTopic>,
+    timerViewModel: TimerViewModel
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -122,6 +124,9 @@ fun BottomBar(
                                 }
                             }
                         } else {
+                            timerViewModel.resetTimer()
+                            timerViewModel.resetData()
+                            timerViewModel.updatePointsDataList(topic)
                             navController.navigate("${NavigationItem.Statistics.route}/${topic!!.name}")
                         }
                     }

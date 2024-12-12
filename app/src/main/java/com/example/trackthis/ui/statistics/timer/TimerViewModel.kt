@@ -128,6 +128,8 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
                 if (index < pointsData.size) {
                     pointsData[index] = timeSpent.toDouble()
                 }
+            } else {
+                pointsData[index] = 0.0
             }
         }
     }
