@@ -104,12 +104,12 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
                     currentState.copy(defaultPointsData = updatedPointsDataList)
                 }
                 resetTimer()
-                return@launch
-            }
-            navController.navigate("${NavigationItem.Statistics.route}/${topicId}") {
-                navController.graph.startDestinationRoute?.let { route ->
-                    popUpTo(route)
+                navController.navigate("${NavigationItem.Statistics.route}/${updatedTopic.name}") {
+                    navController.graph.startDestinationRoute?.let { route ->
+                        popUpTo(route)
+                    }
                 }
+                return@launch
             }
         }
         builder.setNegativeButton("No") { dialog, _ ->

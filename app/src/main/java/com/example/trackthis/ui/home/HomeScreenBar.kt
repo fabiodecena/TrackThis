@@ -124,14 +124,14 @@ fun BottomBar(
                                 }
                             }
                         } else {
-                            timerViewModel.resetTimer()
-                            timerViewModel.resetData()
-                            timerViewModel.updatePointsDataList(topic)
-                            navController.navigate("${NavigationItem.Statistics.route}/${topic!!.name}")
+                            navController.navigate("${NavigationItem.Statistics.route}/${topic!!.name}"){
+                                navController.graph.startDestinationRoute?.let { route ->
+                                    popUpTo(route) {
+                                    }
+                                }
+                            }
                         }
                     }
-
-
                 }
             )
         }
