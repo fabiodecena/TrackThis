@@ -63,8 +63,7 @@ fun HistoryScreen(
                timerViewModel = timerViewModel,
                modifier = modifier
                    .clickable {
-                       timerViewModel.resetTimer()
-                       timerViewModel.resetData()
+                      timerViewModel.initializeTimer(trackedTopic)
                        navigateOnSelectedClick(trackedTopic.name)
                    }
            )

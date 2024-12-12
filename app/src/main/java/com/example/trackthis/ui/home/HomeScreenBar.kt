@@ -124,6 +124,7 @@ fun BottomBar(
                                 }
                             }
                         } else {
+                            timerViewModel.initializeTimer(topic)
                             navController.navigate("${NavigationItem.Statistics.route}/${topic!!.name}"){
                                 navController.graph.startDestinationRoute?.let { route ->
                                     popUpTo(route) {
