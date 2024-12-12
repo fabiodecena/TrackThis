@@ -20,6 +20,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.trackthis.R
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.bottomBarNavigationItems
+import com.example.trackthis.data.database.tracked_topic.TrackedTopic
+import com.example.trackthis.data.listOfVisualizedTopics
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -76,9 +78,17 @@ fun TopAppBar(navController: NavController) {
 }
 
 @Composable
-fun BottomBar(navController: NavController) {
+fun BottomBar(
+    navController: NavController,
+    trackedTopics: List<TrackedTopic>
+) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    val topic = trackedTopics.firstOrNull {
+        listOfVisualizedTopics.any { topic ->
+            topic.name == it.name
+        }
+    }
 
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.secondary
@@ -95,12 +105,28 @@ fun BottomBar(navController: NavController) {
                     unselectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer
                 ),
                 onClick = {
-                    navController.navigate(item.route) {
-                        navController.graph.startDestinationRoute?.let { route ->
-                            popUpTo(route) {
+
+                    if (item.route == NavigationItem.Home.route || item.route == NavigationItem.Build.route) {
+                        navController.navigate(item.route) {
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                }
                             }
                         }
+                    } else {
+                        if (trackedTopics.isEmpty()) {
+                            navController.navigate(item.route) {
+                                navController.graph.startDestinationRoute?.let { route ->
+                                    popUpTo(route) {
+                                    }
+                                }
+                            }
+                        } else {
+                            navController.navigate("${NavigationItem.Statistics.route}/${topic!!.name}")
+                        }
                     }
+
+
                 }
             )
         }

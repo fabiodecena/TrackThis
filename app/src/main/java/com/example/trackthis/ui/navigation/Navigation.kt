@@ -1,6 +1,8 @@
 package com.example.trackthis.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -13,6 +15,7 @@ import com.example.trackthis.ui.insert_track.TrackDetails
 import com.example.trackthis.ui.statistics.charts.ChartViewModel
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.TopicListRepository
+import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.data.listOfVisualizedTopics
 import com.example.trackthis.ui.history.HistoryScreen
 import com.example.trackthis.ui.home.HomeScreen
@@ -29,11 +32,11 @@ import com.example.trackthis.ui.statistics.timer.TimerViewModel
 fun Navigation(
     navController: NavHostController,
     timerViewModel: TimerViewModel,
+    trackedTopics: List<TrackedTopic>,
     trackEntryViewModel: TrackEntryViewModel = viewModel(factory = TrackEntryViewModel.factory),
     modifier: Modifier = Modifier
 ) {
     val chartViewModel: ChartViewModel = viewModel()
-
     NavHost(
         modifier = modifier,
         navController = navController,
@@ -55,12 +58,34 @@ fun Navigation(
                 )
             }
         }
-        composable(NavigationItem.Statistics.route) {
-            StatisticsScreen(
-                chartViewModel = chartViewModel, timerViewModel = timerViewModel,
-                navController = navController, trackEntryViewModel = trackEntryViewModel
-            )
-        }
+
+            composable(NavigationItem.Statistics.route) {
+                StatisticsScreen(
+                    chartViewModel = chartViewModel, timerViewModel = timerViewModel,
+                    navController = navController,
+                    firstTopic = null
+                )
+            }
+
+            composable(
+                route = "${NavigationItem.Statistics.route}/{topicId}",
+                arguments = listOf(navArgument("topicId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val topicId = backStackEntry.arguments?.getInt("topicId")
+
+                // Find the first topic matching the visualized topics by name
+                val topic = trackedTopics.find { it.name == topicId }
+                topic?.let {
+                    StatisticsScreen(
+                        chartViewModel = chartViewModel, timerViewModel = timerViewModel,
+                        navController = navController,
+                        firstTopic = topic
+                    )
+                }
+            }
+
+
+
         composable(NavigationItem.Build.route) {
             HistoryScreen(trackEntryViewModel = trackEntryViewModel, timerViewModel = timerViewModel)
         }

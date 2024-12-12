@@ -194,7 +194,7 @@ fun TrackDetails(
                         )
                     )
                 }
-                navController.navigate(NavigationItem.Statistics.route) {
+                navController.navigate("${NavigationItem.Statistics.route}/${topic.name}") {
                     navController.graph.startDestinationRoute?.let { route ->
                         popUpTo(route)
                     }

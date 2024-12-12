@@ -106,7 +106,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
                 resetTimer()
                 return@launch
             }
-            navController.navigate(NavigationItem.Statistics.route) {
+            navController.navigate("${NavigationItem.Statistics.route}/${topicId}") {
                 navController.graph.startDestinationRoute?.let { route ->
                     popUpTo(route)
                 }

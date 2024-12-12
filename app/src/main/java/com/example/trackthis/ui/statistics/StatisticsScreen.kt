@@ -47,7 +47,6 @@ import androidx.navigation.NavController
 import com.example.trackthis.R
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
-import com.example.trackthis.data.listOfVisualizedTopics
 import com.example.trackthis.ui.insert_track.TrackEntryViewModel
 import com.example.trackthis.ui.statistics.charts.ChartViewModel
 import com.example.trackthis.ui.statistics.timer.TimerScreen
@@ -68,17 +67,13 @@ fun StatisticsScreen(
     modifier: Modifier = Modifier,
     chartViewModel: ChartViewModel,
     timerViewModel: TimerViewModel,
-    trackEntryViewModel: TrackEntryViewModel,
+    firstTopic: TrackedTopic?,
     navController: NavController
 ) {
     val chartUiState by chartViewModel.chartUiState.collectAsState()
     val pointsData = chartUiState.defaultPointsData
     val dailyEffort = chartUiState.dailyEffort
-    val trackedTopics by trackEntryViewModel.retrieveAllItems().collectAsState(emptyList())
-    // Find the first topic matching the visualized topics by name
-    val firstTopic = trackedTopics.firstOrNull { trackedTopic ->
-        listOfVisualizedTopics.any { visualizedTopic -> visualizedTopic.name == trackedTopic.name }
-    }
+
 
     timerViewModel.updatePointsDataList(firstTopic)
 
