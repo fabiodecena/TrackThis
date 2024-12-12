@@ -27,18 +27,18 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
     suspend fun deleteItem(trackedTopic: TrackedTopic) {
         trackedTopicDao.delete(trackedTopic)
     }
-    /**
-     * Update an existing Item in the database.
-     */
-    suspend fun updateItem(trackedTopic: TrackedTopic) {
-        trackedTopicDao.update(trackedTopic)
-    }
-    /**
-     * Retrieve an item from the repository.
-     */
-    fun retrieveItem(id: Int): Flow<TrackedTopic> {
-        return trackedTopicDao.getItem(id)
-    }
+//    /**
+//     * Update an existing Item in the database.
+//     */
+//    suspend fun updateItem(trackedTopic: TrackedTopic) {
+//        trackedTopicDao.update(trackedTopic)
+//    }
+//    /**
+//     * Retrieve an item from the repository.
+//     */
+////    fun retrieveItem(id: Int): Flow<TrackedTopic> {
+//        return trackedTopicDao.getItem(id)
+//    }
     fun retrieveAllItems(): Flow<List<TrackedTopic>> {
         return trackedTopicDao.getAllItems()
     }

@@ -48,7 +48,6 @@ import androidx.navigation.NavController
 import com.example.trackthis.R
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
-import com.example.trackthis.ui.insert_track.TrackEntryViewModel
 import com.example.trackthis.ui.statistics.charts.ChartViewModel
 import com.example.trackthis.ui.statistics.timer.TimerScreen
 import com.example.trackthis.ui.statistics.timer.TimerViewModel

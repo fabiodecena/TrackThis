@@ -28,11 +28,11 @@ import com.example.trackthis.ui.statistics.timer.TimerViewModel
 
 @Composable
 fun Navigation(
+    modifier: Modifier = Modifier,
     navController: NavHostController,
     timerViewModel: TimerViewModel,
     trackedTopics: List<TrackedTopic>,
-    trackEntryViewModel: TrackEntryViewModel = viewModel(factory = TrackEntryViewModel.factory),
-    modifier: Modifier = Modifier
+    trackEntryViewModel: TrackEntryViewModel = viewModel(factory = TrackEntryViewModel.factory)
 ) {
     val chartViewModel: ChartViewModel = viewModel()
     NavHost(
