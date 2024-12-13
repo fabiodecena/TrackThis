@@ -77,6 +77,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
             }
         }
     }
+
     private suspend fun saveTotalTimeSpent() {
         val trackedTopics = trackedTopicDao.getAllItems().first()
         for (topic in trackedTopics) {
@@ -84,6 +85,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
             trackedTopicDao.update(updatedTopic)
         }
     }
+
     private suspend fun resetDailyTimeSpentForTrackedTopics() {
         val trackedTopics = trackedTopicDao.getAllItems().first()
         for (topic in trackedTopics) {
@@ -95,7 +97,6 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         }
        resetData()
     }
-
 
     fun initializeTimer(topic: TrackedTopic?) {
         if (timerJob == null || timerJob?.isCancelled == true) {
