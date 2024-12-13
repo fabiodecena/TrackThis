@@ -60,6 +60,9 @@ import ir.ehsannarmani.compose_charts.models.LabelProperties
 import ir.ehsannarmani.compose_charts.models.Line
 import ir.ehsannarmani.compose_charts.models.StrokeStyle
 import ir.ehsannarmani.compose_charts.models.ZeroLineProperties
+import kotlinx.coroutines.delay
+import java.time.DayOfWeek
+import java.time.LocalDate
 
 
 @Composable
@@ -80,6 +83,14 @@ fun StatisticsScreen(
     LaunchedEffect(firstTopic) {
         if (firstTopic != null && timerViewModel.timer.value == 0L) {
             timerViewModel.initializeTimer(firstTopic)
+        }
+        while (true) {
+            // Check if it's Monday
+            if (LocalDate.now().dayOfWeek == DayOfWeek.MONDAY) {
+                timerViewModel.resetDailyTimeSpentForTrackedTopics()
+            }
+            // Delay for 24 hours
+            delay(24 * 60 * 60 * 1000)
         }
     }
 

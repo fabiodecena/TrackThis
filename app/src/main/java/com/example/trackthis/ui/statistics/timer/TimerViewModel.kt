@@ -22,10 +22,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.TextStyle
 import java.util.Locale
+
 
 
 class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel() {
@@ -61,11 +63,39 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         }
     }
 
+    init {
+        // Initialize and start a coroutine to check for Monday and reset data
+        viewModelScope.launch {
+            while (true) {
+                // Check if it's Monday
+                if (LocalDate.now().dayOfWeek == DayOfWeek.MONDAY) {
+                    resetDailyTimeSpentForTrackedTopics()
+                }
+                // Delay for 24 hours
+                delay(24 * 60 * 60 * 1000)
+            }
+        }
+    }
+
+    suspend fun resetDailyTimeSpentForTrackedTopics() {
+        val trackedTopics = trackedTopicDao.getAllItems().first()
+        for (topic in trackedTopics) {
+            val updatedDailyTimeSpent = topic.dailyTimeSpent.toMutableMap()
+            updatedDailyTimeSpent.clear()
+            val totalEffort = updatedDailyTimeSpent.values.sum()// Update total time spent
+            val updatedTopic = topic.copy(dailyTimeSpent = updatedDailyTimeSpent, timeSpent = totalEffort.toInt())
+            trackedTopicDao.update(updatedTopic)
+        }
+       resetData()
+    }
+
+
     fun initializeTimer(topic: TrackedTopic?) {
-        if (timerJob == null || timerJob?.isCancelled == true){
-        val currentDay = saveCurrentDay()
-        val savedTime = topic?.dailyTimeSpent?.get(currentDay) ?: 0L
-        _timer.value = savedTime}
+        if (timerJob == null || timerJob?.isCancelled == true) {
+            val currentDay = saveCurrentDay()
+            val savedTime = topic?.dailyTimeSpent?.get(currentDay) ?: 0L
+            _timer.value = savedTime
+        }
     }
 
     fun pauseTimer() {
