@@ -62,9 +62,10 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
     }
 
     fun initializeTimer(topic: TrackedTopic?) {
+        if (timerJob == null || timerJob?.isCancelled == true){
         val currentDay = saveCurrentDay()
         val savedTime = topic?.dailyTimeSpent?.get(currentDay) ?: 0L
-        _timer.value = savedTime
+        _timer.value = savedTime}
     }
 
     fun pauseTimer() {
