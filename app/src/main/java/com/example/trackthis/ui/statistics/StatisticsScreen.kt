@@ -84,14 +84,6 @@ fun StatisticsScreen(
         if (firstTopic != null && timerViewModel.timer.value == 0L) {
             timerViewModel.initializeTimer(firstTopic)
         }
-        while (true) {
-            // Check if it's Monday
-            if (LocalDate.now().dayOfWeek == DayOfWeek.MONDAY) {
-                timerViewModel.resetDailyTimeSpentForTrackedTopics()
-            }
-            // Delay for 24 hours
-            delay(24 * 60 * 60 * 1000)
-        }
     }
 
     if (firstTopic != null) {

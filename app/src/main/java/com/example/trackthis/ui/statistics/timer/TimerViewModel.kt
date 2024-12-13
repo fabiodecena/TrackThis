@@ -69,6 +69,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
             while (true) {
                 // Check if it's Monday
                 if (LocalDate.now().dayOfWeek == DayOfWeek.MONDAY) {
+                    saveTotalTimeSpent()
                     resetDailyTimeSpentForTrackedTopics()
                 }
                 // Delay for 24 hours
@@ -76,14 +77,20 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
             }
         }
     }
-
-    suspend fun resetDailyTimeSpentForTrackedTopics() {
+    private suspend fun saveTotalTimeSpent() {
+        val trackedTopics = trackedTopicDao.getAllItems().first()
+        for (topic in trackedTopics) {
+            val updatedTopic = topic.copy(index = topic.timeSpent)
+            trackedTopicDao.update(updatedTopic)
+        }
+    }
+    private suspend fun resetDailyTimeSpentForTrackedTopics() {
         val trackedTopics = trackedTopicDao.getAllItems().first()
         for (topic in trackedTopics) {
             val updatedDailyTimeSpent = topic.dailyTimeSpent.toMutableMap()
             updatedDailyTimeSpent.clear()
             val totalEffort = updatedDailyTimeSpent.values.sum()// Update total time spent
-            val updatedTopic = topic.copy(dailyTimeSpent = updatedDailyTimeSpent, timeSpent = totalEffort.toInt())
+            val updatedTopic = topic.copy(dailyTimeSpent = updatedDailyTimeSpent, timeSpent = totalEffort.toInt() + topic.index)
             trackedTopicDao.update(updatedTopic)
         }
        resetData()
@@ -122,7 +129,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
                 val topic = trackedTopicDao.getItemByName(topicId).first()
                 val updatedDailyTimeSpent = topic.dailyTimeSpent.toMutableMap()
                 updatedDailyTimeSpent[currentDay] = timer.value // Store time for current day
-                val totalEffort = updatedDailyTimeSpent.values.sum()// Update total time spent
+                val totalEffort = updatedDailyTimeSpent.values.sum() + topic.index // Update total time spent
                 val updatedTopic = topic.copy(dailyTimeSpent = updatedDailyTimeSpent, timeSpent = totalEffort.toInt())
                 trackedTopicDao.update(updatedTopic)
 
