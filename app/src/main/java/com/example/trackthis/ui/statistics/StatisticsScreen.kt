@@ -60,9 +60,7 @@ import ir.ehsannarmani.compose_charts.models.LabelProperties
 import ir.ehsannarmani.compose_charts.models.Line
 import ir.ehsannarmani.compose_charts.models.StrokeStyle
 import ir.ehsannarmani.compose_charts.models.ZeroLineProperties
-import kotlinx.coroutines.delay
-import java.time.DayOfWeek
-import java.time.LocalDate
+
 
 
 @Composable

@@ -9,7 +9,12 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavController
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.trackthis.TrackApplication
+import com.example.trackthis.data.MondayResetWorker
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.data.database.tracked_topic.TrackedTopicDao
@@ -23,20 +28,24 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
+import java.time.Duration
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.TextStyle
+import java.time.temporal.TemporalAdjusters
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 
 
-class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel() {
+class TimerViewModel(private val trackedTopicDao: TrackedTopicDao, application: TrackApplication) : ViewModel() {
 
     companion object {
         val factory : ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = this[APPLICATION_KEY] as TrackApplication
-                TimerViewModel(application.database.trackedTopicDao())
+                TimerViewModel(application.database.trackedTopicDao(), application)
             }
         }
     }
@@ -64,38 +73,35 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
     }
 
     init {
-        // Initialize and start a coroutine to check for Monday and reset data
-        viewModelScope.launch {
-            while (true) {
-                // Check if it's Monday
-                if (LocalDate.now().dayOfWeek == DayOfWeek.MONDAY) {
-                    saveTotalTimeSpent()
-                    resetDailyTimeSpentForTrackedTopics()
-                }
-                // Delay for 24 hours
-                delay(24 * 60 * 60 * 1000)
-            }
-        }
+        scheduleMondayResetWorker(application)
     }
 
-    private suspend fun saveTotalTimeSpent() {
-        val trackedTopics = trackedTopicDao.getAllItems().first()
-        for (topic in trackedTopics) {
-            val updatedTopic = topic.copy(index = topic.timeSpent)
-            trackedTopicDao.update(updatedTopic)
-        }
+    private fun calculateInitialDelayToMondayMidnight(): Long {
+        val now = LocalDateTime.now(ZoneId.systemDefault())
+        val nextMonday = now.with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY))
+            .withHour(0).withMinute(0).withSecond(0).withNano(1)
+
+        val delayDuration = Duration.between(now, nextMonday)
+        return delayDuration.toMillis()
     }
 
-    private suspend fun resetDailyTimeSpentForTrackedTopics() {
-        val trackedTopics = trackedTopicDao.getAllItems().first()
-        for (topic in trackedTopics) {
-            val updatedDailyTimeSpent = topic.dailyTimeSpent.toMutableMap()
-            updatedDailyTimeSpent.clear()
-            val totalEffort = updatedDailyTimeSpent.values.sum()// Update total time spent
-            val updatedTopic = topic.copy(dailyTimeSpent = updatedDailyTimeSpent, timeSpent = totalEffort.toInt() + topic.index)
-            trackedTopicDao.update(updatedTopic)
-        }
-       resetData()
+    private fun scheduleMondayResetWorker(context: Context) {
+        val initialDelay = calculateInitialDelayToMondayMidnight()
+        val workRequest = PeriodicWorkRequestBuilder<MondayResetWorker>(7, TimeUnit.DAYS)
+            .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
+            .setConstraints(
+                Constraints.Builder()
+                    .setRequiresBatteryNotLow(false) // Run even if the battery is low
+                    .setRequiresDeviceIdle(false)  // Run even if the device is idle
+                    .build()
+            )
+            .build()
+
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+            "MondayResetWorker",
+            ExistingPeriodicWorkPolicy.KEEP,
+            workRequest
+        )
     }
 
     fun initializeTimer(topic: TrackedTopic?) {
