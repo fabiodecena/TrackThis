@@ -12,6 +12,7 @@ import androidx.navigation.NavController
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.example.trackthis.TrackApplication
 import com.example.trackthis.data.MondayResetWorker
@@ -72,8 +73,6 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         }
     }
 
-
-
     private fun calculateInitialDelayToMondayMidnight(): Long {
         val now = LocalDateTime.now(ZoneId.systemDefault())
         val nextMonday = now.with(TemporalAdjusters.next(DayOfWeek.MONDAY))
@@ -83,7 +82,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         return delayDuration.toMillis()
     }
 
-    fun scheduleMondayResetWorker(context: Context) {
+    fun scheduleMondayResetWorker(context: Context, navController: NavController, firstTopic: TrackedTopic?) {
         val initialDelay = calculateInitialDelayToMondayMidnight()
         val workRequest = PeriodicWorkRequestBuilder<MondayResetWorker>(24, TimeUnit.HOURS)
             .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
@@ -97,9 +96,28 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
 
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             "MondayResetWorker",
-            ExistingPeriodicWorkPolicy.UPDATE,
+            ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
             workRequest
         )
+
+        // Observe work status
+        WorkManager.getInstance(context)
+            .getWorkInfosForUniqueWorkLiveData("MondayResetWorker")
+            .observeForever { workInfos ->
+                workInfos?.forEach { workInfo ->
+                    // Check for progress updates
+                    val progress = workInfo.progress.getString("status")
+                    if (progress != "done" && workInfo.state == WorkInfo.State.RUNNING) {
+                        // Reset the Timer and Screen and Composable to update values
+                        resetTimer()
+                        navController.navigate("${NavigationItem.Statistics.route}/${firstTopic?.name}") {
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) { inclusive = true }
+                            }
+                        }
+                    }
+                }
+            }
     }
 
     fun initializeTimer(topic: TrackedTopic?) {

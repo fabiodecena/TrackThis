@@ -3,6 +3,7 @@ package com.example.trackthis.data
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import androidx.work.workDataOf
 import com.example.trackthis.TrackApplication
 import com.example.trackthis.data.database.tracked_topic.TrackedTopicDao
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
@@ -17,13 +18,16 @@ class MondayResetWorker(
 
     override suspend fun doWork(): Result {
         val trackedTopicDao = (applicationContext as TrackApplication).database.trackedTopicDao()
+        val timerViewModel = TimerViewModel(trackedTopicDao)
 
         // Perform Monday check
         if (LocalDate.now().dayOfWeek == DayOfWeek.MONDAY) {
             saveTotalTimeSpent(trackedTopicDao)
             resetDailyTimeSpentForTrackedTopics(trackedTopicDao)
+            timerViewModel.resetData()
+            timerViewModel.updatePointsDataList(firstTopic = trackedTopicDao.getAllItems().first().first())
         }
-
+        setProgress(workDataOf("status" to "done"))
         // Indicate whether the work finished successfully with Result.success()
         return Result.success()
     }
