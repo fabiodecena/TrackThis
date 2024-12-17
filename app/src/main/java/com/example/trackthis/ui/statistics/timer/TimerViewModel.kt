@@ -96,7 +96,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
 
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             "MondayResetWorker",
-            ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
+            ExistingPeriodicWorkPolicy.UPDATE,
             workRequest
         )
 
