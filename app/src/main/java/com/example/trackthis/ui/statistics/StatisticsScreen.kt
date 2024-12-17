@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -60,7 +61,7 @@ import ir.ehsannarmani.compose_charts.models.LabelProperties
 import ir.ehsannarmani.compose_charts.models.Line
 import ir.ehsannarmani.compose_charts.models.StrokeStyle
 import ir.ehsannarmani.compose_charts.models.ZeroLineProperties
-
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -74,9 +75,14 @@ fun StatisticsScreen(
     val chartUiState by chartViewModel.chartUiState.collectAsState()
     val pointsData = chartUiState.defaultPointsData
     val dailyEffort = chartUiState.dailyEffort
+    val context = LocalContext.current
 
 
     timerViewModel.updatePointsDataList(firstTopic)
+
+    LaunchedEffect(Unit) {
+        timerViewModel.scheduleMondayResetWorker(context)
+    }
 
     LaunchedEffect(firstTopic) {
         if (firstTopic != null && timerViewModel.timer.value == 0L) {

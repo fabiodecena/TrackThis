@@ -5,6 +5,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.trackthis.TrackApplication
 import com.example.trackthis.data.database.tracked_topic.TrackedTopicDao
+import com.example.trackthis.ui.statistics.timer.TimerViewModel
 import kotlinx.coroutines.flow.first
 import java.time.DayOfWeek
 import java.time.LocalDate

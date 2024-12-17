@@ -39,13 +39,13 @@ import java.util.concurrent.TimeUnit
 
 
 
-class TimerViewModel(private val trackedTopicDao: TrackedTopicDao, application: TrackApplication) : ViewModel() {
+class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel() {
 
     companion object {
         val factory : ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = this[APPLICATION_KEY] as TrackApplication
-                TimerViewModel(application.database.trackedTopicDao(), application)
+                TimerViewModel(application.database.trackedTopicDao())
             }
         }
     }
@@ -72,22 +72,20 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao, application: 
         }
     }
 
-    init {
-        scheduleMondayResetWorker(application)
-    }
+
 
     private fun calculateInitialDelayToMondayMidnight(): Long {
         val now = LocalDateTime.now(ZoneId.systemDefault())
-        val nextMonday = now.with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY))
-            .withHour(0).withMinute(0).withSecond(0).withNano(1)
+        val nextMonday = now.with(TemporalAdjusters.next(DayOfWeek.MONDAY))
+            .withHour(0).withMinute(0).withSecond(0).withNano(0)
 
         val delayDuration = Duration.between(now, nextMonday)
         return delayDuration.toMillis()
     }
 
-    private fun scheduleMondayResetWorker(context: Context) {
+    fun scheduleMondayResetWorker(context: Context) {
         val initialDelay = calculateInitialDelayToMondayMidnight()
-        val workRequest = PeriodicWorkRequestBuilder<MondayResetWorker>(7, TimeUnit.DAYS)
+        val workRequest = PeriodicWorkRequestBuilder<MondayResetWorker>(24, TimeUnit.HOURS)
             .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
             .setConstraints(
                 Constraints.Builder()
@@ -99,7 +97,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao, application: 
 
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             "MondayResetWorker",
-            ExistingPeriodicWorkPolicy.KEEP,
+            ExistingPeriodicWorkPolicy.UPDATE,
             workRequest
         )
     }
