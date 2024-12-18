@@ -81,7 +81,8 @@ fun StatisticsScreen(
     timerViewModel.updatePointsDataList(firstTopic)
 
     LaunchedEffect(Unit) {
-        timerViewModel.scheduleMondayResetWorker(context, navController, firstTopic)
+        timerViewModel.scheduleMondayResetWorker(context)
+        timerViewModel.observeMondayResetWorker(context, navController, firstTopic)
     }
 
     LaunchedEffect(firstTopic) {

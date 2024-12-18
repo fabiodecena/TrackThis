@@ -73,43 +73,18 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         }
     }
 
-    private fun calculateInitialDelayToMondayMidnight(): Long {
-        val now = LocalDateTime.now(ZoneId.systemDefault())
-        val nextMonday = now.with(TemporalAdjusters.next(DayOfWeek.MONDAY))
-            .withHour(0).withMinute(0).withSecond(0).withNano(0)
-
-        val delayDuration = Duration.between(now, nextMonday)
-        return delayDuration.toMillis()
+    fun scheduleMondayResetWorker(context: Context) {
+        WorkerScheduler.scheduleMondayResetWorker(context)
     }
 
-    fun scheduleMondayResetWorker(context: Context, navController: NavController, firstTopic: TrackedTopic?) {
-        val initialDelay = calculateInitialDelayToMondayMidnight()
-        val workRequest = PeriodicWorkRequestBuilder<MondayResetWorker>(24, TimeUnit.HOURS)
-            .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
-            .setConstraints(
-                Constraints.Builder()
-                    .setRequiresBatteryNotLow(false) // Run even if the battery is low
-                    .setRequiresDeviceIdle(false)  // Run even if the device is idle
-                    .build()
-            )
-            .build()
-
-        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-            "MondayResetWorker",
-            ExistingPeriodicWorkPolicy.UPDATE,
-            workRequest
-        )
-
-        // Observe work status
+    fun observeMondayResetWorker(context: Context, navController: NavController, firstTopic: TrackedTopic?) {
         WorkManager.getInstance(context)
             .getWorkInfosForUniqueWorkLiveData("MondayResetWorker")
-            .observeForever { workInfos ->
+            .observe( navController.currentBackStackEntry!!) { workInfos ->
                 workInfos?.forEach { workInfo ->
-                    // Check for progress updates
                     val progress = workInfo.progress.getString("status")
                     if (progress != "done" && workInfo.state == WorkInfo.State.RUNNING) {
-                        // Reset the Timer and Screen and Composable to update values
-                        resetTimer()
+                        resetTimer() // Reset the timer or update your state
                         navController.navigate("${NavigationItem.Statistics.route}/${firstTopic?.name}") {
                             navController.graph.startDestinationRoute?.let { route ->
                                 popUpTo(route) { inclusive = true }
@@ -230,3 +205,35 @@ fun Long.formatTime(): String {
     return String.format(locale = Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, remainingSeconds)
 }
 
+object WorkerScheduler {
+    fun scheduleMondayResetWorker(context: Context) {
+        val initialDelay = calculateInitialDelayToMondayMidnight()
+
+        WorkManager.getInstance(context).cancelUniqueWork("MondayResetWorker")
+
+        val workRequest = PeriodicWorkRequestBuilder<MondayResetWorker>(24, TimeUnit.HOURS)
+            .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
+            .setConstraints(
+                Constraints.Builder()
+                    .setRequiresBatteryNotLow(false)
+                    .setRequiresDeviceIdle(false)
+                    .build()
+            )
+            .build()
+
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+            "MondayResetWorker",
+            ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
+            workRequest
+        )
+    }
+
+    private fun calculateInitialDelayToMondayMidnight(): Long {
+        val now = LocalDateTime.now(ZoneId.systemDefault())
+        val nextMonday = now.with(TemporalAdjusters.next(DayOfWeek.MONDAY))
+            .withHour(0).withMinute(0).withSecond(0).withNano(0)
+
+        val delayDuration = Duration.between(now, nextMonday)
+        return delayDuration.toMillis()
+    }
+}
