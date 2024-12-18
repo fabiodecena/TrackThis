@@ -212,7 +212,7 @@ object WorkerScheduler {
         WorkManager.getInstance(context).cancelUniqueWork("MondayResetWorker")
 
         val workRequest = PeriodicWorkRequestBuilder<MondayResetWorker>(24, TimeUnit.HOURS)
-            .setInitialDelay(10000, TimeUnit.MILLISECONDS)
+            .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
             .setConstraints(
                 Constraints.Builder()
                     .setRequiresBatteryNotLow(false)
