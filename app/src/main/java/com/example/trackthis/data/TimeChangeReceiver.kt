@@ -10,7 +10,6 @@ class TimeChangeReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         if (intent?.action == Intent.ACTION_TIME_CHANGED || intent?.action == Intent.ACTION_TIMEZONE_CHANGED) {
             // Reschedule the worker when the time or timezone changes
-            Log.d("TimeChangeReceiver", "Time or timezone changed. Rescheduling worker.")
             scheduleMondayResetWorker(context)
         }
     }

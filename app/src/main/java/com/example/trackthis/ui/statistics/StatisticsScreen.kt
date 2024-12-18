@@ -1,6 +1,6 @@
 package com.example.trackthis.ui.statistics
 
-import android.util.Log
+
 import androidx.compose.animation.core.EaseInOutCubic
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -18,11 +18,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -47,7 +44,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.trackthis.R
-import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.ui.statistics.charts.ChartViewModel
 import com.example.trackthis.ui.statistics.timer.TimerScreen
@@ -96,11 +92,8 @@ fun StatisticsScreen(
         ) {
             StartedTopic(
                 topicElement = firstTopic,
-                onDelete = { timerViewModel.resetData() },
                 data = pointsData,
-                dailyEffort = dailyEffort.map { firstTopic.dailyEffort }, // Use firstTopic's dailyEffort
-                navController = navController,
-                timerViewModel = timerViewModel
+                dailyEffort = dailyEffort.map { firstTopic.dailyEffort }
             )
             BuildTracking(
                 timerViewModel = timerViewModel,
@@ -118,12 +111,9 @@ fun StatisticsScreen(
 @Composable
 fun StartedTopic(
     topicElement: TrackedTopic,
-    onDelete: () -> Unit,
     modifier: Modifier = Modifier,
     data: List<Double>,
-    dailyEffort: List<Double>,
-    timerViewModel: TimerViewModel,
-    navController: NavController
+    dailyEffort: List<Double>
 ) {
     Card(
         modifier = modifier
@@ -132,47 +122,16 @@ fun StartedTopic(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(dimensionResource(R.dimen.padding_medium)),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(dimensionResource(R.dimen.padding_small)),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    modifier = Modifier.padding(dimensionResource(R.dimen.padding_small)),
-                    text = stringResource(topicElement.name),
-                    style = MaterialTheme.typography.headlineMedium,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = stringResource(R.string.weekly_effort),
-                    style = MaterialTheme.typography.bodySmall,
-                    textAlign = TextAlign.Center
-                )
-            }
-            FloatingActionButton(
-                onClick = {
-                    onDelete()
-                    timerViewModel.resetTimer()
-                    navController.navigate(NavigationItem.Statistics.route) {
-                        navController.graph.startDestinationRoute?.let { route ->
-                            popUpTo(route)
-                        }
-                    }
-                },
-                modifier = Modifier
-                    .padding(dimensionResource(R.dimen.padding_medium2))
-                    .padding(top = dimensionResource(R.dimen.padding_medium), start = dimensionResource(R.dimen.padding_large))
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Delete,
-                    contentDescription = "Delete Element",
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
-            }
+            Text(
+                text = stringResource(R.string.weekly_effort),
+                style = MaterialTheme.typography.labelLarge,
+                textAlign = TextAlign.Center
+            )
         }
         Row(
             modifier = Modifier
@@ -190,7 +149,6 @@ fun StartedTopic(
                 LineChart(
                     modifier = Modifier.fillMaxSize().padding(horizontal = 22.dp),
                     data = remember {
-                        Log.d("pointsData", "StartedTopic: $data")
                         listOf(
                             Line(
                                 label = "Min Daily Effort",
@@ -203,7 +161,7 @@ fun StartedTopic(
                                 )
                             ),
                             Line(
-                                label = "User Name2",
+                                label = "Progress",
                                 values = data,
                                 color = SolidColor(Color(0xFF23af92)),
                                 dotProperties = DotProperties(
