@@ -3,8 +3,12 @@ package com.example.trackthis.ui.history
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -79,32 +84,64 @@ fun HistoryElement(
     timerViewModel: TimerViewModel
 ) {
     val coroutineScope = rememberCoroutineScope()
+
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(dimensionResource(R.dimen.padding_small))
+            .padding(dimensionResource(R.dimen.padding_small)),
+        shape = MaterialTheme.shapes.large
     ){
-        Text("Name: ${stringResource(trackedTopic.name)}")
-        Text("Total Time Spent: ${trackedTopic.timeSpent}")
-        Text("Daily Effort: ${trackedTopic.dailyEffort}")
-        Text("Final Goal: ${trackedTopic.finalGoal}")
-        Text("Starting Date: ${trackedTopic.startingDate}")
-        Text("Ending Date: ${trackedTopic.endingDate}")
-        Text("Index: ${trackedTopic.index}")
-        Text("Daily Time Spent: ${trackedTopic.dailyTimeSpent}")
-
-        Button(
-            onClick = {
-                timerViewModel.pauseTimer()
-                timerViewModel.initializeTimer(trackedTopic)
-                coroutineScope.launch {
-                trackEntryViewModel.deleteItem(trackedTopic)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(R.dimen.padding_medium))
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(dimensionResource(R.dimen.padding_small)),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    modifier = Modifier
+                            .padding(top= dimensionResource(R.dimen.padding_small)),
+                    style = MaterialTheme.typography.headlineSmall,
+                    text = stringResource(trackedTopic.name)
+                )
+                Button(
+                    colors = buttonColors(MaterialTheme.colorScheme.error),
+                    onClick = {
+                        timerViewModel.pauseTimer()
+                        timerViewModel.initializeTimer(trackedTopic)
+                        coroutineScope.launch {
+                            trackEntryViewModel.deleteItem(trackedTopic)
+                        }
+                    }
+                ) {
+                    Text("Delete")
                 }
             }
-        ){
-            Text("Delete")
+            Column(
+                modifier = Modifier
+                    .padding(end = dimensionResource(R.dimen.padding_medium2)),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text("Starting Date: ${trackedTopic.startingDate}")
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
+                Text("Ending Date: ${trackedTopic.endingDate}")
+            }
         }
-        ShowProgress((trackedTopic.timeSpent)*100/trackedTopic.finalGoal)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = dimensionResource(R.dimen.padding_small)),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                "Progress Bar"
+            )
+        }
+        ShowProgress((trackedTopic.timeSpent) * 100 / trackedTopic.finalGoal)
     }
 }
 
