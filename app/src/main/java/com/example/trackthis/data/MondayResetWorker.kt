@@ -27,6 +27,7 @@ class MondayResetWorker(
             timerViewModel.resetData()
             timerViewModel.updatePointsDataList(firstTopic = trackedTopicDao.getAllItems().first().first())
         }
+        timerViewModel.resetTimer()
         setProgress(workDataOf("status" to "done"))
         // Indicate whether the work finished successfully with Result.success()
         return Result.success()

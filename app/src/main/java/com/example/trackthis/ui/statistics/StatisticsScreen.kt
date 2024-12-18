@@ -61,7 +61,6 @@ import ir.ehsannarmani.compose_charts.models.LabelProperties
 import ir.ehsannarmani.compose_charts.models.Line
 import ir.ehsannarmani.compose_charts.models.StrokeStyle
 import ir.ehsannarmani.compose_charts.models.ZeroLineProperties
-import kotlinx.coroutines.delay
 
 
 @Composable
@@ -80,12 +79,11 @@ fun StatisticsScreen(
 
     timerViewModel.updatePointsDataList(firstTopic)
 
-    LaunchedEffect(Unit) {
-        timerViewModel.scheduleMondayResetWorker(context)
-        timerViewModel.observeMondayResetWorker(context, navController, firstTopic)
-    }
-
     LaunchedEffect(firstTopic) {
+        if (firstTopic != null) {
+            timerViewModel.scheduleMondayResetWorker(context)
+            timerViewModel.observeMondayResetWorker(context, navController, firstTopic)
+        }
         if (firstTopic != null && timerViewModel.timer.value == 0L) {
             timerViewModel.initializeTimer(firstTopic)
         }
