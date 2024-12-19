@@ -109,7 +109,6 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
     }
 
     fun pauseTimer() {
-        _isTimerRunning.value = false
         timerJob?.cancel()
         _isPaused.value = true
     }
@@ -189,6 +188,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
     }
 
     fun resetTimer() {
+        _isTimerRunning.value = false
         timerJob?.cancel()
         _timer.value = 0L
         _isPaused.value = false

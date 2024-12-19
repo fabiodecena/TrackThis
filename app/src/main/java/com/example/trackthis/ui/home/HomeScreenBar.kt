@@ -11,6 +11,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -86,6 +87,7 @@ fun BottomBar(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    val isTimerRunning by timerViewModel.isTimerRunning.collectAsState(initial = false)
     val topic = trackedTopics.firstOrNull {
         listOfVisualizedTopics.any { topic ->
             topic.name == it.name
@@ -107,7 +109,6 @@ fun BottomBar(
                     unselectedTextColor = MaterialTheme.colorScheme.onSecondaryContainer
                 ),
                 onClick = {
-
                     if (item.route == NavigationItem.Home.route || item.route == NavigationItem.History.route) {
                         navController.navigate(item.route) {
                             navController.graph.startDestinationRoute?.let { route ->
@@ -124,7 +125,9 @@ fun BottomBar(
                                 }
                             }
                         } else {
-                            timerViewModel.initializeTimer(topic)
+                            if (!isTimerRunning) {
+                                timerViewModel.initializeTimer(topic)
+                            }
                             navController.navigate("${NavigationItem.Statistics.route}/${topic!!.name}"){
                                 navController.graph.startDestinationRoute?.let { route ->
                                     popUpTo(route) {
