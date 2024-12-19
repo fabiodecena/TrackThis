@@ -24,6 +24,7 @@ import com.example.trackthis.ui.statistics.charts.pointsData
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
@@ -62,7 +63,11 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
 
     private var timerJob: Job? = null
 
+    private val _isTimerRunning = MutableStateFlow(false)
+    val isTimerRunning: StateFlow<Boolean> = _isTimerRunning.asStateFlow()
+
     fun startTimer() {
+        _isTimerRunning.value = true
         if (timerJob == null || timerJob?.isCancelled == true)
             _isPaused.value = false
         timerJob = viewModelScope.launch {
@@ -104,16 +109,18 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
     }
 
     fun pauseTimer() {
+        _isTimerRunning.value = false
         timerJob?.cancel()
         _isPaused.value = true
     }
 
     fun stopTimer(context: Context, navController: NavController, topicId: Int) {
+        _isTimerRunning.value = false
         val currentDay = saveCurrentDay()
         timerJob?.cancel()
         _isPaused.value = false
 
-        // Build the alert dialog
+        // History the alert dialog
         _isPaused.value = true// Pause the timer during the alert dialog
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Confirm Update")
@@ -230,7 +237,7 @@ object WorkerScheduler {
 
     private fun calculateInitialDelayToMondayMidnight(): Long {
         val now = LocalDateTime.now(ZoneId.systemDefault())
-        val nextMonday = now.with(TemporalAdjusters.next(DayOfWeek.MONDAY))
+        val nextMonday = now.with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY))
             .withHour(0).withMinute(0).withSecond(0).withNano(0)
 
         val delayDuration = Duration.between(now, nextMonday)

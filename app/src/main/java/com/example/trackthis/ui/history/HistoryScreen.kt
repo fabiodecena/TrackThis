@@ -17,12 +17,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -36,7 +36,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.trackthis.R
+import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.ui.insert_track.TrackEntryViewModel
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
@@ -49,8 +51,10 @@ fun HistoryScreen(
     trackEntryViewModel: TrackEntryViewModel,
     timerViewModel: TimerViewModel,
     trackedTopics: List<TrackedTopic>,
-    navigateOnSelectedClick: (Int) -> Unit
+    navigateOnSelectedClick: (Int) -> Unit,
+    navController: NavController
 ) {
+    val isTimerRunning by timerViewModel.isTimerRunning.collectAsState(initial = false)
 
     LazyColumn(
         modifier = modifier
@@ -66,11 +70,15 @@ fun HistoryScreen(
                trackedTopic = trackedTopic,
                trackEntryViewModel = trackEntryViewModel,
                timerViewModel = timerViewModel,
-               modifier = modifier
-                   .clickable {
-                      timerViewModel.initializeTimer(trackedTopic)
+               modifier = Modifier.clickable {
+                   if (isTimerRunning) {
+                       navController.navigate(NavigationItem.History.route)
+                   } else {
+                       timerViewModel.pauseTimer()
+                       timerViewModel.initializeTimer(trackedTopic)
                        navigateOnSelectedClick(trackedTopic.name)
                    }
+               }
            )
        }
     }

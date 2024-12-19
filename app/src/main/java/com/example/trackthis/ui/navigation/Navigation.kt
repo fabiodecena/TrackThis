@@ -35,6 +35,7 @@ fun Navigation(
     trackEntryViewModel: TrackEntryViewModel = viewModel(factory = TrackEntryViewModel.factory)
 ) {
     val chartViewModel: ChartViewModel = viewModel()
+
     NavHost(
         modifier = modifier,
         navController = navController,
@@ -78,13 +79,14 @@ fun Navigation(
                     )
                 }
             }
-        composable(NavigationItem.Build.route) {
+        composable(NavigationItem.History.route) {
             HistoryScreen(
                 trackEntryViewModel = trackEntryViewModel, timerViewModel = timerViewModel,
                 trackedTopics = trackedTopics,
                 navigateOnSelectedClick = { topicId ->
                     navController.navigate("${NavigationItem.Statistics.route}/$topicId")
-                }
+                },
+                navController = navController
             )
         }
         composable(NavigationItem.Settings.route) {

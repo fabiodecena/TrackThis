@@ -26,6 +26,7 @@ class MondayResetWorker(
             resetDailyTimeSpentForTrackedTopics(trackedTopicDao)
             timerViewModel.resetData()
             timerViewModel.updatePointsDataList(firstTopic = trackedTopicDao.getAllItems().first().first())
+            timerViewModel.resetTimer()
         }
         timerViewModel.resetTimer()
         setProgress(workDataOf("status" to "done"))

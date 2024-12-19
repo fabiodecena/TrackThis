@@ -108,7 +108,7 @@ fun BottomBar(
                 ),
                 onClick = {
 
-                    if (item.route == NavigationItem.Home.route || item.route == NavigationItem.Build.route) {
+                    if (item.route == NavigationItem.Home.route || item.route == NavigationItem.History.route) {
                         navController.navigate(item.route) {
                             navController.graph.startDestinationRoute?.let { route ->
                                 popUpTo(route) {
