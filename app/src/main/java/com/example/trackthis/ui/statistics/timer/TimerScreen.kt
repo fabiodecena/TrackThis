@@ -104,6 +104,4 @@ fun TimerScreen(
     }
 }
 
-//            // Optionally notify the user or log reset
-//            Toast.makeText(currentContext, "Timer reset for the new day!", Toast.LENGTH_SHORT).show()
 
