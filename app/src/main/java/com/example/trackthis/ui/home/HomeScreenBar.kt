@@ -22,7 +22,6 @@ import com.example.trackthis.R
 import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.bottomBarNavigationItems
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
-import com.example.trackthis.data.listOfVisualizedTopics
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
 
 
@@ -89,13 +88,12 @@ fun BottomBar(
     val currentRoute = navBackStackEntry?.destination?.route
     val isTimerRunning by timerViewModel.isTimerRunning.collectAsState(initial = false)
     val topic by timerViewModel.topic.collectAsState()
+    val firstTopicName = trackedTopics.firstOrNull()?.name
 
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.secondary
     ) {
         bottomBarNavigationItems.forEach { item ->
-
-
             NavigationBarItem(
                 icon = { Icon(imageVector = item.icon!!, contentDescription = item.title) },
                 label = { Text(text = item.title) },
@@ -133,7 +131,11 @@ fun BottomBar(
                                     }
                                 }
                             } else {
-                                navController.navigate(NavigationItem.Statistics.route)
+                                navController.navigate("${NavigationItem.Statistics.route}/$firstTopicName") {
+                                    navController.graph.startDestinationRoute?.let { route ->
+                                        popUpTo(route)
+                                    }
+                                }
                             }
                         }
                     }
