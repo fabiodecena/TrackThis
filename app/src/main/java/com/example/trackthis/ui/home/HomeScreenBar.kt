@@ -88,11 +88,7 @@ fun BottomBar(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     val isTimerRunning by timerViewModel.isTimerRunning.collectAsState(initial = false)
-    val topic = trackedTopics.firstOrNull {
-        listOfVisualizedTopics.any { topic ->
-            topic.name == it.name
-        }
-    }
+    val topic by timerViewModel.topic.collectAsState()
 
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.secondary
@@ -114,27 +110,30 @@ fun BottomBar(
                     if (item.route == NavigationItem.Home.route || item.route == NavigationItem.History.route) {
                         navController.navigate(item.route) {
                             navController.graph.startDestinationRoute?.let { route ->
-                                popUpTo(route) {
-                                }
+                                popUpTo(route)
                             }
                         }
                     } else {
                         if (trackedTopics.isEmpty()) {
                             navController.navigate(item.route) {
                                 navController.graph.startDestinationRoute?.let { route ->
-                                    popUpTo(route) {
-                                    }
+                                    popUpTo(route)
                                 }
                             }
                         } else {
                             if (!isTimerRunning) {
                                 timerViewModel.initializeTimer(topic)
                             }
-                            navController.navigate("${NavigationItem.Statistics.route}/${topic!!.name}"){
-                                navController.graph.startDestinationRoute?.let { route ->
-                                    popUpTo(route) {
+
+                            val topicName = topic?.name
+                            if (topicName != null) {
+                                navController.navigate("${NavigationItem.Statistics.route}/$topicName") {
+                                    navController.graph.startDestinationRoute?.let { route ->
+                                        popUpTo(route)
                                     }
                                 }
+                            } else {
+                                navController.navigate(NavigationItem.Statistics.route)
                             }
                         }
                     }

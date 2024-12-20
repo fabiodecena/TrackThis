@@ -71,6 +71,7 @@ fun Navigation(
             ) { backStackEntry ->
                 val topicId = backStackEntry.arguments?.getInt("topicId")
                 val topic = trackedTopics.find { it.name == topicId }
+                timerViewModel.setTopic(topic)
                 topic?.let {
                     StatisticsScreen(
                         chartViewModel = chartViewModel, timerViewModel = timerViewModel,

@@ -52,6 +52,13 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         }
     }
 
+    private val _topic = MutableStateFlow<TrackedTopic?>(null)
+    val topic = _topic.asStateFlow()
+
+    fun setTopic(topic: TrackedTopic?) {
+        _topic.value = topic
+    }
+
     private val _timer = MutableStateFlow(0L)
     val timer = _timer.asStateFlow()
 
