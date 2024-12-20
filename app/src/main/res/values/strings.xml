@@ -45,5 +45,6 @@
     <string name="dates_error">Starting date cannot be greater than Ending Date!!!</string>
     <string name="back_button">Back Button</string>
     <string name="refresh">Refresh</string>
+    <string name="progress_bar">Progress Bar</string>
 
 </resources>

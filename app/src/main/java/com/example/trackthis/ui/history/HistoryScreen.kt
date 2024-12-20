@@ -32,9 +32,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.trackthis.R
@@ -114,10 +119,11 @@ fun HistoryElement(
                     modifier = Modifier
                             .padding(top= dimensionResource(R.dimen.padding_small)),
                     style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
                     text = stringResource(trackedTopic.name)
                 )
                 Button(
-                    colors = buttonColors(MaterialTheme.colorScheme.error),
+                    colors = buttonColors(colorResource(R.color.light_red)),
                     onClick = {
                         timerViewModel.pauseTimer()
                         timerViewModel.initializeTimer(trackedTopic)
@@ -134,9 +140,23 @@ fun HistoryElement(
                     .padding(end = dimensionResource(R.dimen.padding_medium2)),
                 horizontalAlignment = Alignment.Start
             ) {
-                Text("Starting Date: ${trackedTopic.startingDate}")
+                Text(
+                    text = AnnotatedString.Builder().apply {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("Starting Date: ")
+                        }
+                            append(trackedTopic.startingDate)
+                    }.toAnnotatedString()
+                )
                 Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
-                Text("Ending Date: ${trackedTopic.endingDate}")
+                Text(
+                    text = AnnotatedString.Builder().apply {
+                        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append("Ending Date: ")
+                        }
+                            append(trackedTopic.endingDate)
+                    }.toAnnotatedString()
+                )
             }
         }
         Box(
@@ -146,7 +166,8 @@ fun HistoryElement(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                "Progress Bar"
+                text = stringResource(R.string.progress_bar),
+                style = MaterialTheme.typography.bodySmall
             )
         }
         ShowProgress((trackedTopic.timeSpent) * 100 / trackedTopic.finalGoal)
@@ -163,26 +184,32 @@ fun ShowProgress(score : Int){
 
     Row(
         modifier = Modifier
-        .padding(8.dp)
-        .fillMaxWidth().height(45.dp).border(
-            width = 4.dp,
-            brush = Brush.linearGradient(
-                colors = listOf(
-                    MaterialTheme.colorScheme.primary,
-                    MaterialTheme.colorScheme.secondary
-                )
-            ) ,
-            shape = RoundedCornerShape(50.dp)
-        )
-        .clip(
-            RoundedCornerShape(
-                topStartPercent = 50,
-                topEndPercent = 50,
-                bottomEndPercent = 50,
-                bottomStartPercent = 50
+            .padding(
+                bottom = dimensionResource(R.dimen.padding_medium),
+                start = dimensionResource(R.dimen.padding_medium),
+                end = dimensionResource(R.dimen.padding_medium)
             )
-        )
-        .background(Color.Transparent),
+            .fillMaxWidth()
+            .height(45.dp)
+            .border(
+                width = 4.dp,
+                brush = Brush.linearGradient(
+                    colors = listOf(
+                        MaterialTheme.colorScheme.primary,
+                        MaterialTheme.colorScheme.secondary
+                    )
+                ),
+                shape = RoundedCornerShape(50.dp)
+            )
+            .clip(
+                RoundedCornerShape(
+                    topStartPercent = 50,
+                    topEndPercent = 50,
+                    bottomEndPercent = 50,
+                    bottomStartPercent = 50
+                )
+            )
+            .background(Color.Transparent),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (score > 0) {
