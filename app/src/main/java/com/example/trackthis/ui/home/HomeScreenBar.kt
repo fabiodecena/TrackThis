@@ -98,6 +98,8 @@ fun BottomBar(
         containerColor = MaterialTheme.colorScheme.secondary
     ) {
         bottomBarNavigationItems.forEach { item ->
+
+
             NavigationBarItem(
                 icon = { Icon(imageVector = item.icon!!, contentDescription = item.title) },
                 label = { Text(text = item.title) },
