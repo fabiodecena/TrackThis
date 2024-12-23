@@ -4,6 +4,7 @@ plugins {
     id("com.android.application")
     id("com.google.devtools.ksp") version "1.9.0-1.0.13"
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
     kotlin("plugin.serialization") version "2.1.0"
 }
 
@@ -74,6 +75,9 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
     implementation ("androidx.work:work-runtime-ktx:2.8.1")
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
 
 
 

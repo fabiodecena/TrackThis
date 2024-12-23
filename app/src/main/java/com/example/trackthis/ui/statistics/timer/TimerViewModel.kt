@@ -244,7 +244,7 @@ object WorkerScheduler {
 
     private fun calculateInitialDelayToMondayMidnight(): Long {
         val now = LocalDateTime.now(ZoneId.systemDefault())
-        val nextMonday = now.with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY))
+        val nextMonday = now.with(TemporalAdjusters.next(DayOfWeek.MONDAY))
             .withHour(0).withMinute(0).withSecond(0).withNano(0)
 
         val delayDuration = Duration.between(now, nextMonday)
