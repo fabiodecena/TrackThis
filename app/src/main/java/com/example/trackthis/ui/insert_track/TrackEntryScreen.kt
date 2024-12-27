@@ -52,7 +52,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.trackthis.R
 import com.example.trackthis.ui.statistics.charts.ChartViewModel
-import com.example.trackthis.data.NavigationItem
+import com.example.trackthis.ui.navigation.NavigationItem
 import com.example.trackthis.data.Topic
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.ui.statistics.timer.TimerViewModel

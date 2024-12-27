@@ -19,8 +19,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.trackthis.R
-import com.example.trackthis.data.NavigationItem
-import com.example.trackthis.data.bottomBarNavigationItems
+import com.example.trackthis.ui.navigation.NavigationItem
+import com.example.trackthis.ui.navigation.bottomBarNavigationItems
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
 

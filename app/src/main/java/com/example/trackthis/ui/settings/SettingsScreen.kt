@@ -34,7 +34,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.trackthis.data.TopicListElement
-import com.example.trackthis.data.trackNavigationItems
+import com.example.trackthis.ui.navigation.trackNavigationItems
 import com.example.trackthis.ui.home.HomeScreenViewModel
 import com.example.trackthis.ui.navigation.NavigationSelectionScreen
 

@@ -16,7 +16,7 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.example.trackthis.TrackApplication
 import com.example.trackthis.data.MondayResetWorker
-import com.example.trackthis.data.NavigationItem
+import com.example.trackthis.ui.navigation.NavigationItem
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.data.database.tracked_topic.TrackedTopicDao
 import com.example.trackthis.ui.statistics.charts.ChartUiState

@@ -11,7 +11,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.trackthis.ui.insert_track.TrackDetails
 import com.example.trackthis.ui.statistics.charts.ChartViewModel
-import com.example.trackthis.data.NavigationItem
 import com.example.trackthis.data.TopicListRepository
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.data.listOfVisualizedTopics

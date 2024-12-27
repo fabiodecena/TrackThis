@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.trackthis.R
-import com.example.trackthis.data.NavigationItem
+import com.example.trackthis.ui.navigation.NavigationItem
 import kotlinx.coroutines.launch
 
 @Composable
