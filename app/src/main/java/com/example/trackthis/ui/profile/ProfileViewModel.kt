@@ -1,6 +1,8 @@
 package com.example.trackthis.ui.profile
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -25,28 +27,27 @@ class ProfileViewModel : ViewModel()  {
     }
 
 
-    private fun createUserInFirebase(email: String, password: String, navController: NavController) {
+    private fun createUserInFirebase(email: String, password: String, navController: NavController, context: Context) {
         val auth = FirebaseAuth.getInstance()
 
         // Set Firebase locale (optional)
-        auth.setLanguageCode(Locale.getDefault().language) // Replace "en" with desired language code
+        auth.setLanguageCode(Locale.getDefault().language) // Set with default language code
 
         auth
             .createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
-                Log.d("TAG", "createUserInFirebase: ${it.isSuccessful}")
                 if (it.isSuccessful) {
                    navController.navigate(NavigationItem.Home.route)
                 }
             }
             .addOnFailureListener {
-                Log.d("TAG", "createUserInFirebase: ${it.message}")
+                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
             }
     }
 
-    fun createAccount(navController: NavController) {
+    fun createAccount(navController: NavController, context: Context) {
         createUserInFirebase(
-            email, password, navController
+            email, password, navController, context
         )
     }
 }

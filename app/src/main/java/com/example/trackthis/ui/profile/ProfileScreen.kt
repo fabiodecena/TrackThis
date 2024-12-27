@@ -23,6 +23,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -43,6 +44,7 @@ fun ProfileScreen(
     val email = profileViewModel.email
     val password = profileViewModel.password
     val isFormValid = profileViewModel::isFormValid
+    val context = LocalContext.current
 
     Column(
         modifier = modifier
@@ -116,7 +118,7 @@ fun ProfileScreen(
             isError = password.isBlank()
         )
         Button(
-            onClick = { profileViewModel.createAccount(navController) },
+            onClick = { profileViewModel.createAccount(navController, context) },
             modifier = Modifier
                 .padding(dimensionResource(R.dimen.padding_medium2))
                 .align(Alignment.End),
