@@ -17,6 +17,7 @@ sealed class NavigationItem(var route: String, var icon: ImageVector?, var title
     data object Settings: NavigationItem("settings", Icons.Filled.Menu, "Settings")
     data object ActiveTrackSelection: NavigationItem("activeTrack", null,"Active Tracking")
     data object InactiveTrackSelection: NavigationItem("inactiveTrack",null ,"Inactive Tracking")
+    data object Welcome: NavigationItem("welcome", null, "Welcome")
 
 }
 val bottomBarNavigationItems = listOf(

@@ -50,4 +50,15 @@ class ProfileViewModel : ViewModel()  {
             email, password, navController, context
         )
     }
+
+    fun logout(context: Context) {
+        val firebaseAuth = FirebaseAuth.getInstance()
+        firebaseAuth.signOut()
+        val authStateListener = FirebaseAuth.AuthStateListener {
+            if(it.currentUser == null) {
+                Log.d("TAG", "User is logged out")
+            }
+        }
+        firebaseAuth.addAuthStateListener(authStateListener)
+    }
 }

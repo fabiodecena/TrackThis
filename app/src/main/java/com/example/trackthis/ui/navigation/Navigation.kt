@@ -19,6 +19,8 @@ import com.example.trackthis.ui.home.HomeScreen
 import com.example.trackthis.ui.home.HomeScreenViewModel
 import com.example.trackthis.ui.insert_track.TrackEntryViewModel
 import com.example.trackthis.ui.profile.ProfileScreen
+import com.example.trackthis.ui.profile.ProfileViewModel
+import com.example.trackthis.ui.profile.WelcomeScreen
 import com.example.trackthis.ui.settings.ActiveTrackScreen
 import com.example.trackthis.ui.settings.InactiveTrackScreen
 import com.example.trackthis.ui.settings.SettingsScreen
@@ -34,12 +36,16 @@ fun Navigation(
     trackEntryViewModel: TrackEntryViewModel = viewModel(factory = TrackEntryViewModel.factory)
 ) {
     val chartViewModel: ChartViewModel = viewModel()
+    val profileViewModel: ProfileViewModel = viewModel()
 
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = NavigationItem.Home.route
+        startDestination = NavigationItem.Welcome.route
     ){
+        composable(NavigationItem.Welcome.route) {
+            WelcomeScreen(navController = navController, profileViewModel = profileViewModel)
+        }
         composable(NavigationItem.Home.route) {
             HomeScreen(navController = navController, trackedTopics = trackedTopics)
         }

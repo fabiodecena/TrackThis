@@ -62,7 +62,7 @@ fun TopAppBar(navController: NavController) {
         actions = {
             IconButton(
                 onClick = {
-                    navController.navigate(NavigationItem.Profile.route) {
+                    navController.navigate(NavigationItem.Welcome.route) {
                         navController.graph.startDestinationRoute?.let { route ->
                             popUpTo(route)
                         }
