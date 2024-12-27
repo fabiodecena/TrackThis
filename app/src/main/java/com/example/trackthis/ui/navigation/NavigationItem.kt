@@ -13,11 +13,12 @@ sealed class NavigationItem(var route: String, var icon: ImageVector?, var title
     data object TrackDetails: NavigationItem("trackDetails", null, "Track Details")
     data object Statistics: NavigationItem("statistics", Icons.Filled.BarChart, "Statistics")
     data object History: NavigationItem("build", Icons.Filled.Build, "History")
-    data object Profile: NavigationItem("profile", Icons.Filled.Person, "Profile")
+    data object Registration: NavigationItem("profile", Icons.Filled.Person, "Registration")
     data object Settings: NavigationItem("settings", Icons.Filled.Menu, "Settings")
     data object ActiveTrackSelection: NavigationItem("activeTrack", null,"Active Tracking")
     data object InactiveTrackSelection: NavigationItem("inactiveTrack",null ,"Inactive Tracking")
     data object Welcome: NavigationItem("welcome", null, "Welcome")
+    data object Login: NavigationItem("login", null, "Login")
 
 }
 val bottomBarNavigationItems = listOf(

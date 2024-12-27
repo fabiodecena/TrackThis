@@ -18,8 +18,10 @@ import com.example.trackthis.ui.history.HistoryScreen
 import com.example.trackthis.ui.home.HomeScreen
 import com.example.trackthis.ui.home.HomeScreenViewModel
 import com.example.trackthis.ui.insert_track.TrackEntryViewModel
-import com.example.trackthis.ui.profile.ProfileScreen
-import com.example.trackthis.ui.profile.ProfileViewModel
+import com.example.trackthis.ui.profile.LoginScreen
+import com.example.trackthis.ui.profile.LoginViewModel
+import com.example.trackthis.ui.profile.RegistrationScreen
+import com.example.trackthis.ui.profile.RegistrationViewModel
 import com.example.trackthis.ui.profile.WelcomeScreen
 import com.example.trackthis.ui.settings.ActiveTrackScreen
 import com.example.trackthis.ui.settings.InactiveTrackScreen
@@ -36,7 +38,8 @@ fun Navigation(
     trackEntryViewModel: TrackEntryViewModel = viewModel(factory = TrackEntryViewModel.factory)
 ) {
     val chartViewModel: ChartViewModel = viewModel()
-    val profileViewModel: ProfileViewModel = viewModel()
+    val registrationViewModel: RegistrationViewModel = viewModel()
+    val loginViewModel: LoginViewModel = viewModel()
 
     NavHost(
         modifier = modifier,
@@ -44,7 +47,17 @@ fun Navigation(
         startDestination = NavigationItem.Welcome.route
     ){
         composable(NavigationItem.Welcome.route) {
-            WelcomeScreen(navController = navController, profileViewModel = profileViewModel)
+            WelcomeScreen(
+                navController = navController,
+                registrationViewModel = registrationViewModel,
+                loginViewModel = loginViewModel
+            )
+        }
+        composable(NavigationItem.Registration.route) {
+            RegistrationScreen(navController = navController)
+        }
+        composable(NavigationItem.Login.route) {
+            LoginScreen(navController = navController)
         }
         composable(NavigationItem.Home.route) {
             HomeScreen(navController = navController, trackedTopics = trackedTopics)
@@ -97,9 +110,6 @@ fun Navigation(
         }
         composable(NavigationItem.Settings.route) {
             SettingsScreen()
-        }
-        composable(NavigationItem.Profile.route) {
-            ProfileScreen(navController = navController)
         }
     }
 }

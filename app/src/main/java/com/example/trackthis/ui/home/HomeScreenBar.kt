@@ -70,8 +70,8 @@ fun TopAppBar(navController: NavController) {
                 }
             ) {
                 Icon(
-                    imageVector = NavigationItem.Profile.icon!!,
-                    contentDescription = NavigationItem.Profile.title
+                    imageVector = NavigationItem.Registration.icon!!,
+                    contentDescription = NavigationItem.Registration.title
                 )
             }
         },
@@ -97,7 +97,12 @@ fun BottomBar(
             NavigationBarItem(
                 icon = { Icon(imageVector = item.icon!!, contentDescription = item.title) },
                 label = { Text(text = item.title) },
-                selected = currentRoute == item.route,
+                selected =
+                    if (item.route == NavigationItem.Home.route || item.route == NavigationItem.History.route) {
+                        currentRoute == item.route
+                    } else {
+                        currentRoute == "${NavigationItem.Statistics.route}/{topicId}"
+                    },
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = MaterialTheme.colorScheme.inverseOnSurface,
                     selectedTextColor = MaterialTheme.colorScheme.inverseOnSurface,

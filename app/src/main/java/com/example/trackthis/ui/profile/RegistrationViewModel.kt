@@ -13,13 +13,13 @@ import com.google.firebase.auth.FirebaseAuth
 import java.util.Locale
 
 
-class ProfileViewModel : ViewModel()  {
+class RegistrationViewModel : ViewModel()  {
     var firstName by mutableStateOf("")
     var lastName by mutableStateOf("")
     var email by mutableStateOf("")
     var password by mutableStateOf("")
 
-    fun isFormValid(): Boolean {
+    fun isRegistrationValid(): Boolean {
         return firstName.isNotBlank() &&
                 lastName.isNotBlank() &&
                 email.isNotBlank() &&
@@ -38,6 +38,7 @@ class ProfileViewModel : ViewModel()  {
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                    navController.navigate(NavigationItem.Home.route)
+                    Toast.makeText(context, "User created successfully", Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener {
@@ -57,8 +58,10 @@ class ProfileViewModel : ViewModel()  {
         val authStateListener = FirebaseAuth.AuthStateListener {
             if(it.currentUser == null) {
                 Log.d("TAG", "User is logged out")
+                Toast.makeText(context, "User is logged out", Toast.LENGTH_SHORT).show()
             }
         }
         firebaseAuth.addAuthStateListener(authStateListener)
+        firebaseAuth.removeAuthStateListener(authStateListener)
     }
 }

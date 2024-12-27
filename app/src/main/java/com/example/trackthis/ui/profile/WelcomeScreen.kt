@@ -1,6 +1,5 @@
 package com.example.trackthis.ui.profile
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -23,7 +22,8 @@ import com.example.trackthis.ui.navigation.NavigationItem
 fun WelcomeScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    profileViewModel: ProfileViewModel
+    registrationViewModel: RegistrationViewModel,
+    loginViewModel: LoginViewModel
 ) {
     val context = LocalContext.current
 
@@ -44,17 +44,17 @@ fun WelcomeScreen(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 Button(
-                    onClick = { navController.navigate(NavigationItem.Profile.route) }
+                    onClick = { navController.navigate(NavigationItem.Registration.route) }
                 ) {
                     Text(text = "Register")
                 }
                 Button(
-                    onClick = {  }
+                    onClick = { navController.navigate(NavigationItem.Login.route) }
                 ) {
                     Text(text = "Login")
                 }
                 Button(
-                    onClick = { profileViewModel.logout(context) }
+                    onClick = { registrationViewModel.logout(context) }
                 ) {
                     Text(text = "Logout")
                 }
