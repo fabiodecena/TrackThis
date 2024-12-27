@@ -21,6 +21,8 @@ import com.example.trackthis.data.database.tracked_topic.TrackedTopicDao
 import com.example.trackthis.ui.navigation.NavigationItem
 import com.example.trackthis.ui.statistics.charts.ChartUiState
 import com.example.trackthis.ui.statistics.charts.pointsData
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,6 +50,9 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
             }
         }
     }
+
+    private val userId = FirebaseAuth.getInstance().currentUser?.uid
+
 
     private val _topic = MutableStateFlow<TrackedTopic?>(null)
     val topic = _topic.asStateFlow()
@@ -134,7 +139,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
             dialog.dismiss()
 
             viewModelScope.launch {
-                val topic = trackedTopicDao.getItemByName(topicId).first()
+                val topic = trackedTopicDao.getItemByName(userId!!,topicId).first()
                 val updatedDailyTimeSpent = topic.dailyTimeSpent.toMutableMap()
                 updatedDailyTimeSpent[currentDay] = timer.value // Store time for current day
                 val totalEffort = updatedDailyTimeSpent.values.sum() + topic.index // Update total time spent
