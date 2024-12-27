@@ -93,7 +93,7 @@ fun Navigation(
             SettingsScreen()
         }
         composable(NavigationItem.Profile.route) {
-            ProfileScreen()
+            ProfileScreen(navController = navController)
         }
     }
 }
