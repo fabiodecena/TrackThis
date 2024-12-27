@@ -8,6 +8,8 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.trackthis.TrackApplication
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.data.database.tracked_topic.TrackedTopicDao
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.Flow
 
 
@@ -18,6 +20,13 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
     /**
      * Inserts an [TrackedTopic] in the Room database
      */
+    private val userId: String =
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            FirebaseAuth.getInstance().currentUser!!.uid
+        } else {
+              ""
+        }
+
     suspend fun addNewItem(trackedTopic: TrackedTopic) {
         trackedTopicDao.insert(trackedTopic)
     }
@@ -27,7 +36,7 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
     }
 
     fun retrieveAllItems(): Flow<List<TrackedTopic>> {
-        return trackedTopicDao.getAllItems()
+        return  trackedTopicDao.getAllItems(userId)
     }
 
     companion object {

@@ -60,7 +60,7 @@ fun Navigation(
             LoginScreen(navController = navController)
         }
         composable(NavigationItem.Home.route) {
-            HomeScreen(navController = navController, trackedTopics = trackedTopics)
+            HomeScreen(navController = navController, trackedTopics = trackedTopics, trackEntryViewModel = trackEntryViewModel)
         }
         composable(
             route = "${NavigationItem.TrackDetails.route}/{topicId}",

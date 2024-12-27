@@ -56,6 +56,7 @@ import com.example.trackthis.ui.navigation.NavigationItem
 import com.example.trackthis.data.Topic
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
@@ -76,6 +77,7 @@ fun TrackDetails(
     var startingDateInput by rememberSaveable { mutableStateOf("") }
     var endingDateInput by rememberSaveable { mutableStateOf("") }
     val coroutineScope = rememberCoroutineScope()
+    val userId =  FirebaseAuth.getInstance().currentUser?.uid
 
     val isDailyEffortGreaterThanFinalGoal =
         dailyEffort.isNotBlank() && finalGoalInput.isNotBlank() &&
@@ -93,7 +95,8 @@ fun TrackDetails(
                 finalGoalInput.toInt() > dailyEffort.toInt() &&
                 startingDateInput.isNotBlank() &&
                 endingDateInput.isNotBlank() &&
-                isStartingDateGreaterThanEndingDate.not()
+                isStartingDateGreaterThanEndingDate.not() &&
+                userId != null
 
     Column(
         modifier = modifier
@@ -184,6 +187,7 @@ fun TrackDetails(
                 coroutineScope.launch {
                     trackEntryViewModel.addNewItem(
                         TrackedTopic(
+                            userId = userId!!,
                             name = topic.name,
                             dailyEffort = dailyEffort.toDouble(),
                             finalGoal = finalGoalInput.toInt(),

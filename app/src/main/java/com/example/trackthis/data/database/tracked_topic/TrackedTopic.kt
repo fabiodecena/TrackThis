@@ -14,6 +14,8 @@ import com.google.gson.reflect.TypeToken
 data class TrackedTopic(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+    @ColumnInfo(name = "user_id")
+    val userId: String, // Firebase UID
     @ColumnInfo(name = "topic_name")
     @StringRes val name: Int,
     @ColumnInfo(name = "daily_effort")

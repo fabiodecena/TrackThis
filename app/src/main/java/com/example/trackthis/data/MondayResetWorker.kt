@@ -7,6 +7,7 @@ import androidx.work.workDataOf
 import com.example.trackthis.TrackApplication
 import com.example.trackthis.data.database.tracked_topic.TrackedTopicDao
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.first
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -15,6 +16,8 @@ class MondayResetWorker(
     context: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(context, workerParams) {
+
+    val userId = FirebaseAuth.getInstance().currentUser?.uid
 
     override suspend fun doWork(): Result {
         val trackedTopicDao = (applicationContext as TrackApplication).database.trackedTopicDao()
@@ -25,7 +28,7 @@ class MondayResetWorker(
             saveTotalTimeSpent(trackedTopicDao)
             resetDailyTimeSpentForTrackedTopics(trackedTopicDao)
             timerViewModel.resetData()
-            timerViewModel.updatePointsDataList(firstTopic = trackedTopicDao.getAllItems().first().first())
+            timerViewModel.updatePointsDataList(firstTopic = trackedTopicDao.getAllItems(userId!!).first().first())
             timerViewModel.resetTimer()
         }
         timerViewModel.resetTimer()
@@ -35,7 +38,7 @@ class MondayResetWorker(
     }
 
     private suspend fun saveTotalTimeSpent(trackedTopicDao: TrackedTopicDao) {
-        val trackedTopics = trackedTopicDao.getAllItems().first()
+        val trackedTopics = trackedTopicDao.getAllItems(userId!!).first()
         for (topic in trackedTopics) {
             val updatedTopic = topic.copy(index = topic.timeSpent)
             trackedTopicDao.update(updatedTopic)
@@ -43,7 +46,7 @@ class MondayResetWorker(
     }
 
     private suspend fun resetDailyTimeSpentForTrackedTopics(trackedTopicDao: TrackedTopicDao) {
-        val trackedTopics = trackedTopicDao.getAllItems().first()
+        val trackedTopics = trackedTopicDao.getAllItems(userId!!).first()
         for (topic in trackedTopics) {
             val updatedDailyTimeSpent = topic.dailyTimeSpent.toMutableMap()
             updatedDailyTimeSpent.clear()
