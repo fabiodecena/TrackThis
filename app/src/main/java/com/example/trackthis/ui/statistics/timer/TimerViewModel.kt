@@ -16,9 +16,9 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.example.trackthis.TrackApplication
 import com.example.trackthis.data.MondayResetWorker
-import com.example.trackthis.ui.navigation.NavigationItem
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.data.database.tracked_topic.TrackedTopicDao
+import com.example.trackthis.ui.navigation.NavigationItem
 import com.example.trackthis.ui.statistics.charts.ChartUiState
 import com.example.trackthis.ui.statistics.charts.pointsData
 import kotlinx.coroutines.Job
@@ -29,16 +29,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.DayOfWeek
 import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.TextStyle
-import java.time.temporal.TemporalAdjusters
 import java.util.Locale
 import java.util.concurrent.TimeUnit
-
 
 
 class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel() {
@@ -221,7 +218,7 @@ fun Long.formatTime(): String {
 
 object WorkerScheduler {
     fun scheduleMondayResetWorker(context: Context) {
-        val initialDelay = calculateInitialDelayToMondayMidnight()
+        val initialDelay = calculateInitialDelayToMidnight()
 
         WorkManager.getInstance(context).cancelUniqueWork("MondayResetWorker")
 
@@ -242,12 +239,10 @@ object WorkerScheduler {
         )
     }
 
-    private fun calculateInitialDelayToMondayMidnight(): Long {
+    private fun calculateInitialDelayToMidnight(): Long {
         val now = LocalDateTime.now(ZoneId.systemDefault())
-        val nextMonday = now.with(TemporalAdjusters.next(DayOfWeek.MONDAY))
+        val nextMonday = now.plusDays(1)
             .withHour(0).withMinute(0).withSecond(0).withNano(0)
-
-        val delayDuration = Duration.between(now, nextMonday)
-        return delayDuration.toMillis()
+        return Duration.between(now, nextMonday).toMillis()
     }
 }

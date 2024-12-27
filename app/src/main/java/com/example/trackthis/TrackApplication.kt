@@ -6,10 +6,13 @@ import android.content.IntentFilter
 import com.example.trackthis.data.TimeChangeReceiver
 import com.example.trackthis.data.TopicListRepository
 import com.example.trackthis.data.database.tracked_topic.HistoryDatabase
+import com.google.firebase.FirebaseApp
 
 
 class TrackApplication : Application() {
     private val timeChangeReceiver = TimeChangeReceiver()
+    val database: HistoryDatabase by lazy { HistoryDatabase.getDatabase(this) }
+    val topicListRepository: TopicListRepository by lazy { TopicListRepository(this) }
 
     override fun onCreate() {
         super.onCreate()
@@ -20,12 +23,16 @@ class TrackApplication : Application() {
             addAction(Intent.ACTION_TIMEZONE_CHANGED)
         }
         registerReceiver(timeChangeReceiver, filter)
+
+
+        // Initialize Firebase
+        FirebaseApp.initializeApp(this)
     }
 
     override fun onTerminate() {
         super.onTerminate()
         unregisterReceiver(timeChangeReceiver)
     }
-    val database: HistoryDatabase by lazy { HistoryDatabase.getDatabase(this) }
-    val topicListRepository: TopicListRepository by lazy { TopicListRepository(this) }
+
+
 }
