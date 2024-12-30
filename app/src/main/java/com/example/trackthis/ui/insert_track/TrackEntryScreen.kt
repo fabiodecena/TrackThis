@@ -73,7 +73,6 @@ fun TrackDetails(
     val coroutineScope = rememberCoroutineScope()
     val userId =  FirebaseAuth.getInstance().currentUser?.uid
 
-
     Column(
         modifier = modifier
             .fillMaxSize()
