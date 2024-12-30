@@ -101,7 +101,11 @@ fun BottomBar(
                     if (item.route == NavigationItem.Home.route || item.route == NavigationItem.History.route) {
                         currentRoute == item.route
                     } else {
-                        currentRoute == "${NavigationItem.Statistics.route}/{topicId}"
+                        if (item.route == NavigationItem.Statistics.route) {
+                            currentRoute?.startsWith(item.route) == true
+                        } else {
+                            currentRoute == item.route
+                        }
                     },
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = MaterialTheme.colorScheme.inverseOnSurface,
