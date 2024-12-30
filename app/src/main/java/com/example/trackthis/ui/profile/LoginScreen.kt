@@ -14,6 +14,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,10 +31,8 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     loginViewModel: LoginViewModel = viewModel()
 ) {
-    val email = loginViewModel.email
-    val password = loginViewModel.password
+    val loginUiState by loginViewModel.loginUiState.collectAsState()
     val context = LocalContext.current
-    val isFormValid = loginViewModel::isLoginValid
 
     Column(
         modifier = modifier
@@ -51,11 +51,11 @@ fun LoginScreen(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
             ),
-            value = loginViewModel.email,
+            value = loginUiState.email,
             onValueChanged = {
-               loginViewModel.email = it
+               loginViewModel.updateEmail(it)
             },
-            isError = email.isBlank()
+            isError = loginUiState.isEmailError
         )
         EditField(
             modifier = Modifier
@@ -67,18 +67,18 @@ fun LoginScreen(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Next
             ),
-            value = loginViewModel.password,
+            value = loginUiState.password,
             onValueChanged = {
-                loginViewModel.password = it
+                loginViewModel.updatePassword(it)
             },
-            isError = password.isBlank()
+            isError = loginUiState.isPasswordError
         )
         Button(
-            onClick = { loginViewModel.loginInFirebase(email, password, context) },
+            onClick = { loginViewModel.loginInFirebase(loginUiState.email, loginUiState.password, context) },
             modifier = Modifier
                 .padding(dimensionResource(R.dimen.padding_medium2))
                 .align(Alignment.End),
-            enabled = isFormValid()
+            enabled = loginUiState.isLoginFormValid
         ) {
             Text("Login")
         }

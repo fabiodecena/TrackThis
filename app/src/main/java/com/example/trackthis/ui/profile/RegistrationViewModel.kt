@@ -3,27 +3,53 @@ package com.example.trackthis.ui.profile
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import java.util.Locale
 
 
-class RegistrationViewModel : ViewModel()  {
-    var firstName by mutableStateOf("")
-    var lastName by mutableStateOf("")
-    var email by mutableStateOf("")
-    var password by mutableStateOf("")
+class RegistrationViewModel : ViewModel() {
+    private val _registrationUiState = MutableStateFlow(ProfileUiState())
+    val registrationUiState: StateFlow<ProfileUiState> = _registrationUiState.asStateFlow()
 
-    fun isRegistrationValid(): Boolean {
-        return firstName.isNotBlank() &&
-                lastName.isNotBlank() &&
-                email.isNotBlank() &&
-                password.isNotBlank()
+    fun updateFirstName(firstName: String) {
+        _registrationUiState.value = _registrationUiState.value.copy(firstName = firstName)
+        validateInputs()
     }
 
+    fun updateLastName(lastName: String) {
+        _registrationUiState.value = _registrationUiState.value.copy(lastName = lastName)
+        validateInputs()
+    }
+
+    fun updateEmail(email: String) {
+        _registrationUiState.value = _registrationUiState.value.copy(email = email)
+        validateInputs()
+    }
+
+    fun updatePassword(password: String) {
+        _registrationUiState.value = _registrationUiState.value.copy(password = password)
+        validateInputs()
+    }
+
+    private fun validateInputs() {
+        val isFirstNameError = _registrationUiState.value.firstName.isBlank()
+        val isLastNameError = _registrationUiState.value.lastName.isBlank()
+        val isEmailError = _registrationUiState.value.email.isBlank()
+        val isPasswordError = _registrationUiState.value.password.isBlank()
+        val isFormValid = !isFirstNameError && !isLastNameError && !isEmailError && !isPasswordError
+
+        _registrationUiState.value = _registrationUiState.value.copy(
+            isFirstNameError = isFirstNameError,
+            isLastNameError = isLastNameError,
+            isEmailError = isEmailError,
+            isPasswordError = isPasswordError,
+            isRegistrationFormValid = isFormValid
+        )
+    }
 
     private fun createUserInFirebase(email: String, password: String, context: Context) {
         val auth = FirebaseAuth.getInstance()
@@ -49,7 +75,7 @@ class RegistrationViewModel : ViewModel()  {
 
     fun createAccount(context: Context) {
         createUserInFirebase(
-            email, password, context
+            _registrationUiState.value.email, _registrationUiState.value.password, context
         )
     }
 

@@ -51,7 +51,7 @@ fun Navigation(
             )
         }
         composable(NavigationItem.Registration.route) {
-            RegistrationScreen()
+            RegistrationScreen(registrationViewModel = registrationViewModel)
         }
         composable(NavigationItem.Login.route) {
             LoginScreen()

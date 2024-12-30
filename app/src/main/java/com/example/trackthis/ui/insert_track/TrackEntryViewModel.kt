@@ -1,9 +1,5 @@
 package com.example.trackthis.ui.insert_track
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -17,7 +13,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -29,24 +24,6 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
 
     private val _trackEntryUiState = MutableStateFlow(TrackEntryUiState())
     val trackEntryUiState: StateFlow<TrackEntryUiState> = _trackEntryUiState.asStateFlow()
-
-
-    fun updateSelectedDate(millis: Long?) {
-        _trackEntryUiState.update { currentState ->
-            currentState.copy(
-                selectedDate = millis,
-                selectedDateString = millis?.let { convertMillisToDate(it) } ?: ""
-            )
-        }
-    }
-
-    fun toggleModal(show: Boolean) {
-        _trackEntryUiState.update { currentState ->
-            currentState.copy(showModal = show)
-        }
-    }
-
-
 
     fun updateDailyEffort(dailyEffort: String) {
         _trackEntryUiState.value = _trackEntryUiState.value.copy(dailyEffort = dailyEffort)

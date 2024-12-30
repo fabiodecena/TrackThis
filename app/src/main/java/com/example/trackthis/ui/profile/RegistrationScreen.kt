@@ -14,26 +14,23 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trackthis.R
 import com.example.trackthis.ui.insert_track.EditField
 
 @Composable
 fun RegistrationScreen(
     modifier: Modifier = Modifier,
-    registrationViewModel: RegistrationViewModel = viewModel(),
+    registrationViewModel: RegistrationViewModel
 ) {
-    val firstName = registrationViewModel.firstName
-    val lastName = registrationViewModel.lastName
-    val email = registrationViewModel.email
-    val password = registrationViewModel.password
-    val isFormValid = registrationViewModel::isRegistrationValid
+    val registrationUiState by registrationViewModel.registrationUiState.collectAsState()
     val context = LocalContext.current
 
     Column(
@@ -53,11 +50,11 @@ fun RegistrationScreen(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next
             ),
-            value = registrationViewModel.firstName,
+            value = registrationUiState.firstName,
             onValueChanged = {
-                registrationViewModel.firstName = it
+                registrationViewModel.updateFirstName(it)
             },
-            isError = firstName.isBlank()
+            isError = registrationUiState.isFirstNameError
         )
         EditField(
             modifier = Modifier
@@ -69,11 +66,11 @@ fun RegistrationScreen(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next
             ),
-            value = registrationViewModel.lastName,
+            value = registrationUiState.lastName,
             onValueChanged = {
-                registrationViewModel.lastName = it
+                registrationViewModel.updateLastName(it)
             },
-            isError = lastName.isBlank()
+            isError = registrationUiState.isLastNameError
         )
         EditField(
             modifier = Modifier
@@ -85,11 +82,11 @@ fun RegistrationScreen(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
             ),
-            value = registrationViewModel.email,
+            value = registrationUiState.email,
             onValueChanged = {
-                registrationViewModel.email = it
+                registrationViewModel.updateEmail(it)
             },
-            isError = email.isBlank()
+            isError = registrationUiState.isEmailError
         )
         EditField(
             modifier = Modifier
@@ -101,18 +98,18 @@ fun RegistrationScreen(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Next
             ),
-            value = registrationViewModel.password,
+            value = registrationUiState.password,
             onValueChanged = {
-                registrationViewModel.password = it
+                registrationViewModel.updatePassword(it)
             },
-            isError = password.isBlank()
+            isError = registrationUiState.isPasswordError
         )
         Button(
             onClick = { registrationViewModel.createAccount(context) },
             modifier = Modifier
                 .padding(dimensionResource(R.dimen.padding_medium2))
                 .align(Alignment.End),
-            enabled = isFormValid()
+            enabled = registrationUiState.isRegistrationFormValid
         ) {
             Text("Register")
         }
