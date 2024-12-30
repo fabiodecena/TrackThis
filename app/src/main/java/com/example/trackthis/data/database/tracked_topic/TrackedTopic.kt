@@ -1,7 +1,6 @@
 package com.example.trackthis.data.database.tracked_topic
 
 import androidx.annotation.StringRes
-import androidx.compose.ui.input.key.type
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey

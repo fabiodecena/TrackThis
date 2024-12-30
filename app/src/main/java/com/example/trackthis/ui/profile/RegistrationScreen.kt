@@ -29,7 +29,6 @@ import com.example.trackthis.ui.insert_track.EditField
 fun RegistrationScreen(
     modifier: Modifier = Modifier,
     registrationViewModel: RegistrationViewModel = viewModel(),
-    navController: NavController
 ) {
     val firstName = registrationViewModel.firstName
     val lastName = registrationViewModel.lastName
@@ -110,7 +109,7 @@ fun RegistrationScreen(
             isError = password.isBlank()
         )
         Button(
-            onClick = { registrationViewModel.createAccount(navController, context) },
+            onClick = { registrationViewModel.createAccount(context) },
             modifier = Modifier
                 .padding(dimensionResource(R.dimen.padding_medium2))
                 .align(Alignment.End),

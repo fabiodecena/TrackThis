@@ -3,7 +3,6 @@ package com.example.trackthis.data
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.example.trackthis.ui.statistics.timer.WorkerScheduler.scheduleMondayResetWorker
 
 class TimeChangeReceiver : BroadcastReceiver() {

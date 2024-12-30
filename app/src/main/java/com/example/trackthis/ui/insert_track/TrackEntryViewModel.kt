@@ -9,7 +9,6 @@ import com.example.trackthis.TrackApplication
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.data.database.tracked_topic.TrackedTopicDao
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.Flow
 
 
@@ -36,7 +35,7 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
     }
 
     fun retrieveAllItems(): Flow<List<TrackedTopic>> {
-        return  trackedTopicDao.getAllItems(userId)
+        return  trackedTopicDao.getAllItemsByUser(userId)
     }
 
     companion object {

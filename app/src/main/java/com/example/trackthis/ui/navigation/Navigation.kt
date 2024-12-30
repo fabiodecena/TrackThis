@@ -9,17 +9,15 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.trackthis.ui.insert_track.TrackDetails
-import com.example.trackthis.ui.statistics.charts.ChartViewModel
 import com.example.trackthis.data.TopicListRepository
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.data.listOfVisualizedTopics
 import com.example.trackthis.ui.history.HistoryScreen
 import com.example.trackthis.ui.home.HomeScreen
 import com.example.trackthis.ui.home.HomeScreenViewModel
+import com.example.trackthis.ui.insert_track.TrackDetails
 import com.example.trackthis.ui.insert_track.TrackEntryViewModel
 import com.example.trackthis.ui.profile.LoginScreen
-import com.example.trackthis.ui.profile.LoginViewModel
 import com.example.trackthis.ui.profile.RegistrationScreen
 import com.example.trackthis.ui.profile.RegistrationViewModel
 import com.example.trackthis.ui.profile.WelcomeScreen
@@ -27,6 +25,7 @@ import com.example.trackthis.ui.settings.ActiveTrackScreen
 import com.example.trackthis.ui.settings.InactiveTrackScreen
 import com.example.trackthis.ui.settings.SettingsScreen
 import com.example.trackthis.ui.statistics.StatisticsScreen
+import com.example.trackthis.ui.statistics.charts.ChartViewModel
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
 
 @Composable
@@ -39,7 +38,6 @@ fun Navigation(
 ) {
     val chartViewModel: ChartViewModel = viewModel()
     val registrationViewModel: RegistrationViewModel = viewModel()
-    val loginViewModel: LoginViewModel = viewModel()
 
     NavHost(
         modifier = modifier,
@@ -49,12 +47,11 @@ fun Navigation(
         composable(NavigationItem.Welcome.route) {
             WelcomeScreen(
                 navController = navController,
-                registrationViewModel = registrationViewModel,
-                loginViewModel = loginViewModel
+                registrationViewModel = registrationViewModel
             )
         }
         composable(NavigationItem.Registration.route) {
-            RegistrationScreen(navController = navController)
+            RegistrationScreen()
         }
         composable(NavigationItem.Login.route) {
             LoginScreen()

@@ -22,7 +22,6 @@ import com.example.trackthis.ui.navigation.NavigationItem
 import com.example.trackthis.ui.statistics.charts.ChartUiState
 import com.example.trackthis.ui.statistics.charts.pointsData
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

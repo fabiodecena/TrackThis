@@ -2,14 +2,11 @@ package com.example.trackthis.ui.profile
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavController
-import com.example.trackthis.ui.navigation.NavigationItem
 import com.google.firebase.auth.FirebaseAuth
 import java.util.Locale
 
@@ -28,7 +25,7 @@ class RegistrationViewModel : ViewModel()  {
     }
 
 
-    private fun createUserInFirebase(email: String, password: String, navController: NavController, context: Context) {
+    private fun createUserInFirebase(email: String, password: String, context: Context) {
         val auth = FirebaseAuth.getInstance()
 
         // Set Firebase locale (optional)
@@ -50,9 +47,9 @@ class RegistrationViewModel : ViewModel()  {
             }
     }
 
-    fun createAccount(navController: NavController, context: Context) {
+    fun createAccount(context: Context) {
         createUserInFirebase(
-            email, password, navController, context
+            email, password, context
         )
     }
 

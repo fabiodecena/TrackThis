@@ -11,8 +11,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TrackedTopicDao {
 
+    @Query("SELECT * from tracked_topics ORDER BY id DESC")
+    fun getAllItems(): Flow<List<TrackedTopic>>
+
     @Query("SELECT * from tracked_topics WHERE user_id = :userId ORDER BY id DESC")
-    fun getAllItems(userId: String): Flow<List<TrackedTopic>>
+    fun getAllItemsByUser(userId: String): Flow<List<TrackedTopic>>
 
     @Query("SELECT * from tracked_topics WHERE user_id = :userId AND topic_name = :nameId")
     fun getItemByName(userId: String, nameId: Int): Flow<TrackedTopic>

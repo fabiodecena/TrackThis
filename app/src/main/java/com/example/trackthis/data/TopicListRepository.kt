@@ -16,7 +16,7 @@ object TopicPreferences {
     val SELECTED_TOPICS_KEY = stringSetPreferencesKey("selected_topics")
 }
 
-class TopicListRepository(private val context: Context) {
+class TopicListRepository(context: Context) {
     private val dataStore = context.dataStore
 
     // Save the selected topics

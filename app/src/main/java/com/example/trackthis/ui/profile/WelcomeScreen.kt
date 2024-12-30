@@ -22,8 +22,7 @@ import com.example.trackthis.ui.navigation.NavigationItem
 fun WelcomeScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    registrationViewModel: RegistrationViewModel,
-    loginViewModel: LoginViewModel
+    registrationViewModel: RegistrationViewModel
 ) {
     val context = LocalContext.current
 
