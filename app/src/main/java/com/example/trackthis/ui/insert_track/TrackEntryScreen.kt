@@ -32,11 +32,11 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,13 +48,11 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.trackthis.R
-import com.example.trackthis.ui.statistics.charts.ChartViewModel
-import com.example.trackthis.ui.navigation.NavigationItem
 import com.example.trackthis.data.Topic
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
+import com.example.trackthis.ui.navigation.NavigationItem
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
@@ -68,35 +66,13 @@ fun TrackDetails(
     modifier: Modifier = Modifier,
     topic: Topic,
     navController: NavController,
-    chartViewModel: ChartViewModel = viewModel(),
     timerViewModel: TimerViewModel,
     trackEntryViewModel: TrackEntryViewModel
 ) {
-    val dailyEffort = chartViewModel.dailyEffortInput
-    var finalGoalInput by rememberSaveable { mutableStateOf("") }
-    var startingDateInput by rememberSaveable { mutableStateOf("") }
-    var endingDateInput by rememberSaveable { mutableStateOf("") }
+    val trackEntryUiState by trackEntryViewModel.trackEntryUiState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     val userId =  FirebaseAuth.getInstance().currentUser?.uid
 
-    val isDailyEffortGreaterThanFinalGoal =
-        dailyEffort.isNotBlank() && finalGoalInput.isNotBlank() &&
-                dailyEffort.toInt() >= finalGoalInput.toInt()
-
-    val isStartingDateGreaterThanEndingDate =
-        startingDateInput.isNotBlank() && endingDateInput.isNotBlank() &&
-                (SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).parse(startingDateInput)?.time
-                    ?: 0) >=
-                SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).parse(endingDateInput)?.time!!
-
-    val isFormValid =
-                dailyEffort.isNotBlank() &&
-                finalGoalInput.isNotBlank() &&
-                finalGoalInput.toInt() > dailyEffort.toInt() &&
-                startingDateInput.isNotBlank() &&
-                endingDateInput.isNotBlank() &&
-                isStartingDateGreaterThanEndingDate.not() &&
-                userId != null
 
     Column(
         modifier = modifier
@@ -118,14 +94,14 @@ fun TrackDetails(
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_medium2)),
         ) { }
-        if (isDailyEffortGreaterThanFinalGoal) {
+        if (trackEntryUiState.isDailyEffortError) {
             Text(
                 text = stringResource(R.string.daily_effort_error),
                 color = Color.Red,
                 modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
             )
         }
-        else if (isStartingDateGreaterThanEndingDate) {
+        else if (trackEntryUiState.isDateError) {
             Text(
                 text = stringResource(R.string.dates_error),
                 color = Color.Red,
@@ -142,9 +118,9 @@ fun TrackDetails(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next
             ),
-            value = chartViewModel.dailyEffortInput,
-            onValueChanged = { chartViewModel.dailyEffortInput = it },
-            isError = isDailyEffortGreaterThanFinalGoal
+            value = trackEntryUiState.dailyEffort,
+            onValueChanged = { trackEntryViewModel.updateDailyEffort(it) },
+            isError = trackEntryUiState.isDailyEffortError
         )
         EditField(
             modifier = Modifier
@@ -156,29 +132,29 @@ fun TrackDetails(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next
             ),
-            value = finalGoalInput,
-            onValueChanged = { finalGoalInput = it },
-            isError = isDailyEffortGreaterThanFinalGoal
+            value = trackEntryUiState.finalGoal,
+            onValueChanged = { trackEntryViewModel.updateFinalGoal(it) },
+            isError = trackEntryUiState.isDailyEffortError
         )
         DatePickerFieldToModal(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_medium2)),
             label = R.string.starting_date,
-            onValueChanged = { startingDateInput = it },
+            onValueChanged = { trackEntryViewModel.updateStartingDate(it) },
             isStartDatePicker = true,
-            startingDate = startingDateInput,
-            isError = isStartingDateGreaterThanEndingDate
+            startingDate = trackEntryUiState.startingDate,
+            isError = trackEntryUiState.isDateError
         )
         DatePickerFieldToModal(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_medium2)),
             label = R.string.ending_date,
-            onValueChanged = { endingDateInput = it },
+            onValueChanged = { trackEntryViewModel.updateEndingDate(it) },
             isStartDatePicker = false,
-            startingDate = startingDateInput,
-            isError = isStartingDateGreaterThanEndingDate
+            startingDate = trackEntryUiState.startingDate,
+            isError = trackEntryUiState.isDateError
         )
         Button(
             onClick = {
@@ -189,10 +165,10 @@ fun TrackDetails(
                         TrackedTopic(
                             userId = userId!!,
                             name = topic.name,
-                            dailyEffort = dailyEffort.toDouble(),
-                            finalGoal = finalGoalInput.toInt(),
-                            startingDate = startingDateInput,
-                            endingDate = endingDateInput,
+                            dailyEffort = trackEntryUiState.dailyEffort.toDouble(),
+                            finalGoal = trackEntryUiState.finalGoal.toInt(),
+                            startingDate = trackEntryUiState.startingDate,
+                            endingDate = trackEntryUiState.endingDate,
                             timeSpent = 0,
                             index = 0
                         )
@@ -207,7 +183,7 @@ fun TrackDetails(
             modifier = Modifier
                 .padding(dimensionResource(R.dimen.padding_medium2))
                 .align(Alignment.End),
-            enabled = isFormValid
+            enabled = trackEntryUiState.isFormValid
         ) {
             Icon(
                 Icons.Filled.Add,
@@ -226,7 +202,7 @@ fun EditField(
     keyboardOptions: KeyboardOptions,
     value: String,
     onValueChanged: (String) -> Unit,
-    isError: Boolean = false
+    isError: Boolean
 ) {
     val borderColor = if (isError) {
         Color.Red

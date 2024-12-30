@@ -15,9 +15,6 @@ class ChartViewModel: ViewModel() {
     private val _chartUiState = MutableStateFlow(ChartUiState())
     val chartUiState: StateFlow<ChartUiState> = _chartUiState.asStateFlow()
 
-
-    var dailyEffortInput by mutableStateOf("")
-
     init {
     _chartUiState.value = ChartUiState(defaultPointsData = pointsData, dailyEffort = dailyEffortList)
     }
