@@ -1,6 +1,7 @@
 package com.example.trackthis.ui.profile
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
@@ -59,6 +60,10 @@ class RegistrationViewModel : ViewModel()  {
             if(it.currentUser == null) {
                 Log.d("TAG", "User is logged out")
                 Toast.makeText(context, "User is logged out", Toast.LENGTH_SHORT).show()
+                // Restart the app
+                val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
+                intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                context.startActivity(intent)
             }
         }
         firebaseAuth.addAuthStateListener(authStateListener)

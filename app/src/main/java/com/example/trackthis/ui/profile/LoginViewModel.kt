@@ -1,6 +1,7 @@
 package com.example.trackthis.ui.profile
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
@@ -29,6 +30,10 @@ class LoginViewModel : ViewModel() {
                     Log.d("TAG", "Login successful")
                     Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
                     navController.navigate(NavigationItem.Home.route)
+                    // Restart the app
+                    val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
+                    intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(intent)
                 }
             }
             .addOnFailureListener {
