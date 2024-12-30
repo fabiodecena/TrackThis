@@ -38,8 +38,11 @@ class RegistrationViewModel : ViewModel()  {
             .createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                   navController.navigate(NavigationItem.Home.route)
                     Toast.makeText(context, "User created successfully", Toast.LENGTH_SHORT).show()
+                    // Restart the app
+                    val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
+                    intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(intent)
                 }
             }
             .addOnFailureListener {
@@ -55,18 +58,15 @@ class RegistrationViewModel : ViewModel()  {
 
     fun logout(context: Context) {
         val firebaseAuth = FirebaseAuth.getInstance()
-        firebaseAuth.signOut()
-        val authStateListener = FirebaseAuth.AuthStateListener {
-            if(it.currentUser == null) {
-                Log.d("TAG", "User is logged out")
-                Toast.makeText(context, "User is logged out", Toast.LENGTH_SHORT).show()
-                // Restart the app
-                val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
-                intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                context.startActivity(intent)
-            }
+        if (firebaseAuth.currentUser != null) {
+            firebaseAuth.signOut()
+            Toast.makeText(context, "User is logged out", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "User is already logged out", Toast.LENGTH_SHORT).show()
         }
-        firebaseAuth.addAuthStateListener(authStateListener)
-        firebaseAuth.removeAuthStateListener(authStateListener)
+        // Restart the app
+        val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
+        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
     }
 }

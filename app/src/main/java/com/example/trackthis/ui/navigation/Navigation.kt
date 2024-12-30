@@ -57,7 +57,7 @@ fun Navigation(
             RegistrationScreen(navController = navController)
         }
         composable(NavigationItem.Login.route) {
-            LoginScreen(navController = navController)
+            LoginScreen()
         }
         composable(NavigationItem.Home.route) {
             HomeScreen(navController = navController, trackedTopics = trackedTopics)

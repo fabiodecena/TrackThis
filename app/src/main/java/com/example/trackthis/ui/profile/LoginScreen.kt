@@ -28,8 +28,7 @@ import com.example.trackthis.ui.insert_track.EditField
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    loginViewModel: LoginViewModel = viewModel(),
-    navController: NavController
+    loginViewModel: LoginViewModel = viewModel()
 ) {
     val email = loginViewModel.email
     val password = loginViewModel.password
@@ -76,7 +75,7 @@ fun LoginScreen(
             isError = password.isBlank()
         )
         Button(
-            onClick = { loginViewModel.loginInFirebase(email, password, navController, context) },
+            onClick = { loginViewModel.loginInFirebase(email, password, context) },
             modifier = Modifier
                 .padding(dimensionResource(R.dimen.padding_medium2))
                 .align(Alignment.End),
