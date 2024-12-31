@@ -87,7 +87,7 @@ fun BottomBar(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     val timerUiState by timerViewModel.timerUiState.collectAsState()
-    val topic by timerViewModel.topic.collectAsState()
+    val topic = timerUiState.topic
     val firstTopicName = trackedTopics.firstOrNull()?.name
 
     NavigationBar(

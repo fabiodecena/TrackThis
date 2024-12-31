@@ -56,11 +56,8 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
     private val _chartUiState = MutableStateFlow(ChartUiState())
     private val chartUiState = _chartUiState.asStateFlow()
 
-    private val _topic = MutableStateFlow<TrackedTopic?>(null)
-    val topic = _topic.asStateFlow()
-
     fun setTopic(topic: TrackedTopic?) {
-        _topic.value = topic
+        _timerUiState.value = _timerUiState.value.copy(topic = topic)
     }
 
     fun startTimer() {
