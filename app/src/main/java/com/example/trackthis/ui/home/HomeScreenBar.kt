@@ -86,7 +86,7 @@ fun BottomBar(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    val isTimerRunning by timerViewModel.isTimerRunning.collectAsState(initial = false)
+    val timerUiState by timerViewModel.timerUiState.collectAsState()
     val topic by timerViewModel.topic.collectAsState()
     val firstTopicName = trackedTopics.firstOrNull()?.name
 
@@ -128,7 +128,7 @@ fun BottomBar(
                                 }
                             }
                         } else {
-                            if (!isTimerRunning) {
+                            if (!timerUiState.isTimerRunning) {
                                 timerViewModel.initializeTimer(topic)
                             }
 

@@ -40,7 +40,7 @@ fun TimerScreen(
     navController: NavController,
     topicId: Int
 ) {
-    val timerValue by timerViewModel.timer.collectAsState()
+    val timerUiState by timerViewModel.timerUiState.collectAsState()
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
@@ -49,7 +49,7 @@ fun TimerScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = timerValue.formatTime(), fontSize = 24.sp)
+        Text(text = timerUiState.timer.formatTime(), fontSize = 24.sp)
         Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -62,7 +62,7 @@ fun TimerScreen(
             Spacer(modifier = Modifier.width(16.dp))
             Button(
                 onClick = { timerViewModel.stopTimer(context, navController, topicId) },
-                enabled = timerValue > 0L
+                enabled = timerUiState.timer> 0L
             ) {
                 Text("Stop")
             }

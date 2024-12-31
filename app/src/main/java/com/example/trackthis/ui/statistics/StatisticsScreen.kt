@@ -47,6 +47,7 @@ import com.example.trackthis.R
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.ui.statistics.charts.ChartViewModel
 import com.example.trackthis.ui.statistics.timer.TimerScreen
+import com.example.trackthis.ui.statistics.timer.TimerUiState
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
 import ir.ehsannarmani.compose_charts.LineChart
 import ir.ehsannarmani.compose_charts.models.AnimationMode
@@ -68,6 +69,7 @@ fun StatisticsScreen(
     navController: NavController
 ) {
     val chartUiState by chartViewModel.chartUiState.collectAsState()
+    val timerUiState by timerViewModel.timerUiState.collectAsState()
     val pointsData = chartUiState.defaultPointsData
     val dailyEffort = chartUiState.dailyEffort
     val context = LocalContext.current
@@ -80,7 +82,7 @@ fun StatisticsScreen(
             timerViewModel.scheduleMondayResetWorker(context)
             timerViewModel.observeMondayResetWorker(context, navController, firstTopic)
         }
-        if (firstTopic != null && timerViewModel.timer.value == 0L) {
+        if (firstTopic != null &&  timerUiState.timer == 0L) {
             timerViewModel.initializeTimer(firstTopic)
         }
     }
@@ -97,7 +99,9 @@ fun StatisticsScreen(
             )
             BuildTracking(
                 timerViewModel = timerViewModel,
-                topicElement = firstTopic
+                topicElement = firstTopic,
+                timerUiState = timerUiState
+
             )
             TimerScreen(
                 timerViewModel = timerViewModel,
@@ -284,11 +288,9 @@ fun CircleWithLetter(letter: String, currentDay: String, topicElement: TrackedTo
 fun BuildTracking(
     topicElement: TrackedTopic,
     modifier: Modifier = Modifier,
-    timerViewModel: TimerViewModel
+    timerViewModel: TimerViewModel,
+    timerUiState: TimerUiState
 ) {
-    val timerValue = timerViewModel.timer.collectAsState()
-    val isPaused = timerViewModel.isPaused.collectAsState()
-
     Column(
         modifier = modifier
             .fillMaxWidth(),
@@ -309,7 +311,7 @@ fun BuildTracking(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(
-                    enabled = timerValue.value == 0L || isPaused.value,
+                    enabled = timerUiState.timer == 0L || timerUiState.isPaused,
                     onClick = { timerViewModel.startTimer() },
                     modifier = Modifier
                         .padding(start = dimensionResource(R.dimen.padding_medium))
@@ -317,7 +319,7 @@ fun BuildTracking(
                     Icon(
                         painterResource(R.drawable.play_circle_24dp_fill0_wght400_grad0_opsz24),
                         contentDescription = null,
-                        tint = if (timerValue.value == 0L || isPaused.value) MaterialTheme.colorScheme.tertiary
+                        tint = if (timerUiState.timer == 0L || timerUiState.isPaused) MaterialTheme.colorScheme.tertiary
                             else MaterialTheme.colorScheme.onTertiary
                     )
                 }

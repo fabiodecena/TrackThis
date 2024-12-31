@@ -61,7 +61,7 @@ fun HistoryScreen(
     navigateOnSelectedClick: (Int) -> Unit,
     navController: NavController
 ) {
-    val isTimerRunning by timerViewModel.isTimerRunning.collectAsState(initial = false)
+    val timerUiState by timerViewModel.timerUiState.collectAsState()
     val currentContext = LocalContext.current
 
     LazyColumn(
@@ -79,7 +79,7 @@ fun HistoryScreen(
                trackEntryViewModel = trackEntryViewModel,
                timerViewModel = timerViewModel,
                modifier = Modifier.clickable {
-                   if (isTimerRunning) {
+                   if (timerUiState.isTimerRunning) {
                        navController.navigate(NavigationItem.History.route)
                        Toast.makeText(
                            currentContext, "The Timer is Running! Navigation between Elements is Disabled!!!", Toast.LENGTH_SHORT

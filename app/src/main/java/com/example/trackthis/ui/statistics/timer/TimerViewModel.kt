@@ -25,7 +25,6 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
@@ -52,6 +51,13 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
 
     private val userId = FirebaseAuth.getInstance().currentUser?.uid
 
+    private val _timerUiState = MutableStateFlow(TimerUiState())
+    val timerUiState = _timerUiState.asStateFlow()
+
+    private val _chartUiState = MutableStateFlow(ChartUiState())
+    private val chartUiState = _chartUiState.asStateFlow()
+
+    private var timerJob: Job? = null
 
     private val _topic = MutableStateFlow<TrackedTopic?>(null)
     val topic = _topic.asStateFlow()
@@ -60,28 +66,14 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         _topic.value = topic
     }
 
-    private val _timer = MutableStateFlow(0L)
-    val timer = _timer.asStateFlow()
-
-    private val _chartUiState = MutableStateFlow(ChartUiState())
-    private val chartUiState = _chartUiState.asStateFlow()
-
-    private val _isPaused = MutableStateFlow(false)
-    val isPaused = _isPaused.asStateFlow()
-
-    private var timerJob: Job? = null
-
-    private val _isTimerRunning = MutableStateFlow(false)
-    val isTimerRunning: StateFlow<Boolean> = _isTimerRunning.asStateFlow()
-
     fun startTimer() {
-        _isTimerRunning.value = true
+        _timerUiState.value = _timerUiState.value.copy(isTimerRunning = true)
         if (timerJob == null || timerJob?.isCancelled == true)
-            _isPaused.value = false
+            _timerUiState.value = _timerUiState.value.copy(isPaused = false)
         timerJob = viewModelScope.launch {
             while (true) {
                 delay(1000)
-                _timer.value++
+                _timerUiState.value=_timerUiState.value.copy(timer = _timerUiState.value.timer + 1)
             }
         }
     }
@@ -112,23 +104,23 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         if (timerJob == null || timerJob?.isCancelled == true) {
             val currentDay = saveCurrentDay()
             val savedTime = topic?.dailyTimeSpent?.get(currentDay) ?: 0L
-            _timer.value = savedTime
+            _timerUiState.value = _timerUiState.value.copy(timer = savedTime)
         }
     }
 
     fun pauseTimer() {
         timerJob?.cancel()
-        _isPaused.value = true
+        _timerUiState.value = _timerUiState.value.copy(isPaused = true)
     }
 
     fun stopTimer(context: Context, navController: NavController, topicId: Int) {
-        _isTimerRunning.value = false
+        _timerUiState.value = _timerUiState.value.copy(isPaused = true)
         val currentDay = saveCurrentDay()
         timerJob?.cancel()
-        _isPaused.value = false
+       _timerUiState.value = _timerUiState.value.copy(isTimerRunning = false)
 
         // History the alert dialog
-        _isPaused.value = true// Pause the timer during the alert dialog
+        _timerUiState.value = _timerUiState.value.copy(isPaused = true)// Pause the timer during the alert dialog
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Confirm Update")
         builder.setMessage("Are you sure you want to update the data list?")
@@ -140,7 +132,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
             viewModelScope.launch {
                 val topic = trackedTopicDao.getItemByName(userId!!,topicId).first()
                 val updatedDailyTimeSpent = topic.dailyTimeSpent.toMutableMap()
-                updatedDailyTimeSpent[currentDay] = timer.value // Store time for current day
+                updatedDailyTimeSpent[currentDay] = timerUiState.value.timer // Store time for current day
                 val totalEffort = updatedDailyTimeSpent.values.sum() + topic.index // Update total time spent
                 val updatedTopic = topic.copy(dailyTimeSpent = updatedDailyTimeSpent, timeSpent = totalEffort.toInt())
                 trackedTopicDao.update(updatedTopic)
@@ -164,7 +156,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         }
         builder.setNegativeButton("No") { dialog, _ ->
             // Resume the timer
-            _isPaused.value = false
+            _timerUiState.value = _timerUiState.value.copy(isPaused = false)
             startTimer() // Restart the timer when the user chooses "No"
             dialog.dismiss()
         }
@@ -196,10 +188,10 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
     }
 
     fun resetTimer() {
-        _isTimerRunning.value = false
+        _timerUiState.value = _timerUiState.value.copy(timer = 0L)
         timerJob?.cancel()
-        _timer.value = 0L
-        _isPaused.value = false
+        _timerUiState.value = _timerUiState.value.copy(timer = 0L)
+        _timerUiState.value = _timerUiState.value.copy(isPaused = false)
     }
 
     fun resetData() {
