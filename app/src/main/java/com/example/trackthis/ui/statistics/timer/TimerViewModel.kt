@@ -22,7 +22,6 @@ import com.example.trackthis.ui.navigation.NavigationItem
 import com.example.trackthis.ui.statistics.charts.ChartUiState
 import com.example.trackthis.ui.statistics.charts.pointsData
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -57,8 +56,6 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
     private val _chartUiState = MutableStateFlow(ChartUiState())
     private val chartUiState = _chartUiState.asStateFlow()
 
-    private var timerJob: Job? = null
-
     private val _topic = MutableStateFlow<TrackedTopic?>(null)
     val topic = _topic.asStateFlow()
 
@@ -68,14 +65,14 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
 
     fun startTimer() {
         _timerUiState.value = _timerUiState.value.copy(isTimerRunning = true)
-        if (timerJob == null || timerJob?.isCancelled == true)
+        if (_timerUiState.value.timerJob == null || _timerUiState.value.timerJob?.isCancelled == true)
             _timerUiState.value = _timerUiState.value.copy(isPaused = false)
-        timerJob = viewModelScope.launch {
+        _timerUiState.value = _timerUiState.value.copy(timerJob = viewModelScope.launch {
             while (true) {
                 delay(1000)
-                _timerUiState.value=_timerUiState.value.copy(timer = _timerUiState.value.timer + 1)
+                _timerUiState.value = _timerUiState.value.copy(timer = _timerUiState.value.timer + 1)
             }
-        }
+        })
     }
 
     fun scheduleMondayResetWorker(context: Context) {
@@ -101,7 +98,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
     }
 
     fun initializeTimer(topic: TrackedTopic?) {
-        if (timerJob == null || timerJob?.isCancelled == true) {
+        if (_timerUiState.value.timerJob == null || _timerUiState.value.timerJob?.isCancelled == true) {
             val currentDay = saveCurrentDay()
             val savedTime = topic?.dailyTimeSpent?.get(currentDay) ?: 0L
             _timerUiState.value = _timerUiState.value.copy(timer = savedTime)
@@ -109,14 +106,14 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
     }
 
     fun pauseTimer() {
-        timerJob?.cancel()
+        _timerUiState.value.timerJob?.cancel()
         _timerUiState.value = _timerUiState.value.copy(isPaused = true)
     }
 
     fun stopTimer(context: Context, navController: NavController, topicId: Int) {
         _timerUiState.value = _timerUiState.value.copy(isPaused = true)
         val currentDay = saveCurrentDay()
-        timerJob?.cancel()
+        _timerUiState.value.timerJob?.cancel()
        _timerUiState.value = _timerUiState.value.copy(isTimerRunning = false)
 
         // History the alert dialog
@@ -184,12 +181,12 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
 
     override fun onCleared() {
         super.onCleared()
-        timerJob?.cancel()
+        _timerUiState.value.timerJob?.cancel()
     }
 
     fun resetTimer() {
         _timerUiState.value = _timerUiState.value.copy(timer = 0L)
-        timerJob?.cancel()
+        _timerUiState.value.timerJob?.cancel()
         _timerUiState.value = _timerUiState.value.copy(timer = 0L)
         _timerUiState.value = _timerUiState.value.copy(isPaused = false)
     }
