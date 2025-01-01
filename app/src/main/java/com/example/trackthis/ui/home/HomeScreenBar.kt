@@ -101,7 +101,9 @@ fun TopAppBar(navController: NavController) {
                     modifier = Modifier
                         .size(48.dp) // Adjust size for the background
                         .background(
-                            color = if (currentRoute == NavigationItem.Welcome.route) {
+                            color = if (currentRoute == NavigationItem.Welcome.route ||
+                                currentRoute == NavigationItem.Registration.route ||
+                                currentRoute == NavigationItem.Login.route) {
                                 MaterialTheme.colorScheme.secondaryContainer // Selected background
                             } else {
                                 Color.Transparent // Default background
@@ -113,7 +115,9 @@ fun TopAppBar(navController: NavController) {
                     Icon(
                         imageVector = NavigationItem.Registration.icon!!,
                         contentDescription = NavigationItem.Registration.title,
-                        tint = if (currentRoute == NavigationItem.Welcome.route) {
+                        tint = if (currentRoute == NavigationItem.Welcome.route ||
+                            currentRoute == NavigationItem.Registration.route ||
+                            currentRoute == NavigationItem.Login.route) {
                             MaterialTheme.colorScheme.inverseOnSurface // Selected tint
                         } else {
                             MaterialTheme.colorScheme.onSecondaryContainer // Default tint
