@@ -45,10 +45,19 @@
     <string name="dates_error">Starting date cannot be greater than Ending Date!!!</string>
     <string name="back_button">Back Button</string>
     <string name="refresh">Refresh</string>
-    <string name="progress_bar">Progress Bar</string>
+    <string name="progress_bar">Completed</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="welcome">Welcome!</string>
+    <string name="register_button">Register</string>
+    <string name="login_button">Login</string>
+    <string name="logout_button">Logout</string>
+    <string name="m_circle">M</string>
+    <string name="t_circle">T</string>
+    <string name="w_circle">W</string>
+    <string name="f_circle">F</string>
+    <string name="s_circle">S</string>
 
 </resources>

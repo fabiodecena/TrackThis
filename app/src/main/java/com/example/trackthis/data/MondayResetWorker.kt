@@ -27,7 +27,7 @@ class MondayResetWorker(
             saveTotalTimeSpent(trackedTopicDao)
             resetDailyTimeSpentForTrackedTopics(trackedTopicDao)
             timerViewModel.resetData()
-            timerViewModel.updatePointsDataList(firstTopic = trackedTopicDao.getAllItems().first().first())
+            timerViewModel.updatePointsDataList(topic = trackedTopicDao.getAllItems().first().first())
             timerViewModel.resetTimer()
         }
         timerViewModel.resetTimer()

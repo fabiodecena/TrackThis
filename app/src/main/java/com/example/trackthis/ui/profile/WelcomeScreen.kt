@@ -14,8 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.trackthis.R
 import com.example.trackthis.ui.navigation.NavigationItem
 
 @Composable
@@ -31,7 +33,7 @@ fun WelcomeScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             Text(
-                text = "Welcome",
+                text = stringResource(R.string.welcome),
                 modifier = Modifier.align(Alignment.Center),
                 style = MaterialTheme.typography.headlineLarge
             )
@@ -45,17 +47,17 @@ fun WelcomeScreen(
                 Button(
                     onClick = { navController.navigate(NavigationItem.Registration.route) }
                 ) {
-                    Text(text = "Register")
+                    Text(text = stringResource(R.string.register_button))
                 }
                 Button(
                     onClick = { navController.navigate(NavigationItem.Login.route) }
                 ) {
-                    Text(text = "Login")
+                    Text(text = stringResource(R.string.login_button))
                 }
                 Button(
                     onClick = { registrationViewModel.logout(context) }
                 ) {
-                    Text(text = "Logout")
+                    Text(text = stringResource(R.string.logout_button))
                 }
             }
         }

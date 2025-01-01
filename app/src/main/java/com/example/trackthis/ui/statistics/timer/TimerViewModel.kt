@@ -76,7 +76,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         WorkerScheduler.scheduleMondayResetWorker(context)
     }
 
-    fun observeMondayResetWorker(context: Context, navController: NavController, firstTopic: TrackedTopic?) {
+    fun observeMondayResetWorker(context: Context, navController: NavController, topic: TrackedTopic?) {
         WorkManager.getInstance(context)
             .getWorkInfosForUniqueWorkLiveData("MondayResetWorker")
             .observe( navController.currentBackStackEntry!!) { workInfos ->
@@ -84,7 +84,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
                     val progress = workInfo.progress.getString("status")
                     if (progress != "done" && workInfo.state == WorkInfo.State.RUNNING) {
                         resetTimer() // Reset the timer or update your state
-                        navController.navigate("${NavigationItem.Statistics.route}/${firstTopic?.name}") {
+                        navController.navigate("${NavigationItem.Statistics.route}/${topic?.name}") {
                             navController.graph.startDestinationRoute?.let { route ->
                                 popUpTo(route) { inclusive = true }
                             }
@@ -157,9 +157,9 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         val dialog = builder.create()
         dialog.show()
     }
-    fun updatePointsDataList(firstTopic: TrackedTopic?) {
+    fun updatePointsDataList(topic: TrackedTopic?) {
         chartUiState.value.xLabels.forEachIndexed { index, day -> // Get the timeSpent for the current day
-            val timeSpent = firstTopic?.dailyTimeSpent?.get(day)
+            val timeSpent = topic?.dailyTimeSpent?.get(day)
             if (timeSpent != null) { // Only update if the value exists in the map
                 if (index < pointsData.size) {
                     pointsData[index] = timeSpent.toDouble()

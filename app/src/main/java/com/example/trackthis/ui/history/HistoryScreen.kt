@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -40,14 +39,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.trackthis.R
-import com.example.trackthis.ui.navigation.NavigationItem
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.ui.insert_track.TrackEntryViewModel
+import com.example.trackthis.ui.navigation.NavigationItem
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
 import kotlinx.coroutines.launch
 
@@ -103,6 +101,7 @@ fun HistoryElement(
     timerViewModel: TimerViewModel
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val score = (trackedTopic.timeSpent) * 100 / trackedTopic.finalGoal
 
     Card(
         modifier = modifier
@@ -172,11 +171,11 @@ fun HistoryElement(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = stringResource(R.string.progress_bar),
+                text = stringResource(R.string.progress_bar) + ": " + (score).toString() + "%",
                 style = MaterialTheme.typography.bodySmall
             )
         }
-        ShowProgress((trackedTopic.timeSpent) * 100 / trackedTopic.finalGoal)
+        ShowProgress(score)
     }
 }
 
@@ -232,14 +231,7 @@ fun ShowProgress(score : Int){
                     disabledContainerColor = Color.Transparent
                 )
             ) {
-                Text(text = (score).toString()+"%",
-                    modifier = Modifier
-                        .clip(shape = RoundedCornerShape(23.dp))
-                        .fillMaxHeight(0.87f)
-                        .fillMaxWidth()
-                        .padding(7.dp),
-                    color = Color.White,
-                    textAlign = TextAlign.Center)
+
             }
         }
     }

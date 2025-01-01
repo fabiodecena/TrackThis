@@ -58,6 +58,9 @@ import ir.ehsannarmani.compose_charts.models.LabelProperties
 import ir.ehsannarmani.compose_charts.models.Line
 import ir.ehsannarmani.compose_charts.models.StrokeStyle
 import ir.ehsannarmani.compose_charts.models.ZeroLineProperties
+import java.time.DayOfWeek
+import java.time.format.TextStyle
+import java.util.Locale
 
 
 @Composable
@@ -65,48 +68,48 @@ fun StatisticsScreen(
     modifier: Modifier = Modifier,
     chartViewModel: ChartViewModel,
     timerViewModel: TimerViewModel,
-    firstTopic: TrackedTopic?,
+    topic: TrackedTopic?,
     navController: NavController
 ) {
     val chartUiState by chartViewModel.chartUiState.collectAsState()
     val timerUiState by timerViewModel.timerUiState.collectAsState()
     val pointsData = chartUiState.defaultPointsData
-    val dailyEffort = chartUiState.dailyEffort
+    val dailyEffortList = chartUiState.dailyEffort
     val context = LocalContext.current
 
 
-    timerViewModel.updatePointsDataList(firstTopic)
+    timerViewModel.updatePointsDataList(topic)
 
-    LaunchedEffect(firstTopic) {
-        if (firstTopic != null) {
+    LaunchedEffect(topic) {
+        if (topic != null) {
             timerViewModel.scheduleMondayResetWorker(context)
-            timerViewModel.observeMondayResetWorker(context, navController, firstTopic)
+            timerViewModel.observeMondayResetWorker(context, navController, topic)
         }
-        if (firstTopic != null &&  timerUiState.timer == 0L) {
-            timerViewModel.initializeTimer(firstTopic)
+        if (topic != null &&  timerUiState.timer == 0L) {
+            timerViewModel.initializeTimer(topic)
         }
     }
 
-    if (firstTopic != null) {
+    if (topic != null) {
         Column(
             modifier = modifier
                 .verticalScroll(rememberScrollState())
         ) {
             StartedTopic(
-                topicElement = firstTopic,
+                topicElement = topic,
                 data = pointsData,
-                dailyEffort = dailyEffort.map { firstTopic.dailyEffort }
+                dailyEffortList = dailyEffortList.map { topic.dailyEffort }
             )
             BuildTracking(
                 timerViewModel = timerViewModel,
-                topicElement = firstTopic,
+                topicElement = topic,
                 timerUiState = timerUiState
 
             )
             TimerScreen(
                 timerViewModel = timerViewModel,
                 navController = navController,
-                topicId = firstTopic.name
+                topicId = topic.name
             )
         }
     }
@@ -117,8 +120,9 @@ fun StartedTopic(
     topicElement: TrackedTopic,
     modifier: Modifier = Modifier,
     data: List<Double>,
-    dailyEffort: List<Double>
+    dailyEffortList: List<Double>
 ) {
+    val dailyEffort = dailyEffortList.first()
     Card(
         modifier = modifier
             .padding(dimensionResource(R.dimen.padding_medium)),
@@ -151,12 +155,14 @@ fun StartedTopic(
                 shape = MaterialTheme.shapes.large
             ){
                 LineChart(
-                    modifier = Modifier.fillMaxSize().padding(horizontal = 22.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 22.dp),
                     data = remember {
                         listOf(
                             Line(
                                 label = "Min Daily Effort",
-                                values = dailyEffort,
+                                values = dailyEffortList,
                                 color = SolidColor(Color.Red),
                                 drawStyle = DrawStyle.Stroke(
                                     strokeStyle = StrokeStyle.Dashed(
@@ -227,32 +233,46 @@ fun StartedTopic(
                         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
                     ) {
                         CircleWithLetter(
-                            "M", currentDay = "Monday",
-                            topicElement = topicElement
+                            letter = stringResource(R.string.m_circle),
+                            currentDay = DayOfWeek.MONDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()),
+                            topicElement = topicElement,
+                            dailyEffort = dailyEffort
                         )
                         CircleWithLetter(
-                            "T", currentDay = "Tuesday",
-                            topicElement = topicElement
+                            letter = stringResource(R.string.t_circle),
+                            currentDay = DayOfWeek.TUESDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()),
+                            topicElement = topicElement,
+                            dailyEffort = dailyEffort
                         )
                         CircleWithLetter(
-                            "W", currentDay = "Wednesday",
-                            topicElement = topicElement
+                            letter = stringResource(R.string.w_circle),
+                            currentDay = DayOfWeek.WEDNESDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()),
+                            topicElement = topicElement,
+                            dailyEffort = dailyEffort
                         )
                         CircleWithLetter(
-                            "T", currentDay = "Thursday",
-                            topicElement = topicElement
+                            letter = stringResource(R.string.t_circle),
+                            currentDay = DayOfWeek.THURSDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()),
+                            topicElement = topicElement,
+                            dailyEffort = dailyEffort
                         )
                         CircleWithLetter(
-                            "F", currentDay = "Friday",
-                            topicElement = topicElement
+                            stringResource(R.string.f_circle),
+                            currentDay = DayOfWeek.FRIDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()),
+                            topicElement = topicElement,
+                            dailyEffort = dailyEffort
                         )
                         CircleWithLetter(
-                            "S", currentDay = "Saturday",
-                            topicElement = topicElement
+                            stringResource(R.string.s_circle),
+                            currentDay = DayOfWeek.SATURDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()),
+                            topicElement = topicElement,
+                            dailyEffort = dailyEffort
                         )
                         CircleWithLetter(
-                            "S", currentDay = "Sunday",
-                            topicElement = topicElement
+                            stringResource(R.string.s_circle),
+                            currentDay = DayOfWeek.SUNDAY.getDisplayName(TextStyle.FULL, Locale.getDefault()),
+                            topicElement = topicElement,
+                            dailyEffort = dailyEffort
                         )
                     }
                 }
@@ -263,14 +283,21 @@ fun StartedTopic(
 
 
 @Composable
-fun CircleWithLetter(letter: String, currentDay: String, topicElement: TrackedTopic) {
+fun CircleWithLetter(
+    letter: String, currentDay: String,
+    topicElement: TrackedTopic,
+    dailyEffort: Double
+) {
     val isOnYAxis = topicElement.dailyTimeSpent[currentDay]?.let { it > 0 } ?: false
+    val isLower = topicElement.dailyTimeSpent[currentDay]?.let { it < dailyEffort } ?: false
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .clip(MaterialTheme.shapes.extraLarge)
             .background(
-                if (!isOnYAxis) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.tertiary
+                if (!isOnYAxis) MaterialTheme.colorScheme.onTertiary
+                else if (isLower) MaterialTheme.colorScheme.error
+                else MaterialTheme.colorScheme.tertiary
             )
             .size(dimensionResource(R.dimen.padding_medium2))
     ) {

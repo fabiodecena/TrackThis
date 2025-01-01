@@ -77,7 +77,7 @@ fun Navigation(
                 StatisticsScreen(
                     chartViewModel = chartViewModel, timerViewModel = timerViewModel,
                     navController = navController,
-                    firstTopic = null
+                    topic = null
                 )
             }
             composable(
@@ -91,7 +91,7 @@ fun Navigation(
                     StatisticsScreen(
                         chartViewModel = chartViewModel, timerViewModel = timerViewModel,
                         navController = navController,
-                        firstTopic = topic
+                        topic = topic
                     )
                 }
             }
