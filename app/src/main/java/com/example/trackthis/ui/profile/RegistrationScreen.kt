@@ -9,7 +9,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import com.example.trackthis.R
 import com.example.trackthis.ui.insert_track.EditField
 
@@ -45,7 +48,7 @@ fun RegistrationScreen(
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_medium2)),
             label = R.string.first_name,
-            leadingIcon = Icons.Filled.AccessTime,
+            leadingIcon = Icons.Filled.AccountCircle,
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next
@@ -61,7 +64,7 @@ fun RegistrationScreen(
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_medium2)),
             label = R.string.last_name,
-            leadingIcon = Icons.Filled.AccessTime,
+            leadingIcon = Icons.Filled.AccountCircle,
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next
@@ -77,7 +80,7 @@ fun RegistrationScreen(
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_medium2)),
             label = R.string.email,
-            leadingIcon = Icons.Filled.AccessTime,
+            leadingIcon = Icons.Filled.Email,
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
@@ -88,12 +91,12 @@ fun RegistrationScreen(
             },
             isError = registrationUiState.isEmailError
         )
-        EditField(
+        EditFieldPassword(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_medium2)),
             label = R.string.password,
-            leadingIcon = Icons.Filled.AccessTime,
+            leadingIcon = Icons.Filled.Lock,
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Next
@@ -102,7 +105,8 @@ fun RegistrationScreen(
             onValueChanged = {
                 registrationViewModel.updatePassword(it)
             },
-            isError = registrationUiState.isPasswordError
+            isError = registrationUiState.isPasswordError,
+            visualTransformation = PasswordVisualTransformation()
         )
         Button(
             onClick = { registrationViewModel.createAccount(context) },
