@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,6 +16,19 @@ import java.util.Locale
 class RegistrationViewModel : ViewModel() {
     private val _registrationUiState = MutableStateFlow(ProfileUiState())
     val registrationUiState: StateFlow<ProfileUiState> = _registrationUiState.asStateFlow()
+
+    private val auth = Firebase.auth
+
+    init {
+        fetchUserName()
+    }
+
+    private fun fetchUserName() {
+        val user = auth.currentUser
+        _registrationUiState.value = _registrationUiState.value.copy(
+            userName = user?.email ?: "User not Logged In"
+        )
+    }
 
     fun updateFirstName(firstName: String) {
         _registrationUiState.value = _registrationUiState.value.copy(firstName = firstName)

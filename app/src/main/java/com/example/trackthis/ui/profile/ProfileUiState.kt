@@ -10,5 +10,6 @@ data class ProfileUiState(
     val isEmailError: Boolean = false,
     val isPasswordError: Boolean = false,
     val isRegistrationFormValid: Boolean = false,
-    val isLoginFormValid: Boolean = false
+    val isLoginFormValid: Boolean = false,
+    val userName: String = ""
 )

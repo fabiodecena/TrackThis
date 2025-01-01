@@ -80,7 +80,8 @@ fun HistoryScreen(
                    if (timerUiState.isTimerRunning) {
                        navController.navigate(NavigationItem.History.route)
                        Toast.makeText(
-                           currentContext, "The Timer is Running! Navigation between Elements is Disabled!!!", Toast.LENGTH_SHORT
+                           currentContext,
+                           R.string.timer_running_toast, Toast.LENGTH_SHORT
                        ).show()
                    } else {
                        timerViewModel.pauseTimer()
