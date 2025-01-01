@@ -1,5 +1,9 @@
 package com.example.trackthis.ui.home
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -13,9 +17,13 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.trackthis.R
@@ -28,12 +36,13 @@ import com.example.trackthis.ui.statistics.timer.TimerViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBar(navController: NavController) {
+    val currentBackStackEntry = navController.currentBackStackEntryAsState()
+    val currentRoute = currentBackStackEntry.value?.destination?.route
+
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             titleContentColor = MaterialTheme.colorScheme.onErrorContainer,
-            containerColor = MaterialTheme.colorScheme.secondary,
-            actionIconContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-            navigationIconContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            containerColor = MaterialTheme.colorScheme.secondary
         ),
         title = {
             Text(
@@ -53,10 +62,29 @@ fun TopAppBar(navController: NavController) {
                     }
                 }
             ) {
-                Icon(
-                    imageVector = NavigationItem.Settings.icon!!,
-                    contentDescription = NavigationItem.Settings.title
-                )
+                Box(
+                    modifier = Modifier
+                        .size(48.dp) // Adjust size for the background
+                        .background(
+                            color = if (currentRoute == NavigationItem.Settings.route) {
+                                MaterialTheme.colorScheme.secondaryContainer // Selected background
+                            } else {
+                                Color.Transparent // Default background
+                            },
+                            shape = CircleShape // Circle background
+                        ),
+                    contentAlignment = Alignment.Center // Center the icon
+                ) {
+                    Icon(
+                        imageVector = NavigationItem.Settings.icon!!,
+                        contentDescription = NavigationItem.Settings.title,
+                        tint = if (currentRoute == NavigationItem.Settings.route) {
+                            MaterialTheme.colorScheme.inverseOnSurface // Selected tint
+                        } else {
+                            MaterialTheme.colorScheme.onSecondaryContainer // Default tint
+                        }
+                    )
+                }
             }
         },
         actions = {
@@ -69,10 +97,29 @@ fun TopAppBar(navController: NavController) {
                     }
                 }
             ) {
-                Icon(
-                    imageVector = NavigationItem.Registration.icon!!,
-                    contentDescription = NavigationItem.Registration.title
-                )
+                Box(
+                    modifier = Modifier
+                        .size(48.dp) // Adjust size for the background
+                        .background(
+                            color = if (currentRoute == NavigationItem.Welcome.route) {
+                                MaterialTheme.colorScheme.secondaryContainer // Selected background
+                            } else {
+                                Color.Transparent // Default background
+                            },
+                            shape = CircleShape // Circle background
+                        ),
+                    contentAlignment = Alignment.Center // Center the icon
+                ) {
+                    Icon(
+                        imageVector = NavigationItem.Registration.icon!!,
+                        contentDescription = NavigationItem.Registration.title,
+                        tint = if (currentRoute == NavigationItem.Welcome.route) {
+                            MaterialTheme.colorScheme.inverseOnSurface // Selected tint
+                        } else {
+                            MaterialTheme.colorScheme.onSecondaryContainer // Default tint
+                        }
+                    )
+                }
             }
         },
     )

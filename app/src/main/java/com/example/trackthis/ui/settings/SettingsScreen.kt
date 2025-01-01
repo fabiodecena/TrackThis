@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.trackthis.R
 import com.example.trackthis.data.TopicListElement
 import com.example.trackthis.ui.navigation.trackNavigationItems
 import com.example.trackthis.ui.home.HomeScreenViewModel
@@ -43,9 +45,12 @@ fun SettingsScreen() {
     val navController = rememberNavController()
     Scaffold(
         topBar = { TopRowSelectionScreen(navController = navController) },
+        containerColor = MaterialTheme.colorScheme.inverseOnSurface
     ) { innerPadding ->
         NavigationSelectionScreen(
-            navController = navController, modifier = Modifier.padding(innerPadding)
+            navController = navController,
+            modifier = Modifier
+                .padding(innerPadding)
         )
     }
 }
@@ -89,7 +94,7 @@ fun TopRowSelectionScreen(modifier: Modifier = Modifier, navController: NavContr
 fun ActiveTrackScreen(viewModel: HomeScreenViewModel) {
     val topics by viewModel.topics.collectAsState()
 
-    LazyColumn(modifier = Modifier) {
+    LazyColumn(modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))) {
         items(topics.filter { !it.selected }) { topic ->
             TopicListItem(topic) {
                 viewModel.onTopicSelected(it)
@@ -102,7 +107,7 @@ fun ActiveTrackScreen(viewModel: HomeScreenViewModel) {
 fun InactiveTrackScreen(viewModel: HomeScreenViewModel) {
     val topics by viewModel.topics.collectAsState()
 
-    LazyColumn(modifier = Modifier) {
+    LazyColumn(modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))) {
         items(topics.filter { it.selected }) { topic ->
             TopicListItem(topic) {
                 viewModel.onTopicSelected(it)
