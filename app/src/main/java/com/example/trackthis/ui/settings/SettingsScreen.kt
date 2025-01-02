@@ -95,7 +95,7 @@ fun ActiveTrackScreen(viewModel: HomeScreenViewModel) {
     val topics by viewModel.topics.collectAsState()
 
     LazyColumn(modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))) {
-        items(topics.filter { !it.selected }) { topic ->
+        items(topics.filter { it.selected }) { topic ->
             TopicListItem(topic) {
                 viewModel.onTopicSelected(it)
             }
@@ -108,7 +108,7 @@ fun InactiveTrackScreen(viewModel: HomeScreenViewModel) {
     val topics by viewModel.topics.collectAsState()
 
     LazyColumn(modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))) {
-        items(topics.filter { it.selected }) { topic ->
+        items(topics.filter { !it.selected }) { topic ->
             TopicListItem(topic) {
                 viewModel.onTopicSelected(it)
             }
@@ -130,8 +130,8 @@ fun TopicListItem(topicListItem: TopicListElement, onClick: (TopicListElement) -
             modifier = Modifier
                 .fillMaxWidth()
                 .height(40.dp),
-            colors = if(checked) CardDefaults.cardColors(MaterialTheme.colorScheme.onTertiary)
-            else CardDefaults.cardColors(MaterialTheme.colorScheme.secondaryContainer)
+            colors = if(checked) CardDefaults.cardColors(MaterialTheme.colorScheme.secondaryContainer)
+            else CardDefaults.cardColors(MaterialTheme.colorScheme.onTertiary)
         ) {
             Row(
                 modifier = Modifier

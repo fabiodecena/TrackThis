@@ -3,15 +3,31 @@ package com.example.trackthis.data
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.example.trackthis.R
+import com.example.trackthis.ui.home.HomeScreen
 
 /**
- * [TopicListElement] is a data class representing a topic with a name, an image resource, and a selected state.
+ * Represents a topic with a name, an associated image, and a selection state.
+ *
+ * @property name The string resource ID for the topic's name.
+ * @property imageRes The drawable resource ID for the topic's image.
+ * @property selected Indicates whether the topic is currently selected. Defaults to `false`.
  */
-data class TopicListElement (
+data class TopicListElement(
     @StringRes val name: Int,
     @DrawableRes val imageRes: Int,
-    var selected: Boolean = false
+    var selected: Boolean = true
 )
+
+/**
+ * A mutable list of [TopicListElement] instances, representing all available topics.
+ *
+ * This list is initialized with a set of predefined topics, each with a name
+ * (referenced by a string resource), an image (referenced by a drawable resource),
+ * and an initial selection state (defaulting to `true`).
+ * The selection state indicates whether a topic is currently active or inactive and displayed within the [HomeScreen]
+ *
+ * The list is sorted alphabetically by the topic's name.
+ */
 var listOfVisualizedTopicListItem = mutableListOf(
     TopicListElement(R.string.architecture, R.drawable.architecture),
     TopicListElement(R.string.automotive, R.drawable.automotive),
@@ -38,3 +54,4 @@ var listOfVisualizedTopicListItem = mutableListOf(
     TopicListElement(R.string.history, R.drawable.history),
     TopicListElement(R.string.journalism, R.drawable.journalism)
 ).sortedBy { it.name }
+

@@ -53,7 +53,7 @@ class HomeScreenViewModel(private val topicListRepository: TopicListRepository) 
 
     fun updateTopicList(): List<TopicListElement> {
         // Ensure active topics are reflected dynamically
-        return _topics.value.filter { !it.selected }
+        return _topics.value.filter { it.selected }
     }
     fun toggleExpanded(topicName: Int) {
         _homeScreenUiState.update { currentUiState ->
