@@ -102,7 +102,7 @@ fun HistoryElement(
     timerViewModel: TimerViewModel
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val score = (trackedTopic.timeSpent) * 100 / trackedTopic.finalGoal
+    val score = (trackedTopic.totalTimeSpent) * 100 / trackedTopic.finalGoal
 
     Card(
         modifier = modifier

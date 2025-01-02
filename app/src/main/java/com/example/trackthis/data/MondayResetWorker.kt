@@ -39,7 +39,7 @@ class MondayResetWorker(
     private suspend fun saveTotalTimeSpent(trackedTopicDao: TrackedTopicDao) {
         val trackedTopics = trackedTopicDao.getAllItems().first()
         for (topic in trackedTopics) {
-            val updatedTopic = topic.copy(index = topic.timeSpent)
+            val updatedTopic = topic.copy(weeklyTimeSpent = topic.totalTimeSpent)
             trackedTopicDao.update(updatedTopic)
         }
     }
@@ -52,7 +52,7 @@ class MondayResetWorker(
             val totalEffort = updatedDailyTimeSpent.values.sum()
             val updatedTopic = topic.copy(
                 dailyTimeSpent = updatedDailyTimeSpent,
-                timeSpent = totalEffort.toInt() + topic.index
+                totalTimeSpent = totalEffort.toInt() + topic.weeklyTimeSpent
             )
             trackedTopicDao.update(updatedTopic)
         }

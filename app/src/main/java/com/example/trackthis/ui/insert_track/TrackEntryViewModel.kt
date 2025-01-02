@@ -25,6 +25,13 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
     private val _trackEntryUiState = MutableStateFlow(TrackEntryUiState())
     val trackEntryUiState: StateFlow<TrackEntryUiState> = _trackEntryUiState.asStateFlow()
 
+    private val userId: String =
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            FirebaseAuth.getInstance().currentUser!!.uid
+        } else {
+            ""
+        }
+
     fun updateDailyEffort(dailyEffort: String) {
         _trackEntryUiState.value = _trackEntryUiState.value.copy(dailyEffort = dailyEffort)
         validateInputs()
@@ -57,12 +64,13 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
                 SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).parse(state.endingDate)?.time!!
 
         val isFormValid =
-            !isDailyEffortGreaterThanFinalGoal &&
-                !isStartingDateGreaterThanEndingDate &&
-                state.dailyEffort.isNotBlank() &&
-                state.finalGoal.isNotBlank() &&
-                state.startingDate.isNotBlank() &&
-                state.endingDate.isNotBlank()
+                !isDailyEffortGreaterThanFinalGoal &&
+                    !isStartingDateGreaterThanEndingDate &&
+                    state.dailyEffort.isNotBlank() &&
+                    state.finalGoal.isNotBlank() &&
+                    state.startingDate.isNotBlank() &&
+                    state.endingDate.isNotBlank() &&
+                    userId != ""
 
         _trackEntryUiState.value = state.copy(
             isDailyEffortError = isDailyEffortGreaterThanFinalGoal,
@@ -74,13 +82,6 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
     /**
      * Functions to update [TrackedTopic] in the Room database
      */
-    private val userId: String =
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            FirebaseAuth.getInstance().currentUser!!.uid
-        } else {
-              ""
-        }
-
     suspend fun addNewItem(trackedTopic: TrackedTopic) {
         trackedTopicDao.insert(trackedTopic)
     }

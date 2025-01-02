@@ -127,8 +127,8 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
                 val topic = trackedTopicDao.getItemByName(userId!!,topicId).first()
                 val updatedDailyTimeSpent = topic.dailyTimeSpent.toMutableMap()
                 updatedDailyTimeSpent[currentDay] = timerUiState.value.timer // Store time for current day
-                val totalEffort = updatedDailyTimeSpent.values.sum() + topic.index // Update total time spent
-                val updatedTopic = topic.copy(dailyTimeSpent = updatedDailyTimeSpent, timeSpent = totalEffort.toInt())
+                val totalEffort = updatedDailyTimeSpent.values.sum() + topic.weeklyTimeSpent // Update total time spent
+                val updatedTopic = topic.copy(dailyTimeSpent = updatedDailyTimeSpent, totalTimeSpent = totalEffort.toInt())
                 trackedTopicDao.update(updatedTopic)
 
                 // Update chart data using accumulated time for all days

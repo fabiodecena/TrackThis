@@ -71,7 +71,7 @@ fun TrackDetails(
 ) {
     val trackEntryUiState by trackEntryViewModel.trackEntryUiState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
-    val userId =  FirebaseAuth.getInstance().currentUser?.uid
+    val userId = FirebaseAuth.getInstance().currentUser?.uid
 
     Column(
         modifier = modifier
@@ -103,6 +103,13 @@ fun TrackDetails(
         else if (trackEntryUiState.isDateError) {
             Text(
                 text = stringResource(R.string.dates_error),
+                color = Color.Red,
+                modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
+            )
+        }
+        else if (userId == null) {
+            Text(
+                text = stringResource(R.string.user_not_logged),
                 color = Color.Red,
                 modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
             )
@@ -160,16 +167,17 @@ fun TrackDetails(
                 timerViewModel.resetTimer()
                 timerViewModel.resetData()
                 coroutineScope.launch {
+                    if (userId != null)
                     trackEntryViewModel.addNewItem(
                         TrackedTopic(
-                            userId = userId!!,
+                            userId = userId,
                             name = topic.name,
                             dailyEffort = trackEntryUiState.dailyEffort.toDouble(),
                             finalGoal = trackEntryUiState.finalGoal.toInt(),
                             startingDate = trackEntryUiState.startingDate,
                             endingDate = trackEntryUiState.endingDate,
-                            timeSpent = 0,
-                            index = 0
+                            totalTimeSpent = 0,
+                            weeklyTimeSpent = 0
                         )
                     )
                 }

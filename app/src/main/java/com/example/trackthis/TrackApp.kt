@@ -15,6 +15,27 @@ import com.example.trackthis.ui.home.TopAppBar
 import com.example.trackthis.ui.insert_track.TrackEntryViewModel
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
 
+/**
+ * The main composable function for the Track_This application.
+ *
+ * This function sets up the primary UI structure, including the top app bar,
+ * bottom navigation bar, and the main navigation component. It also initializes
+ * and provides access to the necessary ViewModels for managing application state.
+ *
+ * The function uses a [Scaffold] to provide a basic screen layout, with a
+ * [TopAppBar] at the top, a [BottomBar] at the bottom, and a [Navigation]
+ * composable in the main content area.
+ *
+ * The function also retrieves the list of tracked topics from the [TrackEntryViewModel]
+ * and passes it to the [BottomBar] and [Navigation] composable.
+ *
+ * @see TopAppBar
+ * @see BottomBar
+ * @see Navigation
+ * @see TimerViewModel
+ * @see TrackEntryViewModel
+ */
+
 @Composable
 fun TrackApp() {
     val navController = rememberNavController()
