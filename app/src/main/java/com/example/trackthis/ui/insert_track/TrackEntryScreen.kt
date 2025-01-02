@@ -50,7 +50,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.navigation.NavController
 import com.example.trackthis.R
-import com.example.trackthis.data.Topic
+import com.example.trackthis.data.TopicListElement
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.ui.navigation.NavigationItem
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
@@ -64,7 +64,7 @@ import java.util.Locale
 @Composable
 fun TrackDetails(
     modifier: Modifier = Modifier,
-    topic: Topic,
+    topic: TopicListElement,
     navController: NavController,
     timerViewModel: TimerViewModel,
     trackEntryViewModel: TrackEntryViewModel

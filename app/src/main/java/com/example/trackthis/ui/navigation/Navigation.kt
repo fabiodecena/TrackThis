@@ -11,7 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.trackthis.data.TopicListRepository
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
-import com.example.trackthis.data.listOfVisualizedTopics
+import com.example.trackthis.data.listOfVisualizedTopicListItem
 import com.example.trackthis.ui.history.HistoryScreen
 import com.example.trackthis.ui.home.HomeScreen
 import com.example.trackthis.ui.home.HomeScreenViewModel
@@ -64,7 +64,7 @@ fun Navigation(
             arguments = listOf(navArgument("topicId") { type = NavType.IntType })
         ) { backStackEntry ->
             val topicId = backStackEntry.arguments?.getInt("topicId")
-            val topic = listOfVisualizedTopics.find { it.name == topicId }
+            val topic = listOfVisualizedTopicListItem.find { it.name == topicId }
             topic?.let {
                 TrackDetails(
                     topic = topic, navController = navController,
