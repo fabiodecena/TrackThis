@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.example.trackthis.ui.statistics.StatisticsScreen
 /**
  * [TrackedTopic] is an entity that represents a tracked topic object in the database.
  *
@@ -17,12 +18,12 @@ import com.google.gson.reflect.TypeToken
  * @property userId The Firebase UID of the user tracking this topic.
  * @property name The string resource ID for the name of the topic.
  * @property dailyEffort The daily effort the user intends to dedicate to this topic.
- * @property finalGoal The final goal the user wants to achieve for this topic.
+ * @property finalGoal The final goal the user wants to achieve for this topic expressed in hours.
  * @property startingDate The date when the user started tracking this topic, in string format.
  * @property endingDate The date when the user plans to finish tracking this topic, in string format.
- * @property totalTimeSpent The total time spent on this topic, in minutes.
- * @property weeklyTimeSpent The index of the topic, used for ordering.
- * @property dailyTimeSpent A map of dates to the time spent on each date, in minutes.
+ * @property totalTimeSpent The total time spent on this topic, in hours.
+ * @property weeklyTimeSpent The time spent on this topic in the current week, in hours.
+ * @property dailyTimeSpent A map of days to time spent on this topic, in hours.
  */
 @Entity(tableName = "tracked_topics")
 data class TrackedTopic(
@@ -50,8 +51,9 @@ data class TrackedTopic(
 /**
  * [DailyTimeSpentConverter] is a [TypeConverter] that handles the conversion of a
  * `Map<String, Long>` representing daily time spent to and from a string for database storage.
- * It uses Gson for serialization and deserialization.
  * It is used to store the `dailyTimeSpent` map in the [TrackedTopic] entity.
+ * `dailyTimeSpent` is used to visualize user progress in the [StatisticsScreen]
+ * It uses Gson for serialization and deserialization.
  */
 class DailyTimeSpentConverter {
     /**

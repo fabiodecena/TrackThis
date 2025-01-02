@@ -62,7 +62,9 @@ import java.time.DayOfWeek
 import java.time.format.TextStyle
 import java.util.Locale
 
-
+/**
+ * [StatisticsScreen] is a composable function that displays the statistics for a [TrackedTopic].
+ */
 @Composable
 fun StatisticsScreen(
     modifier: Modifier = Modifier,

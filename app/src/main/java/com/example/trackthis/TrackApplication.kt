@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Intent
 import android.content.IntentFilter
-import com.example.trackthis.data.TimeChangeReceiver
 import com.example.trackthis.data.TopicListRepository
 import com.example.trackthis.data.database.tracked_topic.HistoryDatabase
 import com.google.firebase.FirebaseApp
