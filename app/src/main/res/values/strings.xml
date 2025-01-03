@@ -64,5 +64,8 @@
     <string name="pause_button">Pause</string>
     <string name="stop_button">Stop</string>
     <string name="refresh_data_button">Refresh Data</string>
+    <string name="delete_button">Delete</string>
+    <string name="starting_date_label">"Starting Date: "</string>
+    <string name="ending_date_label">"Ending Date: "</string>
 
 </resources>

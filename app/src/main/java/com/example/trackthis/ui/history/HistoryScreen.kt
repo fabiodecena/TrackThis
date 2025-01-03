@@ -153,7 +153,7 @@ fun HistoryElement(
                         }
                     }
                 ) {
-                    Text("Delete")
+                    Text(stringResource(R.string.delete_button))
                 }
             }
             Column(
@@ -164,7 +164,7 @@ fun HistoryElement(
                 Text(
                     text = AnnotatedString.Builder().apply {
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append("Starting Date: ")
+                            append(stringResource(R.string.starting_date_label))
                         }
                             append(trackedTopic.startingDate)
                     }.toAnnotatedString()
@@ -173,7 +173,7 @@ fun HistoryElement(
                 Text(
                     text = AnnotatedString.Builder().apply {
                         withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append("Ending Date: ")
+                            append(stringResource(R.string.ending_date_label))
                         }
                             append(trackedTopic.endingDate)
                     }.toAnnotatedString()
