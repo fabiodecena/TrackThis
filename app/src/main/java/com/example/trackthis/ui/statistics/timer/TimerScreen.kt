@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -38,6 +39,7 @@ import kotlinx.coroutines.launch
  * [TimerScreen] is a composable function that displays a timer interface.
  *
  * It shows the current timer value, along with buttons to `pause`, `stop`, and `reset` the timer.
+ * These buttons are enabled/disabled following the state of the timer to avoid the user input could cause unexpected behaviors.
  *
  * @param timerViewModel The ViewModel that manages the timer state.
  * @param navController The NavController for navigating between screens.
@@ -80,7 +82,12 @@ fun TimerScreen(
             }
             Spacer(modifier = Modifier.width(16.dp))
             Button(
-                colors = ButtonDefaults.buttonColors(colorResource(R.color.light_blue)),
+                enabled = !timerUiState.isTimerRunning,
+                colors = if (timerUiState.isTimerRunning) {
+                    ButtonDefaults.buttonColors(MaterialTheme.colorScheme.onTertiary)
+                } else {
+                    ButtonDefaults.buttonColors(colorResource(R.color.light_blue))
+                },
                 onClick = {
                     coroutineScope.launch {
                         timerViewModel.resetTimer()
