@@ -49,7 +49,16 @@ import com.example.trackthis.ui.navigation.NavigationItem
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
 import kotlinx.coroutines.launch
 
-
+/**
+ * [HistoryScreen] is a composable function that displays a list of tracked topics with their progress.
+ *
+ * @param modifier Modifier for the layout.
+ * @param trackEntryViewModel ViewModel for managing tracked topic entries and operations.
+ * @param timerViewModel ViewModel for managing the timer state and other related data.
+ * @param trackedTopics List of [TrackedTopic] to display.
+ * @param navigateOnSelectedClick Lambda to execute when a tracked topic is selected.
+ * @param navController Navigation controller for navigating between screens.
+ */
 @Composable
 fun HistoryScreen(
     modifier: Modifier = Modifier,
@@ -93,7 +102,14 @@ fun HistoryScreen(
        }
     }
 }
-
+/**
+ * [HistoryElement] is a composable function that displays a single tracked topic's details and progress.
+ *
+ * @param modifier Modifier for the layout.
+ * @param trackedTopic The [TrackedTopic] to display.
+ * @param trackEntryViewModel ViewModel for managing tracked topic entries.
+ * @param timerViewModel ViewModel for managing the timer state.
+ */
 @Composable
 fun HistoryElement(
     modifier: Modifier = Modifier,
@@ -179,7 +195,13 @@ fun HistoryElement(
         ShowProgress(score)
     }
 }
-
+/**
+ * [ShowProgress] is a composable function that displays a progress bar based on the given score.
+ * The [score] parameter represents the progress of the user based on the [TrackedTopic.totalTimeSpent] for a specific [TrackedTopic]
+ * and the [TrackedTopic.finalGoal] set by the user.
+ *
+ * @param score The progress score (0-100) to display.
+ */
 @Composable
 fun ShowProgress(score : Int){
     val gradient = Brush.linearGradient(listOf(

@@ -16,7 +16,7 @@ import com.example.trackthis.data.database.tracked_topic.TrackedTopic
  *
  * This worker is scheduled to run every day at midnight to reset the [TrackedTopic.dailyTimeSpent]
  * for each [TrackedTopic] at the beginning of the Week.
- * It also saves the [TrackedTopic.totalTimeSpent] for the past week and resets the timer.
+ * It also saves the [TrackedTopic.totalTimeSpent] for the past week and resets the timer daily.
  *
  * @param context The application context.
  * @param workerParams The worker parameters.
@@ -38,6 +38,7 @@ class MondayResetWorker(
             timerViewModel.updatePointsDataList(topic = trackedTopicDao.getAllItems().first().first())
             timerViewModel.resetTimer()
         }
+        // Reset timer daily
         timerViewModel.resetTimer()
         setProgress(workDataOf("status" to "done"))
         return Result.success()

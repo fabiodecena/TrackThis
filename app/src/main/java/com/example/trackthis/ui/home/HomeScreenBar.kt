@@ -32,7 +32,15 @@ import com.example.trackthis.ui.navigation.bottomBarNavigationItems
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
 
-
+/**
+ * [TopAppBar] is a composable function that displays the top app bar of the application.
+ *
+ * It uses a [CenterAlignedTopAppBar] and provides a title, a navigation icon that navigates to the settings screen, and an action
+ * icon that navigates to the welcome/registration/login screen. The appearance of the icons
+ * changes based on the current route.
+ *
+ * @param navController The navigation controller used to handle navigation actions.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBar(navController: NavController) {
@@ -64,16 +72,16 @@ fun TopAppBar(navController: NavController) {
             ) {
                 Box(
                     modifier = Modifier
-                        .size(48.dp) // Adjust size for the background
+                        .size(48.dp)
                         .background(
                             color = if (currentRoute == NavigationItem.Settings.route) {
                                 MaterialTheme.colorScheme.secondaryContainer // Selected background
                             } else {
                                 Color.Transparent // Default background
                             },
-                            shape = CircleShape // Circle background
+                            shape = CircleShape
                         ),
-                    contentAlignment = Alignment.Center // Center the icon
+                    contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = NavigationItem.Settings.icon!!,
@@ -99,7 +107,7 @@ fun TopAppBar(navController: NavController) {
             ) {
                 Box(
                     modifier = Modifier
-                        .size(48.dp) // Adjust size for the background
+                        .size(48.dp)
                         .background(
                             color = if (currentRoute == NavigationItem.Welcome.route ||
                                 currentRoute == NavigationItem.Registration.route ||
@@ -108,9 +116,9 @@ fun TopAppBar(navController: NavController) {
                             } else {
                                 Color.Transparent // Default background
                             },
-                            shape = CircleShape // Circle background
+                            shape = CircleShape
                         ),
-                    contentAlignment = Alignment.Center // Center the icon
+                    contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = NavigationItem.Registration.icon!!,
@@ -128,7 +136,17 @@ fun TopAppBar(navController: NavController) {
         },
     )
 }
-
+/**
+ * [BottomBar] is a composable function that displays the bottom navigation bar of the application.
+ *
+ * It uses a [NavigationBar] to display navigation items. The selected item is highlighted, and
+ * navigation is handled based on the selected item. If the Statistics item is selected, it navigates
+ * to the statistics screen for the currently tracked topic, or the first topic if none is selected.
+ *
+ * @param navController The navigation controller used to handle navigation actions.
+ * @param trackedTopics The list of tracked topics.
+ * @param timerViewModel The view model that manages the timer state.
+ */
 @Composable
 fun BottomBar(
     navController: NavController,

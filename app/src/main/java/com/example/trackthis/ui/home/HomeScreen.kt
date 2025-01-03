@@ -46,6 +46,16 @@ import com.example.trackthis.data.TopicListElement
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.ui.navigation.NavigationItem
 
+/**
+ * [HomeScreen] is a composable function that displays a list of tracked topics.
+ *
+ * It uses a [LazyVerticalGrid] to efficiently display a scrollable grid of [TopicCard] composable.
+ *
+ * @param modifier Modifier for the layout.
+ * @param homeScreenViewModel ViewModel that manages the home screen's state and data.
+ * @param navController NavController for navigating to other screens.
+ * @param trackedTopics List of topics that are currently being tracked.
+ */
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -77,7 +87,19 @@ fun HomeScreen(
         }
     }
 }
-
+/**
+ * [TopicCard] is a composable function that displays a card for a single topic.
+ *
+ * It shows the topic's image, name, and an expand/collapse button. When expanded, it shows
+ * a button to navigate to the track details screen for the topic.
+ *
+ * @param topic The topic data to display.
+ * @param homeScreenUiState The current UI state of the home screen.
+ * @param onCardButtonClick Callback for when the expand/collapse button is clicked.
+ * @param modifier Modifier for the layout.
+ * @param trackedTopics List of topics that are currently being tracked.
+ * @param navController NavController for navigating to other screens.
+ */
 @Composable
 fun TopicCard(
     topic: TopicListElement,
@@ -181,7 +203,10 @@ fun TopicCard(
         }
     }
 }
-
+/**
+ * [TopicCardButton] is a composable function that displays the expand/collapse button for a [TopicCard]
+ * with its corresponding icon and functionality [onButtonClick].
+ */
 @Composable
 fun TopicCardButton(
     topic: TopicListElement,

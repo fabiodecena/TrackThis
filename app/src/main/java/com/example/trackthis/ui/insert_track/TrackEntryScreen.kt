@@ -57,12 +57,23 @@ import com.example.trackthis.ui.statistics.timer.TimerViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
+import com.example.trackthis.ui.statistics.StatisticsScreen
 
 
+/**
+ * This composable provides a screen for users to input details related to a specific [topic] they want to track.
+ * It includes fields for [TrackedTopic.dailyEffort], [TrackedTopic.finalGoal], [TrackedTopic.startingDate], and [TrackedTopic.endingDate].
+ * It also handles the submission of this data to the [TrackEntryViewModel] and navigates to the [StatisticsScreen]
+ *
+ * @param modifier Modifier for styling the layout.
+ * @param topic The [TopicListElement] for which details are being entered.
+ * @param navController The NavController for navigation.
+ * @param timerViewModel The [TimerViewModel] for managing timer data and operations.
+ * @param trackEntryViewModel The [TrackEntryViewModel] for managing track entry data.
+ */
 @Composable
-fun TrackDetails(
+fun TrackEntryScreen(
     modifier: Modifier = Modifier,
     topic: TopicListElement,
     navController: NavController,
@@ -146,6 +157,7 @@ fun TrackDetails(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_medium2)),
+            trackEntryViewModel = trackEntryViewModel,
             label = R.string.starting_date,
             onValueChanged = { trackEntryViewModel.updateStartingDate(it) },
             isStartDatePicker = true,
@@ -156,6 +168,7 @@ fun TrackDetails(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_medium2)),
+            trackEntryViewModel = trackEntryViewModel,
             label = R.string.ending_date,
             onValueChanged = { trackEntryViewModel.updateEndingDate(it) },
             isStartDatePicker = false,
@@ -200,7 +213,17 @@ fun TrackDetails(
         }
     }
 }
-
+/**
+ * This composable provides a styled text field with a leading icon, used for data input.
+ *
+ * @param modifier Modifier for styling the layout.
+ * @param label The string resource for the text field label.
+ * @param leadingIcon The ImageVector for the leading icon.
+ * @param keyboardOptions The keyboard options for the text field.
+ * @param value The current value of the text field.
+ * @param onValueChanged Callback for when the text field value changes.
+ * @param isError Boolean indicating if the text field has an error.
+ */
 @Composable
 fun EditField(
     modifier: Modifier = Modifier,
@@ -214,7 +237,7 @@ fun EditField(
     val borderColor = if (isError) {
         Color.Red
     } else {
-        Color.Transparent // Or your default border color
+        Color.Transparent
     }
     TextField(
         value = value,
@@ -233,10 +256,27 @@ fun EditField(
         )
     )
 }
-
+/**
+ * This composable provides a text field that, when clicked, opens a date picker modal for selecting a date.
+ *
+ * The date picker modal is displayed as a dialog, allowing the user to select a date.
+ * The selected date is then formatted and displayed in the text field.
+ *
+ * @param modifier Modifier for styling the layout.
+ * @param trackEntryViewModel The [TrackEntryViewModel] for managing track entry data.
+ * @param label The string resource for the text field label.
+ * @param onValueChanged Callback for when the date is selected. It provides the selected date as a formatted string.
+ * @param isStartDatePicker Boolean indicating if this is for the start date picker.
+ *  If true, the date picker will only allow dates from today onwards.
+ *  If false, it will use the [startingDate] to validate the selected date.
+ * @param startingDate The current starting date, used to validate the selected date in the end date picker.
+ * @param isError Boolean indicating if the date field has an error.
+ *  If true, the text field's border will be displayed in red.
+ */
 @Composable
 fun DatePickerFieldToModal(
     modifier: Modifier = Modifier,
+    trackEntryViewModel: TrackEntryViewModel,
     @StringRes label: Int,
     onValueChanged: (String) -> Unit,
     isStartDatePicker: Boolean,
@@ -246,13 +286,11 @@ fun DatePickerFieldToModal(
     var selectedDate by remember { mutableStateOf<Long?>(null) }
     var showModal by remember { mutableStateOf(false) }
     var selectedDateString by remember { mutableStateOf("") }
-
     val borderColor = if (isError) {
         Color.Red
     } else {
         Color.Transparent
     }
-
     TextField(
         value = selectedDateString,
         onValueChange = {
@@ -283,13 +321,12 @@ fun DatePickerFieldToModal(
             unfocusedIndicatorColor = borderColor
         )
     )
-
     if (showModal) {
-        if (isStartDatePicker) { // Use the parameter to decide which modal to show
+        if (isStartDatePicker) {
             StartDatePickerModal(
                 onDateSelected = { millis ->
                     selectedDate = millis
-                    selectedDateString = millis?.let { convertMillisToDate(it) } ?: ""
+                    selectedDateString = millis?.let { trackEntryViewModel.convertMillisToDate(it) } ?: ""
                     onValueChanged(selectedDateString)
                 },
                 onDismiss = { showModal = false }
@@ -298,7 +335,7 @@ fun DatePickerFieldToModal(
             EndDatePickerModal(
                 onDateSelected = { millis ->
                     selectedDate = millis
-                    selectedDateString = millis?.let { convertMillisToDate(it) } ?: ""
+                    selectedDateString = millis?.let { trackEntryViewModel.convertMillisToDate(it) } ?: ""
                     onValueChanged(selectedDateString)
                 },
                 onDismiss = { showModal = false },
@@ -307,6 +344,13 @@ fun DatePickerFieldToModal(
         }
     }
 }
+/**
+ *  This composable displays a date picker dialog that allows the user to select a date.
+ *  The selected date must be equal to or after the current date.
+ *
+ *  @param onDateSelected Callback for when a date is selected. It provides the selected date in milliseconds.
+ *  @param onDismiss Callback for when the dialog is dismissed.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StartDatePickerModal(
@@ -317,7 +361,6 @@ fun StartDatePickerModal(
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = today
     )
-
     DatePickerDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
@@ -342,7 +385,14 @@ fun StartDatePickerModal(
         )
     }
 }
-
+/**
+ * This composable displays a date picker dialog that allows the user to select a date.
+ * The selected date must be after the [startingDate].
+ *
+ * @param onDateSelected Callback for when a date is selected. It provides the selected date in milliseconds.
+ * @param onDismiss Callback for when the dialog is dismissed.
+ * @param startingDate The starting date in milliseconds. The selected date must be after this date.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EndDatePickerModal(
@@ -353,7 +403,6 @@ fun EndDatePickerModal(
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = startingDate
     )
-
     DatePickerDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
@@ -379,7 +428,3 @@ fun EndDatePickerModal(
     }
 }
 
-fun convertMillisToDate(millis: Long): String {
-    val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-    return formatter.format(Date(millis))
-}

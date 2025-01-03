@@ -14,23 +14,24 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
-
 /**
- * ViewModel to validate and insert items in the Room database.
+ * ViewModel to validate and insert and manage items in the Room database.
+ *
+ * @param trackedTopicDao The Data Access Object for the TrackedTopic entity.
  */
 class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel() {
 
     private val _trackEntryUiState = MutableStateFlow(TrackEntryUiState())
+    /**
+     *  StateFlow to manage the UI state of the track entry screen.
+     */
     val trackEntryUiState: StateFlow<TrackEntryUiState> = _trackEntryUiState.asStateFlow()
 
     private val userId: String =
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            FirebaseAuth.getInstance().currentUser!!.uid
-        } else {
-            ""
-        }
+        FirebaseAuth.getInstance().currentUser?.uid ?: ""
 
     fun updateDailyEffort(dailyEffort: String) {
         _trackEntryUiState.value = _trackEntryUiState.value.copy(dailyEffort = dailyEffort)
@@ -49,7 +50,9 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
         _trackEntryUiState.value = _trackEntryUiState.value.copy(endingDate = endingDate)
         validateInputs()
     }
-
+    /**
+     * Validates the input fields in the UI state and updates the error flags and form validity.
+     */
     private fun validateInputs() {
         val state = _trackEntryUiState.value
 
@@ -80,6 +83,17 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
     }
 
     /**
+     * Converts milliseconds to a formatted date string to adjust the [DatePickerFieldToModal]
+     *
+     * @param millis The time in milliseconds.
+     * @return The formatted date string.
+     */
+    fun convertMillisToDate(millis: Long): String {
+        val formatter = android.icu.text.SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+        return formatter.format(Date(millis))
+    }
+
+    /**
      * Functions to update [TrackedTopic] in the Room database
      */
     suspend fun addNewItem(trackedTopic: TrackedTopic) {
@@ -93,7 +107,9 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
     fun retrieveAllItems(): Flow<List<TrackedTopic>> {
         return  trackedTopicDao.getAllItemsByUser(userId)
     }
-
+    /**
+     * Factory for creating [TrackEntryViewModel] instances.
+     */
     companion object {
         val factory : ViewModelProvider.Factory = viewModelFactory {
             initializer {

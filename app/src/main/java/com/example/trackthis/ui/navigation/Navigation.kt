@@ -15,7 +15,7 @@ import com.example.trackthis.data.listOfVisualizedTopicListItem
 import com.example.trackthis.ui.history.HistoryScreen
 import com.example.trackthis.ui.home.HomeScreen
 import com.example.trackthis.ui.home.HomeScreenViewModel
-import com.example.trackthis.ui.insert_track.TrackDetails
+import com.example.trackthis.ui.insert_track.TrackEntryScreen
 import com.example.trackthis.ui.insert_track.TrackEntryViewModel
 import com.example.trackthis.ui.profile.LoginScreen
 import com.example.trackthis.ui.profile.RegistrationScreen
@@ -66,7 +66,7 @@ fun Navigation(
             val topicId = backStackEntry.arguments?.getInt("topicId")
             val topic = listOfVisualizedTopicListItem.find { it.name == topicId }
             topic?.let {
-                TrackDetails(
+                TrackEntryScreen(
                     topic = topic, navController = navController,
                     timerViewModel = timerViewModel, trackEntryViewModel = trackEntryViewModel
                 )
