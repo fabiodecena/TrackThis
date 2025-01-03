@@ -227,8 +227,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
      */
     fun resetTimer() {
         _timerUiState.value = _timerUiState.value.copy(timer = 0L)
-        _timerUiState.value.timerJob?.cancel()/*TODO*/
-        _timerUiState.value = _timerUiState.value.copy(timer = 0L)
+        _timerUiState.value.timerJob?.cancel()
         _timerUiState.value = _timerUiState.value.copy(isPaused = false)
     }
     /**
