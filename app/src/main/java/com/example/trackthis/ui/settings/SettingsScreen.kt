@@ -40,6 +40,11 @@ import com.example.trackthis.ui.navigation.trackNavigationItems
 import com.example.trackthis.ui.home.HomeScreenViewModel
 import com.example.trackthis.ui.navigation.NavigationSelectionScreen
 
+/**
+ * This composable function represents the settings screen of the application.
+ * It uses a [Scaffold] to provide a basic screen layout with a top bar and content area.
+ * The screen uses a [NavigationSelectionScreen] to display different content based on navigation.
+ */
 @Composable
 fun SettingsScreen() {
     val navController = rememberNavController()
@@ -54,7 +59,13 @@ fun SettingsScreen() {
         )
     }
 }
-
+/**
+ * This composable function displays a top row of navigation items.
+ * It uses a [Row] to arrange the items horizontally and highlights the currently selected item.
+ *
+ * @param modifier The modifier to apply to the row.
+ * @param navController The navigation controller used to handle navigation events.
+ */
 @Composable
 fun TopRowSelectionScreen(modifier: Modifier = Modifier, navController: NavController) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
@@ -89,7 +100,13 @@ fun TopRowSelectionScreen(modifier: Modifier = Modifier, navController: NavContr
         }
     }
 }
-
+/**
+ * This composable function displays a list of active topics.
+ * It uses a [LazyColumn] to efficiently display a scrollable list of [TopicListItem] composable
+ * selected from the list.
+ *
+ * @param viewModel The view model that provides the list of topics.
+ */
 @Composable
 fun ActiveTrackScreen(viewModel: HomeScreenViewModel) {
     val topics by viewModel.topics.collectAsState()
@@ -102,7 +119,13 @@ fun ActiveTrackScreen(viewModel: HomeScreenViewModel) {
         }
     }
 }
-
+/**
+ * This composable function displays a list of inactive topics.
+ * It uses a [LazyColumn] to efficiently display a scrollable list of [TopicListItem] composable
+ * not selected from the list.
+ *
+ * @param viewModel The view model that provides the list of topics.
+ */
 @Composable
 fun InactiveTrackScreen(viewModel: HomeScreenViewModel) {
     val topics by viewModel.topics.collectAsState()
@@ -115,8 +138,13 @@ fun InactiveTrackScreen(viewModel: HomeScreenViewModel) {
         }
     }
 }
-
-
+/**
+ * This composable function displays a single topic list item.
+ * It uses a [Surface] and a [Card] to create a clickable item with a visual representation of a topic.
+ *
+ * @param topicListItem The topic list element to display.
+ * @param onClick A callback function that is invoked when the item is clicked.
+ */
 @Composable
 fun TopicListItem(topicListItem: TopicListElement, onClick: (TopicListElement) -> Unit) {
     val checked by remember { mutableStateOf(topicListItem.selected) }

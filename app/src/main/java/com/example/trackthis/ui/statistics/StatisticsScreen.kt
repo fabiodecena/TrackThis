@@ -63,7 +63,17 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 /**
- * [StatisticsScreen] is a composable function that displays the statistics for a [TrackedTopic].
+ * [StatisticsScreen] is a composable function that displays the statistics for a specific [TrackedTopic].
+ *
+ * It fetches data from [ChartViewModel] and [TimerViewModel] to display a line chart of progress,
+ * daily effort indicators, and a timer interface. It also observing
+ * a worker for resetting the tracked data on Mondays.
+ *
+ * @param modifier Modifier for styling the layout.
+ * @param chartViewModel ViewModel for chart-related data.
+ * @param timerViewModel ViewModel for timer-related data and actions.
+ * @param topic The [TrackedTopic] for which to display statistics.
+ * @param navController Navigation controller for navigating to other screens.
  */
 @Composable
 fun StatisticsScreen(
@@ -117,6 +127,14 @@ fun StatisticsScreen(
     }
 }
 
+/**
+ * [StartedTopic] displays a card containing a line chart of the weekly tracked topic's progress.
+ *
+ * @param topicElement The [TrackedTopic] for which to display the chart.
+ * @param modifier Modifier for styling the layout.
+ * @param data List of data points for the progress line chart.
+ * @param dailyEffortList Set the minimum daily effort guessed by user. It remains the same each day of the week.
+ */
 @Composable
 fun StartedTopic(
     topicElement: TrackedTopic,
@@ -283,7 +301,17 @@ fun StartedTopic(
     }
 }
 
-
+/**
+ * [CircleWithLetter] displays a circle with a letter inside it.
+ *
+ * The circle's background color is determined by the provided [topicElement]'s daily time spent
+ * for the given [currentDay] in relation to the set [dailyEffort].
+ *
+ * @param letter The letter to display inside the circle.
+ * @param currentDay The current day to check the time spent against.
+ * @param topicElement The [TrackedTopic] containing the daily time spent data.
+ * @param dailyEffort The daily effort target to compare against.
+ */
 @Composable
 fun CircleWithLetter(
     letter: String, currentDay: String,
@@ -312,7 +340,17 @@ fun CircleWithLetter(
     }
 }
 
-
+/**
+ * [BuildTracking] displays a card with a play/pause button and the name of the tracked topic.
+ *
+ * This composable provides a visual representation of a tracked topic, including a button to start
+ * tracking time and the topic's name. The button's enabled state depends on the [timerUiState].
+ *
+ * @param topicElement The [TrackedTopic] to display.
+ * @param modifier Modifier for the layout.
+ * @param timerViewModel The [TimerViewModel] to handle timer actions.
+ * @param timerUiState The [TimerUiState] to determine the state of the timer.
+ */
 @Composable
 fun BuildTracking(
     topicElement: TrackedTopic,
