@@ -65,7 +65,10 @@ fun TimerScreen(
             horizontalArrangement = Arrangement.Center
         ) {
             Spacer(modifier = Modifier.width(16.dp))
-            Button(onClick = { timerViewModel.pauseTimer() }) {
+            Button(
+                onClick = { timerViewModel.pauseTimer() },
+                enabled = !timerUiState.isPaused
+            ) {
                 Text(stringResource(R.string.pause_button))
             }
             Spacer(modifier = Modifier.width(16.dp))

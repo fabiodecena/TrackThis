@@ -90,9 +90,8 @@ fun StatisticsScreen(
     val context = LocalContext.current
 
 
-    timerViewModel.updatePointsDataList(topic)
-
     LaunchedEffect(topic) {
+        timerViewModel.updatePointsDataList(topic)
         if (topic != null) {
             timerViewModel.scheduleMondayResetWorker(context)
             timerViewModel.observeMondayResetWorker(context, navController, topic)
@@ -378,7 +377,7 @@ fun BuildTracking(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(
-                    enabled = timerUiState.timer == 0L || timerUiState.isPaused,
+                    enabled = !timerUiState.isTimerRunning || timerUiState.isPaused,
                     onClick = { timerViewModel.startTimer() },
                     modifier = Modifier
                         .padding(start = dimensionResource(R.dimen.padding_medium))
@@ -386,7 +385,7 @@ fun BuildTracking(
                     Icon(
                         painterResource(R.drawable.play_circle_24dp_fill0_wght400_grad0_opsz24),
                         contentDescription = null,
-                        tint = if (timerUiState.timer == 0L || timerUiState.isPaused) MaterialTheme.colorScheme.tertiary
+                        tint = if (!timerUiState.isTimerRunning || timerUiState.isPaused) MaterialTheme.colorScheme.tertiary
                             else MaterialTheme.colorScheme.onTertiary
                     )
                 }

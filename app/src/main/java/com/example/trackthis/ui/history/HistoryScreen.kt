@@ -93,7 +93,6 @@ fun HistoryScreen(
                            R.string.timer_running_toast, Toast.LENGTH_SHORT
                        ).show()
                    } else {
-                       timerViewModel.pauseTimer()
                        timerViewModel.initializeTimer(trackedTopic)
                        navigateOnSelectedClick(trackedTopic.name)
                    }
