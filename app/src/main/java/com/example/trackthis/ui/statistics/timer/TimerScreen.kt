@@ -34,6 +34,15 @@ import com.example.trackthis.R
 import com.example.trackthis.ui.navigation.NavigationItem
 import kotlinx.coroutines.launch
 
+/**
+ * [TimerScreen] is a composable function that displays a timer interface.
+ *
+ * It shows the current timer value, along with buttons to `pause`, `stop`, and `reset` the timer.
+ *
+ * @param timerViewModel The ViewModel that manages the timer state.
+ * @param navController The NavController for navigating between screens.
+ * @param topicId The ID of the topic associated with the timer.
+ */
 @Composable
 fun TimerScreen(
     timerViewModel: TimerViewModel,
@@ -57,14 +66,14 @@ fun TimerScreen(
         ) {
             Spacer(modifier = Modifier.width(16.dp))
             Button(onClick = { timerViewModel.pauseTimer() }) {
-                Text("Pause")
+                Text(stringResource(R.string.pause_button))
             }
             Spacer(modifier = Modifier.width(16.dp))
             Button(
                 onClick = { timerViewModel.stopTimer(context, navController, topicId) },
                 enabled = timerUiState.timer> 0L
             ) {
-                Text("Stop")
+                Text(stringResource(R.string.stop_button))
             }
             Spacer(modifier = Modifier.width(16.dp))
             Button(
@@ -89,7 +98,7 @@ fun TimerScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Repeat,
-                        contentDescription = "Refresh Data"
+                        contentDescription = stringResource(R.string.refresh_data_button)
                     )
                     Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
                     Text(

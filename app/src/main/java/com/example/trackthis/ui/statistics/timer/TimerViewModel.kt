@@ -37,8 +37,17 @@ import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 
+/**
+ * [TimerViewModel] is a ViewModel class responsible for managing the timer state.
+ * It handles starting, pausing, and stopping the timer, as well as updating the tracked time
+ * for a given topic. It also manages the UI state for the timer and chart.
+ *
+ * @param trackedTopicDao The Data Access Object for accessing tracked topic data.
+ */
 class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel() {
-
+    /**
+     * Factory for creating [TimerViewModel] instances.
+     */
     companion object {
         val factory : ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -59,7 +68,9 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
     fun setTopic(topic: TrackedTopic?) {
         _timerUiState.value = _timerUiState.value.copy(topic = topic)
     }
-
+    /**
+     * Starts the timer. If the timer is already running, it will resume from the last paused time.
+     */
     fun startTimer() {
         _timerUiState.value = _timerUiState.value.copy(isTimerRunning = true)
         if (_timerUiState.value.timerJob == null || _timerUiState.value.timerJob?.isCancelled == true)
@@ -71,11 +82,21 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
             }
         })
     }
-
+    /**
+     * Schedules a worker [MondayResetWorker] to reset the timer on Monday.
+     *
+     * @param context The context to use for scheduling the worker.
+     */
     fun scheduleMondayResetWorker(context: Context) {
         WorkerScheduler.scheduleMondayResetWorker(context)
     }
-
+    /**
+     * Observes the state of the Monday reset worker and navigates to the statistics screen if the worker is running.
+     *
+     * @param context The context to use for observing the worker.
+     * @param navController The navigation controller to use for navigating to the statistics screen.
+     * @param topic The tracked topic.
+     */
     fun observeMondayResetWorker(context: Context, navController: NavController, topic: TrackedTopic?) {
         WorkManager.getInstance(context)
             .getWorkInfosForUniqueWorkLiveData("MondayResetWorker")
@@ -93,7 +114,11 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
                 }
             }
     }
-
+    /**
+     * Initializes the timer with the saved time for the current day.
+     *
+     * @param topic The tracked topic.
+     */
     fun initializeTimer(topic: TrackedTopic?) {
         if (_timerUiState.value.timerJob == null || _timerUiState.value.timerJob?.isCancelled == true) {
             val currentDay = saveCurrentDay()
@@ -106,7 +131,13 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         _timerUiState.value.timerJob?.cancel()
         _timerUiState.value = _timerUiState.value.copy(isPaused = true)
     }
-
+    /**
+     * Stops the timer and updates the tracked time for the current day.
+     *
+     * @param context The context to use for displaying the confirmation dialog.
+     * @param navController The navigation controller to use for navigating to the statistics screen.
+     * @param topicId The id of the tracked topic.
+     */
     fun stopTimer(context: Context, navController: NavController, topicId: Int) {
         _timerUiState.value = _timerUiState.value.copy(isPaused = true)
         val currentDay = saveCurrentDay()
@@ -145,7 +176,6 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
                         popUpTo(route)
                     }
                 }
-                return@launch
             }
         }
         builder.setNegativeButton("No") { dialog, _ ->
@@ -157,6 +187,14 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         val dialog = builder.create()
         dialog.show()
     }
+    /**
+     * Updates the points data list for the chart.
+     *
+     * This function iterates through the days of the week and updates the corresponding
+     * data point in the chart with the time spent on the given topic for that day.
+     *
+     * @param topic The tracked topic.
+     */
     fun updatePointsDataList(topic: TrackedTopic?) {
         chartUiState.value.xLabels.forEachIndexed { index, day -> // Get the timeSpent for the current day
             val timeSpent = topic?.dailyTimeSpent?.get(day)
@@ -175,19 +213,29 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         val dayOfWeek = currentDate.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
         return dayOfWeek
     }
-
+    /**
+     * Cancels the timer coroutine when the ViewModel is cleared.
+     */
     override fun onCleared() {
         super.onCleared()
         _timerUiState.value.timerJob?.cancel()
     }
-
+    /**
+     * Resets the timer to zero.
+     *
+     * This function resets the timer value and cancels any running timer coroutine.
+     */
     fun resetTimer() {
         _timerUiState.value = _timerUiState.value.copy(timer = 0L)
-        _timerUiState.value.timerJob?.cancel()
+        _timerUiState.value.timerJob?.cancel()/*TODO*/
         _timerUiState.value = _timerUiState.value.copy(timer = 0L)
         _timerUiState.value = _timerUiState.value.copy(isPaused = false)
     }
-
+    /**
+     * Resets the chart data to zero.
+     *
+     * This function sets all data points in the chart to zero.
+     */
     fun resetData() {
         val updatedList: MutableList<Double> = pointsData
         updatedList.indices.forEach { index ->
@@ -198,15 +246,31 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
         }
     }
 }
-
+/**
+ * Formats a time in seconds to a string in the format "HH:MM:SS".
+ *
+ * @return The formatted time string.
+ */
 fun Long.formatTime(): String {
     val hours = this / 3600
     val minutes = (this % 3600) / 60
     val remainingSeconds = this % 60
     return String.format(locale = Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, remainingSeconds)
 }
-
+/**
+ * Object responsible for scheduling a worker to reset data on Mondays.
+ * This function is implemented out of the ViewModel class in order to be able to reach it easily
+ */
 object WorkerScheduler {
+    /**
+     * Schedules a worker to reset data on Mondays.
+     *
+     * This function calculates the initial delay until midnight and then schedules a periodic
+     * [MondayResetWorker] to run every 24 hours, starting at midnight on Monday to reset data
+     * and reset timer value daily.
+     *
+     * @param context The application context.
+     */
     fun scheduleMondayResetWorker(context: Context) {
         val initialDelay = calculateInitialDelayToMidnight()
 

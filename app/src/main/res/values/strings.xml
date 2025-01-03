@@ -61,5 +61,8 @@
     <string name="s_circle">S</string>
     <string name="timer_running_toast">The Timer is Running! Navigation between Topics is Disabled!!!</string>
     <string name="user_not_logged">User not Logged In</string>
+    <string name="pause_button">Pause</string>
+    <string name="stop_button">Stop</string>
+    <string name="refresh_data_button">Refresh Data</string>
 
 </resources>
