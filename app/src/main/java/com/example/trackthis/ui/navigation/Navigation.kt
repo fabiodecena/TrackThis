@@ -28,6 +28,16 @@ import com.example.trackthis.ui.statistics.StatisticsScreen
 import com.example.trackthis.ui.statistics.charts.ChartViewModel
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
 
+/**
+ * This composable sets up the navigation graph using Jetpack Navigation Compose.
+ * It defines the different screens of the application and how to navigate between them.
+ *
+ * @param modifier Modifier for the NavHost.
+ * @param navController NavHostController for managing navigation.
+ * @param timerViewModel ViewModel for managing timer-related data.
+ * @param trackedTopics List of tracked topics to display.
+ * @param trackEntryViewModel ViewModel for managing track entry data.
+ */
 @Composable
 fun Navigation(
     modifier: Modifier = Modifier,
@@ -110,7 +120,12 @@ fun Navigation(
         }
     }
 }
-
+/**
+ * This composable sets up the navigation graph for the active and inactive track selection screens.
+ *
+ * @param navController NavHostController for managing navigation.
+ * @param modifier Modifier for the NavHost.
+ */
 @Composable
 fun NavigationSelectionScreen(navController: NavHostController, modifier: Modifier = Modifier) {
     val context = LocalContext.current

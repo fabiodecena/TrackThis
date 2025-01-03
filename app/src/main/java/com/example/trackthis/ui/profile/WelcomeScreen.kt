@@ -31,6 +31,16 @@ import androidx.navigation.NavController
 import com.example.trackthis.R
 import com.example.trackthis.ui.navigation.NavigationItem
 
+/**
+ * This composable function represents the welcome screen of the application.
+ * It displays a welcome message along with the user's email, and provides
+ * buttons for navigation to the registration and login screens, as well as a
+ * logout button.
+ *
+ * @param modifier Modifier to apply to this layout.
+ * @param navController NavController for navigating between screens.
+ * @param registrationViewModel ViewModel for managing registration state and user data.
+ */
 @Composable
 fun WelcomeScreen(
     modifier: Modifier = Modifier,

@@ -28,6 +28,14 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import com.example.trackthis.R
 import com.example.trackthis.ui.insert_track.EditField
 
+/**
+ * This composable displays a registration form with fields for `first name`, `last name`, `email`,
+ * and `password`. It uses a [RegistrationViewModel] to manage the state of the form and handle
+ * user input. The form includes input validation and displays messages when necessary.
+ *
+ * @param modifier The modifier to be applied to the layout.
+ * @param registrationViewModel The view model that manages the registration state.
+ */
 @Composable
 fun RegistrationScreen(
     modifier: Modifier = Modifier,

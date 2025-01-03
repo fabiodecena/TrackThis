@@ -12,8 +12,16 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.util.Locale
 
-
+/**
+ * This class represents the view model for the registration screen.
+ * It manages the UI state for the registration form, including user input,
+ * validation, and interactions with Firebase authentication [FirebaseAuth].
+ */
 class RegistrationViewModel : ViewModel() {
+    /**
+     * A [StateFlow] that holds the current UI state for the registration screen.
+     * It includes user input fields, validation flags, and overall form validity.
+     */
     private val _registrationUiState = MutableStateFlow(ProfileUiState())
     val registrationUiState: StateFlow<ProfileUiState> = _registrationUiState.asStateFlow()
 
@@ -22,7 +30,10 @@ class RegistrationViewModel : ViewModel() {
     init {
         fetchUserName()
     }
-
+    /**
+     * Fetches the current user's email from Firebase and updates the UI state.
+     * If the user is not logged in, it sets the username to "User not Logged In".
+     */
     private fun fetchUserName() {
         val user = auth.currentUser
         _registrationUiState.value = _registrationUiState.value.copy(
@@ -49,7 +60,10 @@ class RegistrationViewModel : ViewModel() {
         _registrationUiState.value = _registrationUiState.value.copy(password = password)
         validateInputs()
     }
-
+    /**
+     * Validates all input fields in the UI state and updates the error flags and form validity.
+     * It checks if first name, last name, email, and password fields are blank.
+     */
     private fun validateInputs() {
         val isFirstNameError = _registrationUiState.value.firstName.isBlank()
         val isLastNameError = _registrationUiState.value.lastName.isBlank()
@@ -65,12 +79,17 @@ class RegistrationViewModel : ViewModel() {
             isRegistrationFormValid = isFormValid
         )
     }
-
+    /**
+     * Creates a new user in Firebase with the provided email and password.
+     * It also sets the Firebase locale to the device's default language.
+     * @param email The email of the new user.
+     * @param password The password of the new user.
+     * @param context The context used to display toast messages and restart the app.
+     */
     private fun createUserInFirebase(email: String, password: String, context: Context) {
         val auth = FirebaseAuth.getInstance()
 
-        // Set Firebase locale (optional)
-        auth.setLanguageCode(Locale.getDefault().language) // Set with default language code
+        auth.setLanguageCode(Locale.getDefault().language)
 
         auth
             .createUserWithEmailAndPassword(email, password)
@@ -93,7 +112,11 @@ class RegistrationViewModel : ViewModel() {
             _registrationUiState.value.email, _registrationUiState.value.password, context
         )
     }
-
+    /**
+     * This function is called when the user logs out by clicking the "Logout" button in [WelcomeScreen].
+     * It signs the user out of Firebase and restarts the app to clear the session.
+     * @param context The context used to display toast messages and restart the app.
+     */
     fun logout(context: Context) {
         val firebaseAuth = FirebaseAuth.getInstance()
         if (firebaseAuth.currentUser != null) {

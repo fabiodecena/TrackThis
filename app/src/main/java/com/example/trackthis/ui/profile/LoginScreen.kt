@@ -35,6 +35,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trackthis.R
 import com.example.trackthis.ui.insert_track.EditField
 
+/**
+ * This composable displays a login form with fields for `email` and `password`.
+ * It uses a [LoginViewModel] to manage the state of the login form and handle the login logic.
+ *
+ * @param modifier Modifier for styling the layout.
+ * @param loginViewModel ViewModel for managing the login state and logic.
+ */
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
@@ -94,7 +101,19 @@ fun LoginScreen(
         }
     }
 }
-
+/**
+ * This composable displays a text field for `password` input, with a leading icon,
+ * error indication, and password visual transformation.
+ *
+ * @param modifier Modifier for styling the layout.
+ * @param label String resource for the text field label.
+ * @param leadingIcon Vector image for the leading icon.
+ * @param keyboardOptions Keyboard options for the text field.
+ * @param value Current value of the text field.
+ * @param onValueChanged Callback for value changes in the text field.
+ * @param isError Boolean indicating if the text field has an error. The logic is managed with [LoginViewModel]
+ * @param visualTransformation Visual transformation for the password field to hide the characters with '*'.
+ */
 @Composable
 fun EditFieldPassword(
     modifier: Modifier = Modifier,
