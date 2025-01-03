@@ -178,7 +178,6 @@ fun TrackEntryScreen(
         Button(
             onClick = {
                 timerViewModel.resetTimer()
-                timerViewModel.resetData()
                 coroutineScope.launch {
                     if (userId != null)
                     trackEntryViewModel.addNewItem(
@@ -326,7 +325,7 @@ fun DatePickerFieldToModal(
             StartDatePickerModal(
                 onDateSelected = { millis ->
                     selectedDate = millis
-                    selectedDateString = millis?.let { trackEntryViewModel.convertMillisToDate(it) } ?: ""
+                    selectedDateString = millis?.let { trackEntryViewModel.convertMillisToDate(it) } ?: ""/*TODO change default date*/
                     onValueChanged(selectedDateString)
                 },
                 onDismiss = { showModal = false }
@@ -335,7 +334,7 @@ fun DatePickerFieldToModal(
             EndDatePickerModal(
                 onDateSelected = { millis ->
                     selectedDate = millis
-                    selectedDateString = millis?.let { trackEntryViewModel.convertMillisToDate(it) } ?: ""
+                    selectedDateString = millis?.let { trackEntryViewModel.convertMillisToDate(it) } ?: ""/*TODO change default date*/
                     onValueChanged(selectedDateString)
                 },
                 onDismiss = { showModal = false },

@@ -227,9 +227,11 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
      * This function resets the timer value and cancels any running timer coroutine.
      */
     fun resetTimer() {
+        _timerUiState.value = _timerUiState.value.copy(isTimerRunning = false)
+        _timerUiState.value = _timerUiState.value.copy(isPaused = false)
         _timerUiState.value = _timerUiState.value.copy(timer = 0L)
         _timerUiState.value.timerJob?.cancel()
-        _timerUiState.value = _timerUiState.value.copy(isPaused = false)
+
     }
     /**
      * Resets the chart data to zero.
