@@ -200,7 +200,6 @@ fun BottomBar(
                             if (!timerUiState.isTimerRunning) {
                                 timerViewModel.initializeTimer(topic)
                             }
-
                             val topicName = topic?.name
                             if (topicName != null) {
                                 navController.navigate("${NavigationItem.Statistics.route}/$topicName") {

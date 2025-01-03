@@ -72,6 +72,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
      * Starts the timer. If the timer is already running, it will resume from the last paused time.
      */
     fun startTimer() {
+        timerUiState.value.timerJob?.cancel()// Cancel the previous timer job
         _timerUiState.value = _timerUiState.value.copy(isTimerRunning = true)
         if (_timerUiState.value.timerJob == null || _timerUiState.value.timerJob?.isCancelled == true)
             _timerUiState.value = _timerUiState.value.copy(isPaused = false)
