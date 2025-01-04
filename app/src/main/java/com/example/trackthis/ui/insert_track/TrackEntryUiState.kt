@@ -1,5 +1,8 @@
 package com.example.trackthis.ui.insert_track
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
 /**
  * Data class that represents the current UI state in TrackEntryViewModel, which is reflected in the [TrackEntryScreen]
  *
@@ -17,7 +20,7 @@ package com.example.trackthis.ui.insert_track
 data class TrackEntryUiState(
     val dailyEffort: String = "",
     val finalGoal: String = "",
-    val startingDate: String = "",
+    val startingDate: String = getCurrentDateAsString(),
     val endingDate: String = "",
     val selectedDate: Long? = null,
     val selectedDateString: String = "",
@@ -26,3 +29,9 @@ data class TrackEntryUiState(
     val isDateError: Boolean = false,
     val isFormValid: Boolean = false
 )
+
+fun getCurrentDateAsString(): String {
+    val currentDate = LocalDate.now()
+    val formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
+    return currentDate.format(formatter)
+}

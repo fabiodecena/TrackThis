@@ -325,7 +325,7 @@ fun DatePickerFieldToModal(
             StartDatePickerModal(
                 onDateSelected = { millis ->
                     selectedDate = millis
-                    selectedDateString = millis?.let { trackEntryViewModel.convertMillisToDate(it) } ?: ""/*TODO change default date*/
+                    selectedDateString = millis?.let { trackEntryViewModel.convertMillisToDate(it) } ?: ""
                     onValueChanged(selectedDateString)
                 },
                 onDismiss = { showModal = false }
@@ -334,7 +334,7 @@ fun DatePickerFieldToModal(
             EndDatePickerModal(
                 onDateSelected = { millis ->
                     selectedDate = millis
-                    selectedDateString = millis?.let { trackEntryViewModel.convertMillisToDate(it) } ?: ""/*TODO change default date*/
+                    selectedDateString = millis?.let { trackEntryViewModel.convertMillisToDate(it) } ?: ""
                     onValueChanged(selectedDateString)
                 },
                 onDismiss = { showModal = false },
