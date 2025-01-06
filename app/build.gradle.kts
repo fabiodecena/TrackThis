@@ -89,6 +89,9 @@ dependencies {
     testImplementation ("androidx.test:core:1.6.1")
     testImplementation ("org.mockito:mockito-core:5.6.0")
     testImplementation ("org.mockito.kotlin:mockito-kotlin:5.2.0")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
+    testImplementation ("junit:junit:4.13.2")
+
 
     androidTestImplementation ("androidx.compose.ui:ui-test-junit4:1.7.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
