@@ -70,6 +70,7 @@ dependencies {
     implementation("io.github.ehsannarmani:compose-charts:0.0.18")
     implementation("androidx.test.ext:junit-ktx:1.2.1")
     testImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation("org.testng:testng:6.9.6")
     ksp("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
     annotationProcessor("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
     implementation("androidx.compose.material:material-icons-extended-android:1.7.5")
