@@ -18,11 +18,12 @@ import com.example.trackthis.ui.statistics.timer.WorkerScheduler.scheduleMondayR
  *
  * @see scheduleMondayResetWorker
  */
-class TimeChangeReceiver : BroadcastReceiver() {
+class TimeChangeReceiver(
+    private val scheduleWorker: (Context) -> Unit = ::scheduleMondayResetWorker
+) : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         if (intent?.action == Intent.ACTION_TIME_CHANGED || intent?.action == Intent.ACTION_TIMEZONE_CHANGED) {
-            // Reschedule the worker when the time or timezone changes
-            scheduleMondayResetWorker(context)
+            scheduleWorker(context)
         }
     }
 }
