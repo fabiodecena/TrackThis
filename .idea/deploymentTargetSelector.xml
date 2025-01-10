@@ -19,6 +19,9 @@
       <SelectionState runConfigName="TimeChangeReceiverTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="doWork_when_today_is_Monday()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>
