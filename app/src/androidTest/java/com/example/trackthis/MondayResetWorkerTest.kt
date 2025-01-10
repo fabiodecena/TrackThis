@@ -23,19 +23,29 @@ import org.junit.runner.RunWith
 import java.time.DayOfWeek
 import java.time.LocalDate
 
+/**
+ * [MondayResetWorkerTest] is a test class for the [MondayResetWorker].
+ * It tests the worker's ability to reset daily time spent on tracked topics,
+ * and save the total time spent to weekly time spent when the current day is Monday.
+ * It also tests that the worker does not reset data when the current day is not Monday.
+ */
 @RunWith(AndroidJUnit4::class)
 class MondayResetWorkerTest {
     private lateinit var database: HistoryDatabase
     private lateinit var trackedTopicDao: TrackedTopicDao
-
+    /**
+     * Sets up the test environment before each test.
+     * It initializes an in-memory database, gets the DAO, and initializes WorkManager for testing.
+     */
     @Before
     fun setup() {
         val context = ApplicationProvider.getApplicationContext<Context>()
+        // Create an in-memory database for testing
         database = Room.inMemoryDatabaseBuilder(context, HistoryDatabase::class.java)
             .allowMainThreadQueries()
             .build()
         trackedTopicDao = database.trackedTopicDao()
-
+        // Configure WorkManager for testing
         val config = Configuration.Builder()
             .setMinimumLoggingLevel(Log.DEBUG)
             .setExecutor(androidx.work.testing.SynchronousExecutor())
@@ -44,12 +54,20 @@ class MondayResetWorkerTest {
         // Initialize WorkManager for instrumentation tests.
         WorkManagerTestInitHelper.initializeTestWorkManager(context, config)
     }
-
+    /**
+     * Tears down the test environment after each test.
+     * It closes the database and running worker.
+     */
     @After
     fun teardown() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
         database.close()
+        WorkManager.getInstance(context).cancelAllWork()
     }
-
+    /**
+     * Tests that the worker resets daily and weekly time spent on tracked topics
+     * and saves the total time spent to weekly time spent when the current day is Monday.
+     */
     @Test
     @Throws(Exception::class)
     fun reset_data_and_save_total_time_spent_when_today_is_Monday() = runBlocking {
@@ -82,6 +100,10 @@ class MondayResetWorkerTest {
             assertThat(trackedTopic.dailyTimeSpent.values.sum(), `is`(0))
         }
     }
+    /**
+     * Tests that the worker does not reset data when the current day is not Monday
+     * and update the total time spent that have to be equal to the sum of the daily time spent.
+     */
     @Test
     @Throws(Exception::class)
     fun do_not_reset_data_and_not_save_total_time_spent_when_today_is_not_Monday() = runBlocking {

@@ -16,9 +16,6 @@
       <SelectionState runConfigName="HistoryDatabaseTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="TimeChangeReceiverTest">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="doWork_when_today_is_Monday()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
@@ -26,6 +23,9 @@
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="do_not_reset_data_when_today_is_not_Monday()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="do_not_reset_data_and_not_save_total_time_spent_when_today_is_not_Monday()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
