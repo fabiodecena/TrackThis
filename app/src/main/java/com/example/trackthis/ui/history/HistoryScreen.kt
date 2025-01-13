@@ -1,6 +1,5 @@
 package com.example.trackthis.ui.history
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -160,11 +159,9 @@ fun HistoryElement(
                         }
                     }
                 ) {
-                    val deleteButtonDescription = stringResource(R.string.delete_button) + " " + trackedTopic.name
-                    Log.d("HistoryScreen", "Delete button description: $deleteButtonDescription")
                     Icon(
                         Icons.Default.Delete,
-                        contentDescription = deleteButtonDescription,
+                        contentDescription = stringResource(R.string.delete_button)
                     )
                     Text(stringResource(R.string.delete_button))
                 }
@@ -266,6 +263,7 @@ fun ShowProgress(score : Int){
                     disabledContainerColor = Color.Transparent
                 )
             ) {
+
             }
         }
     }
