@@ -18,7 +18,7 @@ sealed class NavigationItem(var route: String, var icon: ImageVector?, var title
     data object Home: NavigationItem("home", Icons.Filled.Home, "Home")
     data object TrackDetails: NavigationItem("trackDetails", null, "Track Details")
     data object Statistics: NavigationItem("statistics", Icons.Filled.BarChart, "Statistics")
-    data object History: NavigationItem("build", Icons.Filled.Build, "History")
+    data object History: NavigationItem("history", Icons.Filled.Build, "History")
     data object Registration: NavigationItem("profile", Icons.Filled.Person, "Registration")
     data object Settings: NavigationItem("settings", Icons.Filled.Menu, "Settings")
     data object ActiveTrackSelection: NavigationItem("activeTrack", null,"Active Tracking")

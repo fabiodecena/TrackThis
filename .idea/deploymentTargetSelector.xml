@@ -13,19 +13,19 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="HistoryDatabaseTest">
+      <SelectionState runConfigName="HistoryScreenTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="doWork_when_today_is_Monday()">
+      <SelectionState runConfigName="historyScreen_clicking_on_Delete_Button_corresponding_Topic_is_deleted_from_database()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="MondayResetWorkerTest">
+      <SelectionState runConfigName="testDeleteTrackedTopic()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="do_not_reset_data_when_today_is_not_Monday()">
+      <SelectionState runConfigName="historyScreen_click_on_Topic_navigates_to_Statistics_Screen()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="do_not_reset_data_and_not_save_total_time_spent_when_today_is_not_Monday()">
+      <SelectionState runConfigName="historyScreen_displaysTrackedTopics()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
