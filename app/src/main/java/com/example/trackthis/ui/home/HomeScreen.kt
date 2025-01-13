@@ -30,6 +30,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -131,7 +132,7 @@ fun TopicCard(
         ) {
             Image(
                 painter = painterResource(id = topic.imageRes),
-                contentDescription = null,
+                contentDescription = stringResource(id = topic.name),
                 modifier = Modifier.size(width = 68.dp, height = 68.dp),
                 contentScale = ContentScale.Crop
             )
@@ -216,7 +217,7 @@ fun TopicCardButton(
 ) {
     IconButton(
         onClick = { onButtonClick(topic.name) },
-        modifier = modifier
+        modifier = modifier.testTag("expand_button_${topic.name}")
     ) {
         Icon(
             imageVector = if(expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
