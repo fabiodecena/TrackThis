@@ -118,6 +118,7 @@ fun TopicCard(
         else RoundedCornerShape(bottomEnd = 16.dp, topStart = 16.dp),
         // animation when the  card is expanded or collapsed through modifier
         modifier = modifier
+            .testTag("home_test_tag")
             .animateContentSize(
                 animationSpec = spring(
                     dampingRatio = Spring.DampingRatioMediumBouncy,

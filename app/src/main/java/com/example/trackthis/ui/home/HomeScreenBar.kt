@@ -111,7 +111,8 @@ fun TopAppBar(navController: NavController) {
                         .background(
                             color = if (currentRoute == NavigationItem.Welcome.route ||
                                 currentRoute == NavigationItem.Registration.route ||
-                                currentRoute == NavigationItem.Login.route) {
+                                currentRoute == NavigationItem.Login.route
+                            ) {
                                 MaterialTheme.colorScheme.secondaryContainer // Selected background
                             } else {
                                 Color.Transparent // Default background
