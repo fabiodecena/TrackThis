@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter
  * @property selectedDate The selected date as a timestamp.
  * @property selectedDateString The selected date as a formatted string.
  * @property showModal Controls the visibility of a modal dialog.
- * @property isDailyEffortError Indicates if there's an error with the daily effort input.
+ * @property isDailyEffortErrorGreaterThanFinalGoal Indicates if there's an error with the daily effort input.
  * @property isDateError Indicates if there's an error with the selected date.
  * @property isFormValid Indicates if the form is valid and can be submitted.
  */
@@ -25,7 +25,8 @@ data class TrackEntryUiState(
     val selectedDate: Long? = null,
     val selectedDateString: String = "",
     val showModal: Boolean = false,
-    val isDailyEffortError: Boolean = false,
+    val isDailyEffortErrorGreaterThanFinalGoal: Boolean = false,
+    val isDailyEffortErrorGreaterThan24: Boolean = false,
     val isDateError: Boolean = false,
     val isFormValid: Boolean = false
 )

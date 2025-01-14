@@ -60,6 +60,9 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
             state.dailyEffort.isNotBlank() && state.finalGoal.isNotBlank() && (state.dailyEffort.toIntOrNull()
                 ?: 0) >= (state.finalGoal.toIntOrNull() ?: 0)
 
+        val isDailyEffortGreaterThan24 =
+            state.dailyEffort.toInt() > 24
+
         val isStartingDateGreaterThanEndingDate =
             state.startingDate.isNotBlank() &&
                 state.endingDate.isNotBlank() &&
@@ -69,6 +72,7 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
         val isFormValid =
                 !isDailyEffortGreaterThanFinalGoal &&
                     !isStartingDateGreaterThanEndingDate &&
+                    !isDailyEffortGreaterThan24 &&
                     state.dailyEffort.isNotBlank() &&
                     state.finalGoal.isNotBlank() &&
                     state.startingDate.isNotBlank() &&
@@ -76,7 +80,8 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
                     userId != ""
 
         _trackEntryUiState.value = state.copy(
-            isDailyEffortError = isDailyEffortGreaterThanFinalGoal,
+            isDailyEffortErrorGreaterThanFinalGoal = isDailyEffortGreaterThanFinalGoal,
+            isDailyEffortErrorGreaterThan24 = isDailyEffortGreaterThan24,
             isDateError = isStartingDateGreaterThanEndingDate,
             isFormValid = isFormValid
         )

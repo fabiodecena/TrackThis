@@ -104,9 +104,16 @@ fun TrackEntryScreen(
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_medium2)),
         ) { }
-        if (trackEntryUiState.isDailyEffortError) {
+        if (trackEntryUiState.isDailyEffortErrorGreaterThanFinalGoal) {
             Text(
                 text = stringResource(R.string.daily_effort_error),
+                color = Color.Red,
+                modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
+            )
+        }
+        else if (trackEntryUiState.isDailyEffortErrorGreaterThan24) {
+            Text(
+                text = stringResource(R.string.daily_effort_cannot_be_greater_than_24_hours),
                 color = Color.Red,
                 modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
             )
@@ -137,7 +144,7 @@ fun TrackEntryScreen(
             ),
             value = trackEntryUiState.dailyEffort,
             onValueChanged = { trackEntryViewModel.updateDailyEffort(it) },
-            isError = trackEntryUiState.isDailyEffortError
+            isError = trackEntryUiState.isDailyEffortErrorGreaterThanFinalGoal || trackEntryUiState.isDailyEffortErrorGreaterThan24
         )
         EditField(
             modifier = Modifier
@@ -151,7 +158,7 @@ fun TrackEntryScreen(
             ),
             value = trackEntryUiState.finalGoal,
             onValueChanged = { trackEntryViewModel.updateFinalGoal(it) },
-            isError = trackEntryUiState.isDailyEffortError
+            isError = trackEntryUiState.isDailyEffortErrorGreaterThanFinalGoal
         )
         DatePickerFieldToModal(
             modifier = Modifier

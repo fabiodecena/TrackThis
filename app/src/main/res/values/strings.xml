@@ -41,7 +41,7 @@
     <string name="friday">Fri</string>
     <string name="saturday">Sat</string>
     <string name="sunday">Sun</string>
-    <string name="daily_effort_error">Daily Effort cannot be Greater!!!</string>
+    <string name="daily_effort_error">Daily Effort cannot be Greater than Final Goal!!!</string>
     <string name="dates_error">Starting Date cannot be greater than Ending Date!!!</string>
     <string name="back_button">Back Button</string>
     <string name="refresh">Refresh</string>
@@ -67,5 +67,6 @@
     <string name="delete_button">Delete</string>
     <string name="starting_date_label">"Starting Date: "</string>
     <string name="ending_date_label">"Ending Date: "</string>
+    <string name="daily_effort_cannot_be_greater_than_24_hours">Daily effort cannot be greater than 24 hours</string>
 
 </resources>
