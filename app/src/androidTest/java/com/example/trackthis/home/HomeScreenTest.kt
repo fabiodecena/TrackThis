@@ -10,6 +10,7 @@ import androidx.compose.ui.test.performClick
 import androidx.navigation.testing.TestNavHostController
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.trackthis.R
 import com.example.trackthis.data.TopicListElement
 import com.example.trackthis.data.TopicListRepository
@@ -26,7 +27,9 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class HomeScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()

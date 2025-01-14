@@ -13,10 +13,19 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="topAppBar_navigatesToWelcomeScreen_and_navigation_to_child()">
+      <SelectionState runConfigName="NavigationBarTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="bottomBar_navigatesToHomeScreen()">
+      <SelectionState runConfigName="HomeScreenTest">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="HomeScreenBarTest">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="onTopicSelected_updates_selected_state_and_persist()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="updateTopicList_returns_only_selected_topics()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
