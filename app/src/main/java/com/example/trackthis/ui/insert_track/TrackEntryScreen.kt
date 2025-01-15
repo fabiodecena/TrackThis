@@ -213,7 +213,7 @@ fun TrackEntryScreen(
         ) {
             Icon(
                 Icons.Filled.Add,
-                null,
+                "Submit",
                 tint = MaterialTheme.colorScheme.onPrimary
             )
         }
