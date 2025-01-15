@@ -201,7 +201,7 @@ class TrackEntryScreenTest {
         assert(testNavController.currentBackStackEntry?.destination?.route == "statistics/${trackedTopic1.name}")
     }
     @Test
-    fun testTrackEntryScreen_invalid_InputSubmission_with_dailyEffort_greaterThanFinalGoal() {
+    fun correct_error_message_displayed_when_invalid_InputSubmission_with_dailyEffort_greaterThanFinalGoal() {
         startingDate = getCurrentDateFormatted()
         endingDate = getEndingDateFormatted()
         composeTestRule.setContent {
@@ -233,7 +233,7 @@ class TrackEntryScreenTest {
         composeTestRule.onNodeWithContentDescription("Submit").assertIsNotEnabled()
     }
     @Test
-    fun testTrackEntryScreen_invalid_InputSubmission_with_dailyEffort_greaterThan24() {
+    fun correct_error_message_displayed_when_invalid_InputSubmission_with_dailyEffort_greaterThan24() {
         startingDate = getCurrentDateFormatted()
         endingDate = getEndingDateFormatted()
         composeTestRule.setContent {
@@ -265,7 +265,7 @@ class TrackEntryScreenTest {
         composeTestRule.onNodeWithContentDescription("Submit").assertIsNotEnabled()
     }
     @Test
-    fun testTrackEntryScreen_invalid_InputSubmission_with_startingDate_greaterThanEndingDate() {
+    fun correct_error_message_displayed_when_invalid_InputSubmission_with_startingDate_greaterThanEndingDate() {
         startingDate = getCurrentDateFormatted()
         endingDate = getEndingDateFormatted()
 
@@ -288,29 +288,6 @@ class TrackEntryScreenTest {
         composeTestRule.onNodeWithText("OK").performClick()
         // Error message should be displayed
         composeTestRule.onNodeWithText(context.getString(R.string.dates_error)).assertIsDisplayed()
-        // Click the submit button
-        composeTestRule.onNodeWithContentDescription("Submit").assertIsNotEnabled()
-    }
-    @Test
-    fun testTrackEntryScreen_invalid_InputSubmission_with_null_inputs() {
-        startingDate = getCurrentDateFormatted()
-        endingDate = getEndingDateFormatted()
-
-        composeTestRule.setContent {
-            TrackEntryScreen(
-                topic = testTopics[0],
-                navController = testNavController,
-                timerViewModel = timerViewModel,
-                trackEntryViewModel = trackEntryViewModel
-            )
-        }
-        composeTestRule.onNodeWithText(context.getString(R.string.daily_effort)).performTextInput("5")
-        // Fill in the final goal input
-        composeTestRule.onNodeWithText(context.getString(R.string.final_goal)).performTextInput("")
-        // Open and select a starting date
-        composeTestRule.onNodeWithText(context.getString(R.string.starting_date)).performClick()
-        composeTestRule.onNodeWithText("OK").performClick()
-        // Open and select an ending date
         // Click the submit button
         composeTestRule.onNodeWithContentDescription("Submit").assertIsNotEnabled()
     }

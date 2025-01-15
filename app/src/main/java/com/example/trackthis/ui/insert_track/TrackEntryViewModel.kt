@@ -30,7 +30,7 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
      */
     val trackEntryUiState: StateFlow<TrackEntryUiState> = _trackEntryUiState.asStateFlow()
 
-    private val userId: String =
+    var userId: String =
         FirebaseAuth.getInstance().currentUser?.uid ?: ""
 
     fun updateDailyEffort(dailyEffort: String) {
@@ -109,7 +109,7 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
         trackedTopicDao.delete(trackedTopic)
     }
 
-    fun retrieveAllItems(): Flow<List<TrackedTopic>> {
+    fun retrieveAllItemsByUserId(): Flow<List<TrackedTopic>> {
         return  trackedTopicDao.getAllItemsByUser(userId)
     }
     /**

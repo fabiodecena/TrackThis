@@ -41,7 +41,7 @@ fun TrackApp() {
     val navController = rememberNavController()
     val timerViewModel: TimerViewModel = viewModel(factory = TimerViewModel.factory)
     val trackEntryViewModel: TrackEntryViewModel = viewModel(factory = TrackEntryViewModel.factory)
-    val trackedTopics by trackEntryViewModel.retrieveAllItems().collectAsState(emptyList())
+    val trackedTopics by trackEntryViewModel.retrieveAllItemsByUserId().collectAsState(emptyList())
 
     Scaffold(
         topBar = { TopAppBar(navController = navController) },

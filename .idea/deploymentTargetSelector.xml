@@ -13,16 +13,19 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="testTrackEntryScreen_invalid_InputSubmission()">
+      <SelectionState runConfigName="TrackEntryViewModelTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="testTrackEntryScreen_invalid_InputSubmission_with_dailyEffort_greaterThanFinalGoal()">
+      <SelectionState runConfigName="testAddNewItem_andRetrieveAllItems()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="testTrackEntryScreen_invalid_InputSubmission_with_dailyEffort_greaterThan24()">
+      <SelectionState runConfigName="test_AddNewItem_RetrieveAllItems_and_DeleteItem_functions()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="testTrackEntryScreen_invalid_InputSubmission_with_startingDate_greaterThanEndingDate()">
+      <SelectionState runConfigName="test_AddNewItem_RetrieveAllItems_ByUserId_and_DeleteItem_functions()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="test_AddNewItem_RetrieveAllItemsByUserId_and_DeleteItem_functions()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
