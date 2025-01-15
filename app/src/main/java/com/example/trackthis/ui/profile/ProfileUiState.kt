@@ -14,7 +14,7 @@ package com.example.trackthis.ui.profile
  * @param isPasswordError Indicates if there is an error with the password input.
  * @param isRegistrationFormValid Indicates if the registration form is valid.
  * @param isLoginFormValid Indicates if the login form is valid.
- * @param userName The username entered by the user.
+ * @param userName The username entered by the user, in this case user email is utilized.
  */
 data class ProfileUiState(
     val firstName: String = "",

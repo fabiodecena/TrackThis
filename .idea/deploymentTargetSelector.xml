@@ -13,19 +13,19 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="TrackEntryViewModelTest">
+      <SelectionState runConfigName="RegistrationScreenTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="testAddNewItem_andRetrieveAllItems()">
+      <SelectionState runConfigName="fetchUserName_updates_state_correctly_for_logged_in_user()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="test_AddNewItem_RetrieveAllItems_and_DeleteItem_functions()">
+      <SelectionState runConfigName="loginScreen_successful_Login()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="test_AddNewItem_RetrieveAllItems_ByUserId_and_DeleteItem_functions()">
+      <SelectionState runConfigName="LoginScreenTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="test_AddNewItem_RetrieveAllItemsByUserId_and_DeleteItem_functions()">
+      <SelectionState runConfigName="logout_and_fetchUserName_updates_state_correctly_for_logged_in_user()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

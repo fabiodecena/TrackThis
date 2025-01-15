@@ -61,7 +61,6 @@ class LoginViewModel : ViewModel() {
             .signInWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    Log.d("TAG", "Login successful")
                     Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
                     // Restart the app to clear undesired data and views for a specific user
                     val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
