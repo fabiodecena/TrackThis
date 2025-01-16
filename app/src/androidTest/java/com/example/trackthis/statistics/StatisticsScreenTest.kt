@@ -3,6 +3,7 @@ package com.example.trackthis.statistics
 import android.content.Context
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
@@ -39,6 +40,7 @@ class StatisticsScreenTest {
     private lateinit var database: HistoryDatabase
     private lateinit var trackedTopicDao: TrackedTopicDao
     private lateinit var context: Context
+    private lateinit var trackedTopic: TrackedTopic
 
     @Before
     fun setup() {
@@ -52,7 +54,7 @@ class StatisticsScreenTest {
         chartViewModel = ChartViewModel()
         timerViewModel = TimerViewModel(trackedTopicDao)
         navController = TestNavHostController(context)
-        val trackedTopic = TrackedTopic(
+        trackedTopic = TrackedTopic(
             id = 1,
             userId = "1f",
             name = 2131492868,
@@ -67,6 +69,10 @@ class StatisticsScreenTest {
         runTest {
             trackedTopicDao.insert(trackedTopic)
         }
+    }
+
+    @Test
+    fun statisticsScreen_displays_properly_UI_elements_of_relative_tracked_topic() {
         composeTestRule.setContent {
             navController.navigatorProvider.addNavigator(ComposeNavigator())
 
@@ -84,10 +90,6 @@ class StatisticsScreenTest {
                 }
             }
         }
-    }
-
-    @Test
-    fun statisticsScreen_displays_properly_UI_elements_of_relative_tracked_topic() {
         runTest {
             // Assert that the topic name is displayed
             composeTestRule.onNodeWithText(context.getString(trackedTopicDao.getAllItems().first().first().name)).assertIsDisplayed()
@@ -107,14 +109,30 @@ class StatisticsScreenTest {
             composeTestRule.onNodeWithText("Pause").assertIsDisplayed()
             composeTestRule.onNodeWithText("Stop").assertIsDisplayed()
             composeTestRule.onNodeWithText("Refresh").assertIsDisplayed()
-
-
         }
     }
 
     @Test
-    fun statisticsScreen_hidesContentWhenNoTopicIsProvided() {
-        // Assert that no content is displayed
+    fun statisticsScreen_no_Content_displayed_if_tracked_topic_is_null() {
+        runTest {
+            composeTestRule.setContent {
+                navController.navigatorProvider.addNavigator(ComposeNavigator())
 
+                NavHost(
+                    navController = navController,
+                    startDestination = "statistics"
+                ) {
+                    composable("statistics") {
+                        StatisticsScreen(
+                            chartViewModel = chartViewModel,
+                            timerViewModel = timerViewModel,
+                            topic = null,
+                            navController = navController,
+                        )
+                    }
+                }
+            }
+            composeTestRule.onNodeWithText(context.getString(trackedTopicDao.getAllItems().first().first().name)).assertIsNotDisplayed()
+        }
     }
 }
