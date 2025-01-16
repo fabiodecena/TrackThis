@@ -1,11 +1,7 @@
 package com.example.trackthis.profile
 
-import android.content.Context
-import android.util.Log
-import androidx.test.core.app.ApplicationProvider
 import com.example.trackthis.ui.profile.RegistrationViewModel
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
