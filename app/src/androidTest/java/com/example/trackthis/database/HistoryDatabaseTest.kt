@@ -1,4 +1,4 @@
-package com.example.trackthis
+package com.example.trackthis.database
 
 import android.content.Context
 import androidx.room.Room

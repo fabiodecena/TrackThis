@@ -19,6 +19,8 @@ import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.data.database.tracked_topic.TrackedTopicDao
 import com.example.trackthis.ui.statistics.StatisticsScreen
 import com.example.trackthis.ui.statistics.charts.ChartViewModel
+import com.example.trackthis.ui.statistics.charts.dailyEffortList
+import com.example.trackthis.ui.statistics.charts.pointsData
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
 import com.example.trackthis.ui.statistics.timer.formatTime
 import kotlinx.coroutines.flow.first
@@ -134,5 +136,27 @@ class StatisticsScreenTest {
             }
             composeTestRule.onNodeWithText(context.getString(trackedTopicDao.getAllItems().first().first().name)).assertIsNotDisplayed()
         }
+    }
+    @Test
+    fun verify_chart_data_are_updated_with_database_data() = runTest {
+        composeTestRule.setContent {
+            navController.navigatorProvider.addNavigator(ComposeNavigator())
+
+            NavHost(
+                navController = navController,
+                startDestination = "statistics"
+            ) {
+                composable("statistics") {
+                    StatisticsScreen(
+                        chartViewModel = chartViewModel,
+                        timerViewModel = timerViewModel,
+                        topic = trackedTopic,
+                        navController = navController,
+                    )
+                }
+            }
+        }
+        assert(chartViewModel.chartUiState.value.defaultPointsData == pointsData)
+        assert(chartViewModel.chartUiState.value.dailyEffort == dailyEffortList)
     }
 }
