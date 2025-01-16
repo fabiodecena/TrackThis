@@ -1,4 +1,4 @@
-package com.example.trackthis.profile
+package com.example.trackthis.settings
 
 import android.content.Context
 import androidx.compose.ui.test.assertIsDisplayed

@@ -101,7 +101,7 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
     fun observeMondayResetWorker(context: Context, navController: NavController, topic: TrackedTopic?) {
         WorkManager.getInstance(context)
             .getWorkInfosForUniqueWorkLiveData("MondayResetWorker")
-            .observe( navController.currentBackStackEntry!!) { workInfos ->
+            .observe(navController.currentBackStackEntry!!) { workInfos ->
                 workInfos?.forEach { workInfo ->
                     val progress = workInfo.progress.getString("status")
                     if (progress != "done" && workInfo.state == WorkInfo.State.RUNNING) {
