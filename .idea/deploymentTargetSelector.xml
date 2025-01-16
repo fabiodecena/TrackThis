@@ -13,7 +13,19 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="welcomeScreen_displaysUIAndHandlesActions()">
+      <SelectionState runConfigName="welcomeScreen_displays_UI_and_navigates_to_login()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="welcomeScreen_displays_logout_button_and_logs_out()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="WelcomeScreenTest">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="testSettingsScreenNavigation()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="settingsScreen_display_items_and_verify_toggle_selection()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
