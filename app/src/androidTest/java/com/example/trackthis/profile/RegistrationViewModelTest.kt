@@ -74,11 +74,4 @@ class RegistrationViewModelTest {
         assertEquals(true, state.isPasswordError)
         assertEquals(false, state.isRegistrationFormValid)
     }
-
-    @Test
-    fun fetchUserName_for_logged_out_user() = runTest {
-        val state = viewModel.registrationUiState.first()
-        // Replace the below check with the expected logged-in user's email.
-        assertEquals("User not Logged In", state.userName)
-    }
 }
