@@ -8,6 +8,8 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.trackthis.TrackApplication
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.data.database.tracked_topic.TrackedTopicDao
+import com.example.trackthis.ui.statistics.timer.TimerUiState
+import com.example.trackthis.ui.statistics.timer.TimerViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,6 +30,7 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
     /**
      *  StateFlow to manage the UI state of the track entry screen.
      */
+    val timerViewModel = TimerViewModel
     val trackEntryUiState: StateFlow<TrackEntryUiState> = _trackEntryUiState.asStateFlow()
 
     var userId: String =
@@ -77,7 +80,9 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
                     state.finalGoal.isNotBlank() &&
                     state.startingDate.isNotBlank() &&
                     state.endingDate.isNotBlank() &&
-                    userId != ""
+                    userId != "" &&
+                        TimerUiState().isTimerRunning
+
 
         _trackEntryUiState.value = state.copy(
             isDailyEffortErrorGreaterThanFinalGoal = isDailyEffortGreaterThanFinalGoal,

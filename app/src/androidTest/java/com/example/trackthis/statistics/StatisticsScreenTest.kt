@@ -6,7 +6,9 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -23,7 +25,9 @@ import com.example.trackthis.ui.statistics.charts.dailyEffortList
 import com.example.trackthis.ui.statistics.charts.pointsData
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
 import com.example.trackthis.ui.statistics.timer.formatTime
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -158,5 +162,34 @@ class StatisticsScreenTest {
         }
         assert(chartViewModel.chartUiState.value.defaultPointsData == pointsData)
         assert(chartViewModel.chartUiState.value.dailyEffort == dailyEffortList)
+    }
+    @Test
+    fun verify_timer_value_reflect_dailyTimeSpent_value_and_update_a_delay_input() = runTest {
+        composeTestRule.setContent {
+            navController.navigatorProvider.addNavigator(ComposeNavigator())
+
+            NavHost(
+                navController = navController,
+                startDestination = "statistics"
+            ) {
+                composable("statistics") {
+                    StatisticsScreen(
+                        chartViewModel = chartViewModel,
+                        timerViewModel = timerViewModel,
+                        topic = trackedTopic,
+                        navController = navController,
+                    )
+                }
+            }
+        }
+        val initialTimer = timerViewModel.timerUiState.value.timer
+        val currentTimerValue = initialTimer.formatTime()
+        composeTestRule.onNodeWithText(currentTimerValue).assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription("Start Timer").performClick()
+        runBlocking {
+            delay(10000)
+        }
+        val updatedTimerValue = (initialTimer + 10).formatTime()
+        composeTestRule.onNodeWithText(updatedTimerValue).assertIsDisplayed()
     }
 }

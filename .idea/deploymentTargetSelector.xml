@@ -13,19 +13,19 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="statisticsScreen_displays_properly_UI_elements_of_relative_tracked_topic()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="statisticsScreen_hidesContentWhenNoTopicIsProvided()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="StatisticsScreenTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="testStartedTopicDisplaysCorrectly()">
+      <SelectionState runConfigName="verify_chart_data_are_same_as_in_database() (1)">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="chartUiState_initializes_with_default_data()">
+      <SelectionState runConfigName="verify_chart_data_are_updated_with_database_data()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="testTimerScreenUIInteractions()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="verify_timer_value_reflect_dailyTimeSpent_value()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

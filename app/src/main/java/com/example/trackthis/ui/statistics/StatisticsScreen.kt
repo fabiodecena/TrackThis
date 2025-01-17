@@ -219,7 +219,7 @@ fun StartedTopic(
                         enabled = true,
                         color = SolidColor(MaterialTheme.colorScheme.error),
                     ),
-                    maxValue = 24.0,
+                    maxValue = 86400.0,
                     animationMode = AnimationMode.Together(delayBuilder = {
                         it * 500L
                     }),
@@ -384,7 +384,7 @@ fun BuildTracking(
                 ) {
                     Icon(
                         painterResource(R.drawable.play_circle_24dp_fill0_wght400_grad0_opsz24),
-                        contentDescription = null,
+                        contentDescription = "Start Timer",
                         tint = if (!timerUiState.isTimerRunning || timerUiState.isPaused) MaterialTheme.colorScheme.tertiary
                             else MaterialTheme.colorScheme.onTertiary
                     )

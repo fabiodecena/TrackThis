@@ -191,8 +191,9 @@ fun TrackEntryScreen(
                         TrackedTopic(
                             userId = userId,
                             name = topic.name,
-                            dailyEffort = trackEntryUiState.dailyEffort.toDouble(),
-                            finalGoal = trackEntryUiState.finalGoal.toInt(),
+                            // Convert seconds to hours for displaying correctly in Line Chart
+                            dailyEffort = trackEntryUiState.dailyEffort.toDouble() *3600,
+                            finalGoal = trackEntryUiState.finalGoal.toInt() * 3600,
                             startingDate = trackEntryUiState.startingDate,
                             endingDate = trackEntryUiState.endingDate,
                             totalTimeSpent = 0,

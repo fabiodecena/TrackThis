@@ -60,7 +60,10 @@ fun TimerScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = timerUiState.timer.formatTime(), fontSize = 24.sp)
+        Text(
+            text = timerUiState.timer.formatTime(),
+            fontSize = 24.sp
+        )
         Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
