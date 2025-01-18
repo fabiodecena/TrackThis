@@ -81,6 +81,7 @@ fun TrackEntryScreen(
     trackEntryViewModel: TrackEntryViewModel
 ) {
     val trackEntryUiState by trackEntryViewModel.trackEntryUiState.collectAsState()
+    val timerUiState by timerViewModel.timerUiState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     val userId = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -104,33 +105,46 @@ fun TrackEntryScreen(
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_medium2)),
         ) { }
-        if (trackEntryUiState.isDailyEffortErrorGreaterThanFinalGoal) {
-            Text(
-                text = stringResource(R.string.daily_effort_error),
-                color = Color.Red,
-                modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
-            )
-        }
-        else if (trackEntryUiState.isDailyEffortErrorGreaterThan24) {
-            Text(
-                text = stringResource(R.string.daily_effort_cannot_be_greater_than_24_hours),
-                color = Color.Red,
-                modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
-            )
-        }
-        else if (trackEntryUiState.isDateError) {
-            Text(
-                text = stringResource(R.string.dates_error),
-                color = Color.Red,
-                modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
-            )
-        }
-        else if (userId == null) {
-            Text(
-                text = stringResource(R.string.user_not_logged),
-                color = Color.Red,
-                modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
-            )
+        when {
+            trackEntryUiState.isDailyEffortErrorGreaterThanFinalGoal -> {
+                Text(
+                    text = stringResource(R.string.daily_effort_error),
+                    color = Color.Red,
+                    modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
+                )
+            }
+
+            trackEntryUiState.isDailyEffortErrorGreaterThan24 -> {
+                Text(
+                    text = stringResource(R.string.daily_effort_cannot_be_greater_than_24_hours),
+                    color = Color.Red,
+                    modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
+                )
+            }
+
+            trackEntryUiState.isDateError -> {
+                Text(
+                    text = stringResource(R.string.dates_error),
+                    color = Color.Red,
+                    modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
+                )
+            }
+
+            userId == null -> {
+                Text(
+                    text = stringResource(R.string.user_not_logged),
+                    color = Color.Red,
+                    modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
+                )
+            }
+
+            timerUiState.isTimerRunning -> {
+                Text(
+                    text = "Timer is Running!",
+                    color = Color.Red,
+                    modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
+                )
+            }
         }
         EditField(
             modifier = Modifier
@@ -191,7 +205,7 @@ fun TrackEntryScreen(
                         TrackedTopic(
                             userId = userId,
                             name = topic.name,
-                            // Convert seconds to hours for displaying correctly in Line Chart
+                            // Convert hours to seconds for displaying correctly in Line Chart
                             dailyEffort = trackEntryUiState.dailyEffort.toDouble() *3600,
                             finalGoal = trackEntryUiState.finalGoal.toInt() * 3600,
                             startingDate = trackEntryUiState.startingDate,

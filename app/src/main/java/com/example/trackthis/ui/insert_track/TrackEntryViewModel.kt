@@ -81,7 +81,7 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
                     state.startingDate.isNotBlank() &&
                     state.endingDate.isNotBlank() &&
                     userId != "" &&
-                        TimerUiState().isTimerRunning
+                        !TimerUiState().isTimerRunning
 
 
         _trackEntryUiState.value = state.copy(

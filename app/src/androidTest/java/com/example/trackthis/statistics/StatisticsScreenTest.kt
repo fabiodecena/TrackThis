@@ -187,9 +187,9 @@ class StatisticsScreenTest {
         composeTestRule.onNodeWithText(currentTimerValue).assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("Start Timer").performClick()
         runBlocking {
-            delay(10000)
+            delay(5000)
         }
-        val updatedTimerValue = (initialTimer + 10).formatTime()
+        val updatedTimerValue = (initialTimer + 5).formatTime()
         composeTestRule.onNodeWithText(updatedTimerValue).assertIsDisplayed()
     }
 }
