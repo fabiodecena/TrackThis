@@ -57,6 +57,7 @@ import ir.ehsannarmani.compose_charts.models.GridProperties
 import ir.ehsannarmani.compose_charts.models.HorizontalIndicatorProperties
 import ir.ehsannarmani.compose_charts.models.LabelProperties
 import ir.ehsannarmani.compose_charts.models.Line
+import ir.ehsannarmani.compose_charts.models.PopupProperties
 import ir.ehsannarmani.compose_charts.models.StrokeStyle
 import ir.ehsannarmani.compose_charts.models.ZeroLineProperties
 import java.time.DayOfWeek
@@ -188,6 +189,15 @@ fun StartedTopic(
                                     strokeStyle = StrokeStyle.Dashed(
                                         intervals = floatArrayOf(10f, 10f)
                                     )
+                                ),
+                                popupProperties = PopupProperties(
+                                    contentBuilder = { value ->
+                                        val hours = value / 3600.0
+                                        val minutes = (hours - hours.toInt()) * 60
+                                        val seconds = (minutes - minutes.toInt()) * 60
+                                        String.format(Locale.getDefault(), "%02d:%02d:%02d", hours.toInt(), minutes.toInt(), seconds.toInt())
+                                    },
+                                    containerColor = Color.White,
                                 )
                             ),
                             Line(
@@ -206,10 +216,21 @@ fun StartedTopic(
                                 strokeAnimationSpec = tween(2000, easing = EaseInOutCubic),
                                 gradientAnimationDelay = 1000,
                                 drawStyle = DrawStyle.Stroke(width = 2.dp),
+                                popupProperties = PopupProperties(
+                                    contentBuilder = { value ->
+                                        val hours = value / 3600.0
+                                        val minutes = (hours - hours.toInt()) * 60
+                                        val seconds = (minutes - minutes.toInt()) * 60
+                                        String.format(Locale.getDefault(), "%02d:%02d:%02d", hours.toInt(), minutes.toInt(), seconds.toInt())
+                                    },
+                                    containerColor = Color.White,
+                                )
                             )
                         )
                     },
-                    indicatorProperties = HorizontalIndicatorProperties(contentBuilder = { value->  (value/3600).toString() }),
+                    indicatorProperties = HorizontalIndicatorProperties(contentBuilder = { value->
+                        (value/3600).toInt().toString() }
+                    ),
                     labelProperties = LabelProperties(
                         enabled = true,
                         labels = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
