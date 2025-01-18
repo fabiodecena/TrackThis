@@ -54,6 +54,7 @@ import ir.ehsannarmani.compose_charts.models.AnimationMode
 import ir.ehsannarmani.compose_charts.models.DotProperties
 import ir.ehsannarmani.compose_charts.models.DrawStyle
 import ir.ehsannarmani.compose_charts.models.GridProperties
+import ir.ehsannarmani.compose_charts.models.HorizontalIndicatorProperties
 import ir.ehsannarmani.compose_charts.models.LabelProperties
 import ir.ehsannarmani.compose_charts.models.Line
 import ir.ehsannarmani.compose_charts.models.StrokeStyle
@@ -208,6 +209,7 @@ fun StartedTopic(
                             )
                         )
                     },
+                    indicatorProperties = HorizontalIndicatorProperties(contentBuilder = { value->  (value/3600).toString() }),
                     labelProperties = LabelProperties(
                         enabled = true,
                         labels = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
