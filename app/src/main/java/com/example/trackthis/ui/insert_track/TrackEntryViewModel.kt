@@ -64,7 +64,7 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
                 ?: 0) >= (state.finalGoal.toIntOrNull() ?: 0)
 
         val isDailyEffortGreaterThan24 =
-            state.dailyEffort.toInt() > 24
+            (state.dailyEffort.toIntOrNull() ?: 0) > 24
 
         val isStartingDateGreaterThanEndingDate =
             state.startingDate.isNotBlank() &&
