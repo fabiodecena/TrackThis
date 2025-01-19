@@ -1,6 +1,5 @@
 package com.example.trackthis.ui.insert_track
 
-import android.icu.text.SimpleDateFormat
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -53,12 +52,11 @@ import com.example.trackthis.R
 import com.example.trackthis.data.TopicListElement
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.ui.navigation.NavigationItem
+import com.example.trackthis.ui.statistics.StatisticsScreen
 import com.example.trackthis.ui.statistics.timer.TimerViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 import java.util.Calendar
-import java.util.Locale
-import com.example.trackthis.ui.statistics.StatisticsScreen
 
 
 /**
@@ -301,7 +299,7 @@ fun DatePickerFieldToModal(
     @StringRes label: Int,
     onValueChanged: (String) -> Unit,
     isStartDatePicker: Boolean,
-    startingDate: String,
+    startingDate: String?,
     isError: Boolean
 ) {
     var selectedDate by remember { mutableStateOf<Long?>(null) }
@@ -360,7 +358,7 @@ fun DatePickerFieldToModal(
                     onValueChanged(selectedDateString)
                 },
                 onDismiss = { showModal = false },
-                startingDate = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).parse(startingDate)?.time ?: 0
+                startingDate = trackEntryViewModel.parseDate(startingDate)
             )
         }
     }
@@ -421,8 +419,9 @@ fun EndDatePickerModal(
     onDismiss: () -> Unit,
     startingDate: Long
 ) {
+    val today = Calendar.getInstance().timeInMillis
     val datePickerState = rememberDatePickerState(
-        initialSelectedDateMillis = startingDate
+        initialSelectedDateMillis = if (startingDate < today) today else startingDate
     )
     DatePickerDialog(
         onDismissRequest = onDismiss,
@@ -443,7 +442,7 @@ fun EndDatePickerModal(
         DatePicker(
             state = datePickerState,
             dateValidator = { timestamp ->
-                timestamp > startingDate
+                timestamp > (startingDate)
             }
         )
     }

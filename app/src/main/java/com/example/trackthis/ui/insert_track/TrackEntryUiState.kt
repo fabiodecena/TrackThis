@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter
 data class TrackEntryUiState(
     val dailyEffort: String = "",
     val finalGoal: String = "",
-    val startingDate: String = getCurrentDateAsString(),
+    val startingDate: String = "",
     val endingDate: String = "",
     val selectedDate: Long? = null,
     val selectedDateString: String = "",
@@ -30,9 +30,3 @@ data class TrackEntryUiState(
     val isDateError: Boolean = false,
     val isFormValid: Boolean = false
 )
-
-fun getCurrentDateAsString(): String {
-    val currentDate = LocalDate.now()
-    val formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
-    return currentDate.format(formatter)
-}

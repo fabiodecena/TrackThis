@@ -69,8 +69,7 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
         val isStartingDateGreaterThanEndingDate =
             state.startingDate.isNotBlank() &&
                 state.endingDate.isNotBlank() &&
-                (SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).parse(state.startingDate)?.time ?: 0) >=
-                SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).parse(state.endingDate)?.time!!
+                parseDate(state.startingDate) >= parseDate(state.endingDate)
 
         val isFormValid =
                 !isDailyEffortGreaterThanFinalGoal &&
@@ -102,7 +101,19 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
         val formatter = android.icu.text.SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
         return formatter.format(Date(millis))
     }
-
+    fun parseDate(startingDate: String?): Long {
+        if (startingDate.isNullOrEmpty()) {
+            // Handle the case where the date string is empty or null
+            return 0L // Or any other default value you want to use
+        }
+        return try {
+            SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).parse(startingDate)?.time ?: 0
+        } catch (e: Exception) {
+            // Handle the case where the date string is not in the correct format
+            println("Error parsing date: ${e.message}")
+            0L // Or any other default value you want to use
+        }
+    }
     /**
      * Functions to update [TrackedTopic] in the Room database
      */
