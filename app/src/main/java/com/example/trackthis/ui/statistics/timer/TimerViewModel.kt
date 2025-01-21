@@ -12,10 +12,9 @@ import androidx.navigation.NavController
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import com.example.trackthis.TrackApplication
 import com.example.trackthis.MondayResetWorker
+import com.example.trackthis.TrackApplication
 import com.example.trackthis.data.database.tracked_topic.TrackedTopic
 import com.example.trackthis.data.database.tracked_topic.TrackedTopicDao
 import com.example.trackthis.ui.navigation.NavigationItem
@@ -82,38 +81,6 @@ class TimerViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewModel()
                 _timerUiState.value = _timerUiState.value.copy(timer = _timerUiState.value.timer + 1)
             }
         })
-    }
-    /**
-     * Schedules a worker [MondayResetWorker] to reset the timer on Monday.
-     *
-     * @param context The context to use for scheduling the worker.
-     */
-    fun scheduleMondayResetWorker(context: Context) {
-        WorkerScheduler.scheduleMondayResetWorker(context)
-    }
-    /**
-     * Observes the state of the Monday reset worker and navigates to the statistics screen if the worker is running.
-     *
-     * @param context The context to use for observing the worker.
-     * @param navController The navigation controller to use for navigating to the statistics screen.
-     * @param topic The tracked topic.
-     */
-    fun observeMondayResetWorker(context: Context, navController: NavController, topic: TrackedTopic?) {
-        WorkManager.getInstance(context)
-            .getWorkInfosForUniqueWorkLiveData("MondayResetWorker")
-            .observe(navController.currentBackStackEntry!!) { workInfos ->
-                workInfos?.forEach { workInfo ->
-                    val progress = workInfo.progress.getString("status")
-                    if (progress != "done" && workInfo.state == WorkInfo.State.RUNNING) {
-                        resetTimer() // Reset the timer or update your state
-                        navController.navigate("${NavigationItem.Statistics.route}/${topic?.name}") {
-                            navController.graph.startDestinationRoute?.let { route ->
-                                popUpTo(route) { inclusive = true }
-                            }
-                        }
-                    }
-                }
-            }
     }
     /**
      * Initializes the timer with the saved time for the current day.
@@ -278,8 +245,7 @@ object WorkerScheduler {
 
         WorkManager.getInstance(context).cancelUniqueWork("MondayResetWorker")
 
-        val workRequest = PeriodicWorkRequestBuilder<MondayResetWorker>(24, TimeUnit.HOURS)
-            .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
+        val workRequest = PeriodicWorkRequestBuilder<MondayResetWorker>(initialDelay, TimeUnit.MILLISECONDS)
             .setConstraints(
                 Constraints.Builder()
                     .setRequiresBatteryNotLow(false)
@@ -290,15 +256,15 @@ object WorkerScheduler {
 
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             "MondayResetWorker",
-            ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
+            ExistingPeriodicWorkPolicy.UPDATE,
             workRequest
         )
     }
 
     private fun calculateInitialDelayToMidnight(): Long {
         val now = LocalDateTime.now(ZoneId.systemDefault())
-        val nextMonday = now.plusDays(1)
+        val nextDay = now.plusDays(1)
             .withHour(0).withMinute(0).withSecond(0).withNano(0)
-        return Duration.between(now, nextMonday).toMillis()
+        return Duration.between(now, nextDay).toMillis()
     }
 }

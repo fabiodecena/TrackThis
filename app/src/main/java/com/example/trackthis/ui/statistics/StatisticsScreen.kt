@@ -34,7 +34,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -68,8 +67,7 @@ import java.util.Locale
  * [StatisticsScreen] is a composable function that displays the statistics for a specific [TrackedTopic].
  *
  * It fetches data from [ChartViewModel] and [TimerViewModel] to display a line chart of progress,
- * daily effort indicators, and a timer interface. It also observing
- * a worker for resetting the tracked data on Mondays.
+ * daily effort indicators, and a timer interface.
  *
  * @param modifier Modifier for styling the layout.
  * @param chartViewModel ViewModel for chart-related data.
@@ -89,18 +87,10 @@ fun StatisticsScreen(
     val timerUiState by timerViewModel.timerUiState.collectAsState()
     val pointsData = chartUiState.defaultPointsData
     val dailyEffortList = chartUiState.dailyEffort
-    val context = LocalContext.current
-
 
     LaunchedEffect(topic) {
         timerViewModel.updatePointsDataList(topic)
-        if (topic != null) {
-            timerViewModel.scheduleMondayResetWorker(context)
-            timerViewModel.observeMondayResetWorker(context, navController, topic)
-        }
-        if (topic != null &&  timerUiState.timer == 0L) {
-            timerViewModel.initializeTimer(topic)
-        }
+        timerViewModel.initializeTimer(topic)
     }
 
     if (topic != null) {
