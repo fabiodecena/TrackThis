@@ -62,7 +62,7 @@ fun TimerScreen(
     ) {
         Text(
             text = timerUiState.timer.formatTime(),
-            fontSize = 24.sp
+            fontSize = 28.sp
         )
         Spacer(modifier = Modifier.height(16.dp))
         Row(
@@ -72,20 +72,23 @@ fun TimerScreen(
             Spacer(modifier = Modifier.width(16.dp))
             Button(
                 onClick = { timerViewModel.pauseTimer() },
-                enabled = !timerUiState.isPaused
+                enabled = !timerUiState.isPaused,
+                elevation = ButtonDefaults.buttonElevation(2.dp)
             ) {
                 Text(stringResource(R.string.pause_button))
             }
             Spacer(modifier = Modifier.width(16.dp))
             Button(
                 onClick = { timerViewModel.stopTimer(context, navController, topicId) },
-                enabled = timerUiState.timer> 0L
+                enabled = timerUiState.timer> 0L,
+                elevation = ButtonDefaults.buttonElevation(2.dp)
             ) {
                 Text(stringResource(R.string.stop_button))
             }
             Spacer(modifier = Modifier.width(16.dp))
             Button(
                 enabled = !timerUiState.isTimerRunning,
+                elevation = ButtonDefaults.buttonElevation(2.dp),
                 colors = if (timerUiState.isTimerRunning) {
                     ButtonDefaults.buttonColors(MaterialTheme.colorScheme.onTertiary)
                 } else {

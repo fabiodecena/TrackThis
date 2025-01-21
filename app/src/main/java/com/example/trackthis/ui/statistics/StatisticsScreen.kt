@@ -137,7 +137,8 @@ fun StartedTopic(
     Card(
         modifier = modifier
             .padding(dimensionResource(R.dimen.padding_medium)),
-        shape = MaterialTheme.shapes.large
+        shape = MaterialTheme.shapes.large,
+        elevation = CardDefaults.cardElevation(defaultElevation = dimensionResource(R.dimen.padding_small))
     ) {
         Row(
             modifier = Modifier
@@ -223,7 +224,9 @@ fun StartedTopic(
                     ),
                     labelProperties = LabelProperties(
                         enabled = true,
-                        labels = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
+                        labels = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"),
+                        rotationDegreeOnSizeConflict = -45f,
+                        forceRotation = true
                     ),
                     gridProperties = GridProperties(
                         enabled = false
@@ -249,7 +252,7 @@ fun StartedTopic(
             Card(
                 modifier = Modifier
                     .padding(dimensionResource(R.dimen.padding_medium))
-                    .height(70.dp)
+                    .height(60.dp)
                     .fillMaxWidth(),
                 shape = MaterialTheme.shapes.large,
                 colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
@@ -380,7 +383,8 @@ fun BuildTracking(
             modifier = modifier
                 .padding(dimensionResource(R.dimen.padding_medium))
                 .fillMaxWidth(),
-            shape = MaterialTheme.shapes.large
+            shape = MaterialTheme.shapes.large,
+            elevation = CardDefaults.cardElevation(defaultElevation = dimensionResource(R.dimen.padding_small))
         ) {
             Row(
                 modifier = Modifier
