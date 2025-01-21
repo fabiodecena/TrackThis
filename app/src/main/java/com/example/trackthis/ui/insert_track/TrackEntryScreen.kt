@@ -31,6 +31,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -83,6 +84,13 @@ fun TrackEntryScreen(
     val coroutineScope = rememberCoroutineScope()
     val userId = FirebaseAuth.getInstance().currentUser?.uid
 
+    LaunchedEffect(Unit) {
+        trackEntryViewModel.updateDailyEffort("")
+        trackEntryViewModel.updateFinalGoal("")
+        trackEntryViewModel.updateStartingDate("")
+        trackEntryViewModel.updateEndingDate("")
+        trackEntryViewModel.updateIsFormValid(false)
+    }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -222,7 +230,7 @@ fun TrackEntryScreen(
             modifier = Modifier
                 .padding(dimensionResource(R.dimen.padding_medium2))
                 .align(Alignment.End),
-            enabled = trackEntryUiState.isFormValid
+            enabled = if (!timerUiState.isTimerRunning) trackEntryUiState.isFormValid else false
         ) {
             Icon(
                 Icons.Filled.Add,

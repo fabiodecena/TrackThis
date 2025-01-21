@@ -53,6 +53,10 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
         _trackEntryUiState.value = _trackEntryUiState.value.copy(endingDate = endingDate)
         validateInputs()
     }
+    fun updateIsFormValid(isTimerRunning: Boolean) {
+        _trackEntryUiState.value = _trackEntryUiState.value.copy(isFormValid = isTimerRunning)
+        validateInputs()
+    }
     /**
      * Validates the input fields in the UI state and updates the error flags and form validity.
      */
@@ -79,8 +83,7 @@ class TrackEntryViewModel(private val trackedTopicDao: TrackedTopicDao) : ViewMo
                     state.finalGoal.isNotBlank() &&
                     state.startingDate.isNotBlank() &&
                     state.endingDate.isNotBlank() &&
-                    userId != "" &&
-                        !TimerUiState().isTimerRunning
+                    userId != ""
 
 
         _trackEntryUiState.value = state.copy(
