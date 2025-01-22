@@ -30,7 +30,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -39,6 +38,13 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
+/**
+ * These tests verify the behavior of the TrackEntryScreen when the user interacts with it,
+ * such as entering data, submitting the form, and navigating to other screens.
+ *
+ * The tests use the Jetpack Compose testing framework to simulate user interactions and
+ * assert the expected behavior of the UI.
+ */
 @RunWith(AndroidJUnit4::class)
 class TrackEntryScreenTest {
     @get:Rule
@@ -55,77 +61,57 @@ class TrackEntryScreenTest {
     private lateinit var trackEntryViewModel: TrackEntryViewModel
     private lateinit var startingDate: String
     private lateinit var endingDate: String
-
-    companion object {
-        private lateinit var staticTrackedTopicDao: TrackedTopicDao
-        private lateinit var trackedTopic1: TrackedTopic
-        private lateinit var trackedTopic2: TrackedTopic
-        private lateinit var trackedTopic3: TrackedTopic
-        /**
-         * Sets up the database and DAO before all tests.
-         * It creates an in-memory database to avoid affecting the actual database.
-         * It also inserts the tracked topics that will be used by the tests.
-         */
-        @BeforeClass
-        @JvmStatic
-        fun setupDatabaseAndInsertData() {
-            val context = ApplicationProvider.getApplicationContext<Context>()
-            val database = Room.inMemoryDatabaseBuilder(context, HistoryDatabase::class.java)
-                .allowMainThreadQueries()
-                .build()
-            staticTrackedTopicDao = database.trackedTopicDao()
-
-            trackedTopic1 = TrackedTopic(
-                id = 1,
-                userId = "1f",
-                name = 2131492868,
-                dailyEffort = 3.0,
-                finalGoal = 70,
-                startingDate = "11/01/2025",
-                endingDate = "11/20/2025",
-                totalTimeSpent = 10,
-                weeklyTimeSpent = 0,
-                dailyTimeSpent = mapOf("Monday" to 3, "Tuesday" to 4, "Friday" to 3 )
-            )
-            trackedTopic2 = TrackedTopic(
-                id = 2,
-                userId = "1f",
-                name = 2131492869,
-                dailyEffort = 2.5,
-                finalGoal = 50,
-                startingDate = "12/01/2025",
-                endingDate = "12/20/2025",
-                totalTimeSpent = 15,
-                weeklyTimeSpent = 5,
-                dailyTimeSpent = mapOf("Wednesday" to 2, "Thursday" to 3)
-            )
-            trackedTopic3 = TrackedTopic(
-                id = 3,
-                userId = "2g",
-                name = 2131492871,
-                dailyEffort = 4.0,
-                finalGoal = 100,
-                startingDate = "01/01/2026",
-                endingDate = "01/30/2026",
-                totalTimeSpent = 20,
-                weeklyTimeSpent = 10,
-                dailyTimeSpent = mapOf("Monday" to 4, "Friday" to 6)
-            )
-            runBlocking {
-                staticTrackedTopicDao.insert(trackedTopic1)
-                staticTrackedTopicDao.insert(trackedTopic2)
-                staticTrackedTopicDao.insert(trackedTopic3)
-            }
-        }
-    }
+    private lateinit var trackedTopic1: TrackedTopic
+    private lateinit var trackedTopic2: TrackedTopic
+    private lateinit var trackedTopic3: TrackedTopic
+    /**
+     * Sets up the database and DAO before all tests.
+     * It creates an in-memory database to avoid affecting the actual database.
+     * It also inserts the tracked topics that will be used by the tests.
+     */
     @Before
-    fun setup() {
+    fun setupDatabaseAndInsertData() {
         context = ApplicationProvider.getApplicationContext()
-        // Create an in-memory database for testing
         database = Room.inMemoryDatabaseBuilder(context, HistoryDatabase::class.java)
             .allowMainThreadQueries()
             .build()
         trackedTopicDao = database.trackedTopicDao()
+        trackedTopic1 = TrackedTopic(
+            id = 1,
+            userId = "1f",
+            name = 2131492868,
+            dailyEffort = 3.0,
+            finalGoal = 70,
+            startingDate = "11/01/2025",
+            endingDate = "11/20/2025",
+            totalTimeSpent = 10,
+            weeklyTimeSpent = 0,
+            dailyTimeSpent = mapOf("Monday" to 3, "Tuesday" to 4, "Friday" to 3 )
+        )
+        trackedTopic2 = TrackedTopic(
+            id = 2,
+            userId = "1f",
+            name = 2131492869,
+            dailyEffort = 2.5,
+            finalGoal = 50,
+            startingDate = "12/01/2025",
+            endingDate = "12/20/2025",
+            totalTimeSpent = 15,
+            weeklyTimeSpent = 5,
+            dailyTimeSpent = mapOf("Wednesday" to 2, "Thursday" to 3)
+        )
+        trackedTopic3 = TrackedTopic(
+            id = 3,
+            userId = "2g",
+            name = 2131492871,
+            dailyEffort = 4.0,
+            finalGoal = 100,
+            startingDate = "01/01/2026",
+            endingDate = "01/30/2026",
+            totalTimeSpent = 20,
+            weeklyTimeSpent = 10,
+            dailyTimeSpent = mapOf("Monday" to 4, "Friday" to 6)
+        )
         testNavController = TestNavHostController(context)
         timerViewModel = TimerViewModel(trackedTopicDao)
         trackEntryViewModel = TrackEntryViewModel(trackedTopicDao)
@@ -145,7 +131,10 @@ class TrackEntryScreenTest {
     fun tearDown() {
         database.close()
     }
-
+    /**
+     * This test verifies that the screen correctly handles valid input,
+     * updates the database, and navigates to the relative StatisticsScreen.
+     */
     @Test
     fun testTrackEntryScreen_valid_Input_Submission_and_respectively_navigation() {
         startingDate = getCurrentDateFormatted()
@@ -200,6 +189,10 @@ class TrackEntryScreenTest {
         composeTestRule.onNodeWithContentDescription("Submit").performClick()
         assert(testNavController.currentBackStackEntry?.destination?.route == "statistics/${trackedTopic1.name}")
     }
+    /**
+     * This test verifies that the screen displays the correct error message
+     * when the user enters a daily effort value greater than the final goal.
+     */
     @Test
     fun correct_error_message_displayed_when_invalid_InputSubmission_with_dailyEffort_greaterThanFinalGoal() {
         startingDate = getCurrentDateFormatted()
@@ -232,6 +225,10 @@ class TrackEntryScreenTest {
         // Click the submit button
         composeTestRule.onNodeWithContentDescription("Submit").assertIsNotEnabled()
     }
+    /**
+     * This test verifies that the screen displays the correct error message
+     * when the user enters a daily effort value greater than 24.
+     */
     @Test
     fun correct_error_message_displayed_when_invalid_InputSubmission_with_dailyEffort_greaterThan24() {
         startingDate = getCurrentDateFormatted()
@@ -264,6 +261,10 @@ class TrackEntryScreenTest {
         // Click the submit button
         composeTestRule.onNodeWithContentDescription("Submit").assertIsNotEnabled()
     }
+    /**
+     * This test verifies that the screen displays the correct error message
+     * when the user selects a starting date that is greater than the ending date.
+     */
     @Test
     fun correct_error_message_displayed_when_invalid_InputSubmission_with_startingDate_greaterThanEndingDate() {
         startingDate = getCurrentDateFormatted()

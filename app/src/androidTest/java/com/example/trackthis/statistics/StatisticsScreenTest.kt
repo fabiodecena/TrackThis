@@ -29,17 +29,22 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+/**
+ * This class contains JUnit tests to verify the functionality of the [StatisticsScreen].
+ * It tests the UI elements displayed on the screen, the behavior when the tracked topic is null,
+ * the updating of chart data with database data, and the timer's value reflecting daily time spent.
+ */
 @RunWith(AndroidJUnit4::class)
 class StatisticsScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
-
     private lateinit var chartViewModel: ChartViewModel
     private lateinit var timerViewModel: TimerViewModel
     private lateinit var navController: TestNavHostController
@@ -76,7 +81,15 @@ class StatisticsScreenTest {
             trackedTopicDao.insert(trackedTopic)
         }
     }
-
+    @After
+    fun tearDown() {
+        database.close()
+    }
+    /**
+     * Tests that the StatisticsScreen displays the correct UI elements for a given tracked topic.
+     * It verifies that the topic name, minimum daily effort, progress, days of the week, timer,
+     * and control buttons (Pause, Stop, Refresh) are displayed.
+     */
     @Test
     fun statisticsScreen_displays_properly_UI_elements_of_relative_tracked_topic() {
         composeTestRule.setContent {
@@ -117,7 +130,10 @@ class StatisticsScreenTest {
             composeTestRule.onNodeWithText("Refresh").assertIsDisplayed()
         }
     }
-
+    /**
+     * Tests that the StatisticsScreen displays no content when the tracked topic is null.
+     * It verifies that the topic name is not displayed in this case.
+     */
     @Test
     fun statisticsScreen_no_Content_displayed_if_tracked_topic_is_null() {
         runTest {
@@ -141,6 +157,10 @@ class StatisticsScreenTest {
             composeTestRule.onNodeWithText(context.getString(trackedTopicDao.getAllItems().first().first().name)).assertIsNotDisplayed()
         }
     }
+    /**
+     * Tests that the chart data is updated with data from the database.
+     * It verifies that the chartViewModel's chartUiState contains the expected points data and daily effort list.
+     */
     @Test
     fun verify_chart_data_are_updated_with_database_data() = runTest {
         composeTestRule.setContent {
@@ -163,6 +183,10 @@ class StatisticsScreenTest {
         assert(chartViewModel.chartUiState.value.defaultPointsData == pointsData)
         assert(chartViewModel.chartUiState.value.dailyEffort == dailyEffortList)
     }
+    /**
+     * Tests that the timer value reflects the dailyTimeSpent value and updates after a delay.
+     * It verifies that the timer starts, runs for a specific duration, and updates its displayed value.
+     */
     @Test
     fun verify_timer_value_reflect_dailyTimeSpent_value_and_update_a_delay_input() = runTest {
         composeTestRule.setContent {

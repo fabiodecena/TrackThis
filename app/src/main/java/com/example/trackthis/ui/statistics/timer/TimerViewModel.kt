@@ -228,7 +228,6 @@ fun Long.formatTime(): String {
 }
 /**
  * Object responsible for scheduling a worker to reset data on Mondays.
- * This function is implemented out of the ViewModel class in order to be able to reach it easily
  */
 object WorkerScheduler {
     /**

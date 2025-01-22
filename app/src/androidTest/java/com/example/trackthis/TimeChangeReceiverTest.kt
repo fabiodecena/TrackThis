@@ -8,11 +8,17 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 
+/**
+ * [TimeChangeReceiverTest] is a test class for the [TimeChangeReceiver].
+ *
+ * This class tests the behavior of the `TimeChangeReceiver` when it receives
+ * different intents. It verifies that the `scheduleWorker` function is called
+ * when the receiver receives `ACTION_TIME_CHANGED` and `ACTION_TIMEZONE_CHANGED`
+ * intents, and that it is not called for other intents.
+ */
 @RunWith(AndroidJUnit4::class)
 class TimeChangeReceiverTest {
-
     private var workerCalled = false
-
     private val testScheduleWorker: (Context) -> Unit = {
         workerCalled = true
     }

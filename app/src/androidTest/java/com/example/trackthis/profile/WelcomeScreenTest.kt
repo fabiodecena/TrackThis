@@ -23,6 +23,13 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+/**
+ * This class contains JUnit tests to verify the functionality of the [WelcomeScreen].
+ * It tests the UI elements of the screen, such as the welcome text, username display,
+ * and navigation buttons. It also verifies the navigation to the registration and login screens
+ * when the respective buttons are clicked. Additionally, it tests the logout functionality,
+ * ensuring the logout button is displayed and triggers the logout action.
+ */
 @RunWith(AndroidJUnit4::class)
 class WelcomeScreenTest {
 
@@ -31,7 +38,6 @@ class WelcomeScreenTest {
     private val context = ApplicationProvider.getApplicationContext<Context>()
     private val testNavController = TestNavHostController(context)
     private val registrationViewModel = RegistrationViewModel()
-
 
     @Before
     fun setup() {
@@ -59,8 +65,12 @@ class WelcomeScreenTest {
             }
         }
     }
-
-
+    /**
+     * This Test verifies the presence of the welcome text, username display (or "User not Logged In"
+     * if no user is logged in), and the register button. It then simulates a click on the
+     * register button and asserts that the navigation controller has moved to the registration
+     * screen.
+     */
     @Test
     fun welcomeScreen_displays_UI_and_navigates_to_registration() {
         // Verify welcome text is displayed
@@ -84,6 +94,10 @@ class WelcomeScreenTest {
         // Verify navigation to Registration
         assert(testNavController.currentDestination?.route == NavigationItem.Registration.route)
     }
+    /**
+     * Test verifies the presence of the login button, simulates a click on it, and asserts
+     * that the navigation controller has moved to the login screen.
+     */
     @Test
     fun welcomeScreen_displays_UI_and_navigates_to_login() {
         // Verify login button is displayed and clickable
@@ -93,6 +107,12 @@ class WelcomeScreenTest {
         // Verify navigation to Login
         assert(testNavController.currentDestination?.route == NavigationItem.Login.route)
     }
+    /**
+     * Tests verifies the presence of the logout button, simulates a click on it, and asserts
+     * that the appropriate message is displayed based on the user's login status.
+     * If the user is logged in, it expects a "User is logged out" message.
+     * If the user is already logged out, it expects a "User is already logged out" message.
+     */
     @Test
     fun welcomeScreen_displays_logout_button_and_logs_out() {
         val state = registrationViewModel.registrationUiState.value

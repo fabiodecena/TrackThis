@@ -14,6 +14,11 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+/**
+ * This class contains JUnit tests to verify the functionality of the [RegistrationScreen].
+ * It ensures that the screen behaves as expected in different scenarios, such as successful input validation,
+ * invalid email input validation, and empty input validation.
+ */
 @RunWith(AndroidJUnit4::class)
 class RegistrationScreenTest {
 
@@ -21,7 +26,11 @@ class RegistrationScreenTest {
     val composeTestRule = createComposeRule()
     private val viewModel = RegistrationViewModel()
     private val uiState = viewModel.registrationUiState
-
+    /**
+     * This test verifies that the registration form is validated successfully when valid input is provided.
+     * It simulates user input for first name, last name, email, and password, and then asserts that
+     * the view model is updated correctly and the registration button is enabled.
+     */
     @Test
     fun successful_input_Validation() {
         composeTestRule.setContent {
@@ -44,6 +53,11 @@ class RegistrationScreenTest {
         composeTestRule.onNodeWithText("Register").assertIsEnabled()
         assert(uiState.value.isRegistrationFormValid)
     }
+    /**
+     * This test verifies that the registration form validation fails when an invalid email is provided.
+     * It simulates user input with an invalid email address and asserts that the view model is updated
+     * correctly and the registration button is not enabled.
+     */
     @Test
     fun invalid_email_input_Validation() {
         composeTestRule.setContent {
@@ -67,7 +81,10 @@ class RegistrationScreenTest {
         // Click the register button
         composeTestRule.onNodeWithText("Register").assertIsNotEnabled()
     }
-
+    /**
+     * This test verifies that the registration form validation fails when all input fields are empty.
+     * It asserts that the view model is initialized with empty values and the registration button is not enabled.
+     */
     @Test
     fun empty_input_Validation() {
         composeTestRule.setContent {

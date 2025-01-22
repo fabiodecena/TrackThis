@@ -17,7 +17,11 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
+/**
+ * This class contains JUnit tests to verify the functionality of the [SettingsScreen].
+ * It ensures that the screen displays the expected navigation items,
+ * and that the toggle selection behavior for active and inactive tracking sections works correctly.
+ */
 @RunWith(AndroidJUnit4::class)
 class SettingsScreenTest {
 
@@ -25,7 +29,13 @@ class SettingsScreenTest {
     val composeTestRule = createComposeRule()
     private val context = ApplicationProvider.getApplicationContext<Context>()
     private val topicListRepository = TopicListRepository(context)
-
+    /**
+     * Tests the following scenarios:
+     * 1. All navigation items are displayed on the SettingsScreen.
+     * 2. An active tracking element is displayed in the Active Tracking Section.
+     * 3. The same element is not displayed in the Inactive Tracking Section when active.
+     * 4. After an active topic is clicked, it is moved to and displayed in the Inactive Tracking Section.
+     */
     @Test
     fun settingsScreen_display_items_and_verify_toggle_selection() {
         runTest {

@@ -8,7 +8,16 @@ import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
+/**
+ * This class contains JUnit tests to verify the functionality of the `LoginViewModel`.
+ *
+ * These tests cover the following scenarios:
+ * - Updating the email address in the ViewModel should update the UI state accordingly.
+ * - Updating the password in the ViewModel should update the UI state accordingly.
+ * - When the email address is blank, the `isEmailError` flag in the UI state should be set to `true`.
+ * - When the password is blank, the `isPasswordError` flag in the UI state should be set to `true`.
+ * - When both the email address and password are not blank, the `isLoginFormValid` flag in the UI state should be set to `true`.
+ */
 @RunWith(AndroidJUnit4::class)
 class LoginViewModelTest {
     private val loginViewModel = LoginViewModel()

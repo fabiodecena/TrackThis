@@ -6,11 +6,18 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
+/**
+ * This class contains JUnit tests to verify the functionality of the `RegistrationViewModel`.
+ *
+ * These tests cover the following scenarios:
+ * - Updating the first name, last name, email, and password should be reflected in the UI state.
+ * - Input validation should correctly identify valid and invalid registration form inputs.
+ */
 class RegistrationViewModelTest {
     private val viewModel = RegistrationViewModel()
 
     @Test
-    fun updating_first_name_should_be_reflected_in_state() = runTest {
+    fun updating_first_name_should_be_reflected_in_UI_state() = runTest {
         viewModel.updateFirstName("John")
 
         val state = viewModel.registrationUiState.first()
@@ -18,7 +25,7 @@ class RegistrationViewModelTest {
     }
 
     @Test
-    fun updating_last_name_should_be_reflected_in_state() = runTest {
+    fun updating_last_name_should_be_reflected_in_UI_state() = runTest {
         viewModel.updateLastName("Doe")
 
         val state = viewModel.registrationUiState.first()
@@ -26,7 +33,7 @@ class RegistrationViewModelTest {
     }
 
     @Test
-    fun updating_email_should_be_reflected_in_state() = runTest {
+    fun updating_email_should_be_reflected_in_UI_state() = runTest {
         viewModel.updateEmail("john.doe@example.com")
 
         val state = viewModel.registrationUiState.first()
@@ -34,7 +41,7 @@ class RegistrationViewModelTest {
     }
 
     @Test
-    fun updating_password_should_be_reflected_in_state() = runTest {
+    fun updating_password_should_be_reflected_in_UI_state() = runTest {
         viewModel.updatePassword("password123")
 
         val state = viewModel.registrationUiState.first()

@@ -75,7 +75,7 @@ class MondayResetWorkerTest {
             TrackedTopic(
                 id = 1,
                 userId = "1f",
-                name = 123,
+                name = 2131492868,
                 dailyEffort = 3.0,
                 finalGoal = 70,
                 startingDate = "11/01/2025",
@@ -88,12 +88,9 @@ class MondayResetWorkerTest {
         val trackedTopic = trackedTopicDao.getAllItems().first().first()
         val localDate = LocalDate.of(2025, 1, 5) // Example: Set the date to a Monday
         val currentDayOfWeek = localDate.dayOfWeek
-        // Create request
         val request = OneTimeWorkRequestBuilder<MondayResetWorker>()
             .build()
         val workManager = WorkManager.getInstance(ApplicationProvider.getApplicationContext())
-        // Enqueue and wait for result. This also runs the Worker synchronously
-        // because we are using a SynchronousExecutor.
         workManager.enqueue(request).result.get()
         if (currentDayOfWeek == DayOfWeek.MONDAY) {
             assertThat(trackedTopic.weeklyTimeSpent, `is`(trackedTopic.totalTimeSpent))
@@ -107,27 +104,26 @@ class MondayResetWorkerTest {
     @Test
     @Throws(Exception::class)
     fun do_not_reset_data_and_not_save_total_time_spent_when_today_is_not_Monday() = runBlocking {
-        trackedTopicDao.insert(TrackedTopic(
-            id = 1,
-            userId = "1f",
-            name = 123,
-            dailyEffort = 3.0,
-            finalGoal = 70,
-            startingDate = "11/01/2025",
-            endingDate = "11/20/2025",
-            totalTimeSpent = 10,
-            weeklyTimeSpent = 0,
-            dailyTimeSpent = mapOf("Monday" to 3, "Tuesday" to 4, "Friday" to 3 )
-        ))
+        trackedTopicDao.insert(
+            TrackedTopic(
+                id = 1,
+                userId = "1f",
+                name = 2131492868,
+                dailyEffort = 3.0,
+                finalGoal = 70,
+                startingDate = "11/01/2025",
+                endingDate = "11/20/2025",
+                totalTimeSpent = 10,
+                weeklyTimeSpent = 0,
+                dailyTimeSpent = mapOf("Monday" to 3, "Tuesday" to 4, "Friday" to 3 )
+            )
+        )
         val trackedTopic = trackedTopicDao.getAllItems().first().first()
         val localDate = LocalDate.of(2025, 1, 4) // Example: Set the date to a Monday
         val currentDayOfWeek = localDate.dayOfWeek
-        // Create request
         val request = OneTimeWorkRequestBuilder<MondayResetWorker>()
             .build()
         val workManager = WorkManager.getInstance(ApplicationProvider.getApplicationContext())
-        // Enqueue and wait for result. This also runs the Worker synchronously
-        // because we are using a SynchronousExecutor.
         workManager.enqueue(request).result.get()
         if (currentDayOfWeek != DayOfWeek.MONDAY) {
             assertThat(trackedTopic.weeklyTimeSpent, `is`(0))

@@ -34,7 +34,6 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class HistoryScreenTest {
-
     @get:Rule
     val composeTestRule = createComposeRule()
     private lateinit var database: HistoryDatabase
@@ -45,79 +44,62 @@ class HistoryScreenTest {
     private lateinit var testNavController: TestNavHostController
     private lateinit var trackedTopics: List<TrackedTopic>
     private lateinit var context: Context
-
-    companion object {
-        private lateinit var staticTrackedTopicDao: TrackedTopicDao
-        private lateinit var trackedTopic1: TrackedTopic
-        private lateinit var trackedTopic2: TrackedTopic
-        private lateinit var trackedTopic3: TrackedTopic
-        /**
-         * Sets up the database and DAO before all tests.
-         * It creates an in-memory database to avoid affecting the actual database.
-         * It also inserts the tracked topics that will be used by the tests.
-         */
-        @BeforeClass
-        @JvmStatic
-        fun setupDatabaseAndInsertData() {
-            val context = ApplicationProvider.getApplicationContext<Context>()
-            val database = Room.inMemoryDatabaseBuilder(context, HistoryDatabase::class.java)
-                .allowMainThreadQueries()
-                .build()
-            staticTrackedTopicDao = database.trackedTopicDao()
-
-            trackedTopic1 = TrackedTopic(
-                id = 1,
-                userId = "1f",
-                name = 2131492946,
-                dailyEffort = 3.0,
-                finalGoal = 70,
-                startingDate = "11/01/2025",
-                endingDate = "11/20/2025",
-                totalTimeSpent = 10,
-                weeklyTimeSpent = 0,
-                dailyTimeSpent = mapOf("Monday" to 3, "Tuesday" to 4, "Friday" to 3 )
-            )
-            trackedTopic2 = TrackedTopic(
-                id = 2,
-                userId = "1f",
-                name = 2131492995,
-                dailyEffort = 2.5,
-                finalGoal = 50,
-                startingDate = "12/01/2025",
-                endingDate = "12/20/2025",
-                totalTimeSpent = 15,
-                weeklyTimeSpent = 5,
-                dailyTimeSpent = mapOf("Wednesday" to 2, "Thursday" to 3)
-            )
-            trackedTopic3 = TrackedTopic(
-                id = 3,
-                userId = "2g",
-                name = 2131492950,
-                dailyEffort = 4.0,
-                finalGoal = 100,
-                startingDate = "01/01/2026",
-                endingDate = "01/30/2026",
-                totalTimeSpent = 20,
-                weeklyTimeSpent = 10,
-                dailyTimeSpent = mapOf("Monday" to 4, "Friday" to 6)
-            )
-            runBlocking {
-                staticTrackedTopicDao.insert(trackedTopic1)
-                staticTrackedTopicDao.insert(trackedTopic2)
-                staticTrackedTopicDao.insert(trackedTopic3)
-            }
-        }
-    }
-
+    private lateinit var trackedTopic1: TrackedTopic
+    private lateinit var trackedTopic2: TrackedTopic
+    private lateinit var trackedTopic3: TrackedTopic
+    /**
+     * Sets up the database and DAO before all tests.
+     * It creates an in-memory database to avoid affecting the actual database.
+     * It also inserts the tracked topics that will be used by the tests.
+     */
     @Before
-    fun setup() {
+    fun setupDatabaseAndInsertData() {
         context = ApplicationProvider.getApplicationContext()
-        // Create an in-memory database for testing
         database = Room.inMemoryDatabaseBuilder(context, HistoryDatabase::class.java)
             .allowMainThreadQueries()
             .build()
-        @Transaction
         trackedTopicDao = database.trackedTopicDao()
+        trackedTopic1 = TrackedTopic(
+            id = 1,
+            userId = "1f",
+            name = 2131492868,
+            dailyEffort = 3.0,
+            finalGoal = 70,
+            startingDate = "11/01/2025",
+            endingDate = "11/20/2025",
+            totalTimeSpent = 10,
+            weeklyTimeSpent = 0,
+            dailyTimeSpent = mapOf("Monday" to 3, "Tuesday" to 4, "Friday" to 3 )
+        )
+        trackedTopic2 = TrackedTopic(
+            id = 2,
+            userId = "1f",
+            name = 2131492869,
+            dailyEffort = 2.5,
+            finalGoal = 50,
+            startingDate = "12/01/2025",
+            endingDate = "12/20/2025",
+            totalTimeSpent = 15,
+            weeklyTimeSpent = 5,
+            dailyTimeSpent = mapOf("Wednesday" to 2, "Thursday" to 3)
+        )
+        trackedTopic3 = TrackedTopic(
+            id = 3,
+            userId = "2g",
+            name = 2131492871,
+            dailyEffort = 4.0,
+            finalGoal = 100,
+            startingDate = "01/01/2026",
+            endingDate = "01/30/2026",
+            totalTimeSpent = 20,
+            weeklyTimeSpent = 10,
+            dailyTimeSpent = mapOf("Monday" to 4, "Friday" to 6)
+        )
+        runBlocking {
+            trackedTopicDao.insert(trackedTopic1)
+            trackedTopicDao.insert(trackedTopic2)
+            trackedTopicDao.insert(trackedTopic3)
+        }
         testNavController = TestNavHostController(context)
         trackEntryViewModel = TrackEntryViewModel(trackedTopicDao)
         timerViewModel = TimerViewModel(trackedTopicDao)
@@ -152,6 +134,7 @@ class HistoryScreenTest {
         composeTestRule.onNodeWithText(context.getString(trackedTopic2.name)).assertIsDisplayed()
         composeTestRule.onNodeWithText(context.getString(trackedTopic3.name)).assertIsDisplayed()
     }
+
     @Test
     fun historyScreen_click_on_Topic_navigates_to_Statistics_Screen() {
         // Initialize the NavController with a programmatically defined NavGraph
@@ -184,10 +167,8 @@ class HistoryScreenTest {
                 }
             }
         }
-
-        // Simulate a click on the "Design" Topic with string resource ID 2131492946
+        // Simulate a click on the "Architecture" Topic with string resource ID 2131492868
         composeTestRule.onNodeWithText(context.getString(trackedTopic1.name)).performClick()
-
         // Verify that the navigation occurred
         assertEquals("statistics_screen/${trackedTopic1.name}", testNavController.currentDestination?.route)
     }
@@ -216,8 +197,7 @@ class HistoryScreenTest {
                 }
             }
         }
-
-        // Simulate a click on the "Design" Topic with string resource ID 2131492946
+        // Simulate a click on the "Architecture" Topic with string resource ID 2131492868
         composeTestRule.onNodeWithText(context.getString(trackedTopic1.name)).performClick()
         // Verify that the Toast is displayed
         composeTestRule.onNodeWithText("The Timer is Running! Navigation between Topics is Disabled!!!").isDisplayed()

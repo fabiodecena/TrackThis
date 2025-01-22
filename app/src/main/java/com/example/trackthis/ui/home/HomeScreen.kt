@@ -184,7 +184,7 @@ fun TopicCard(
                     text =
                     if (enabled) {
                         buildAnnotatedString {
-                            append("Start to Track your Progress about ")/*TODO change string*/
+                            append("Start to Track your Progress about ")
                             withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                                 append(stringResource(id = topic.name))
                             }
@@ -194,7 +194,7 @@ fun TopicCard(
                             withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                                 append(stringResource(id = topic.name))
                             }
-                            append(" is already being tracked!!!")/*TODO change string*/
+                            append(" is already being tracked!!!")
                         }
                     },
                     textAlign = TextAlign.Left,

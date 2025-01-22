@@ -17,16 +17,16 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
- * This class contains JUnit tests to verify the functionality of the [TrackEntryViewModel].
- * This Unit tests are located within the androidTest folder to maintain a clean overview.
- * It tests the validation of user inputs, specifically:
- * - Daily effort cannot be greater than the final goal.
- * - Daily effort cannot be greater than 24 hours.
- * - Starting date cannot be greater than the ending date.
- * It also tests the following database operations managed by the [TrackEntryViewModel]:
- * - Adding a new tracked topic.
- * - Retrieving all tracked topics by user ID.
- * - Deleting a tracked topic.
+ * These tests verify the behavior of the TrackEntryViewModel.
+ *
+ * The tests cover the following scenarios:
+ * - Validating user inputs for daily effort, final goal, and start/end dates.
+ * - Adding a new tracked topic to the database.
+ * - Retrieving all tracked topics for a specific user.
+ * - Deleting a tracked topic from the database.
+ *
+ * The tests use an in-memory database to ensure that they are isolated and do not affect the
+ * actual application data.
  */
 @RunWith(AndroidJUnit4::class)
 class TrackEntryViewModelTest {
@@ -50,8 +50,12 @@ class TrackEntryViewModelTest {
     fun tearDown() {
         database.close()
     }
+
+    /**
+     * Tests that the ViewModel correctly identifies an invalid daily effort that is greater than the final goal.
+     */
     @Test
-    fun testValidateInputs_invalidDailyEffortGreaterThanFinalGoal() = runBlocking {
+    fun test_Validate_Inputs_invalid_DailyEffortGreaterThanFinalGoal() = runBlocking {
         trackEntryViewModel.updateDailyEffort("15")
         trackEntryViewModel.updateFinalGoal("10")
         trackEntryViewModel.updateStartingDate("01/15/2025")
@@ -64,9 +68,11 @@ class TrackEntryViewModelTest {
         Assert.assertFalse(state.isDateError)
         Assert.assertFalse(state.isFormValid)
     }
-
+    /**
+     * Tests that the ViewModel correctly identifies an invalid daily effort that is greater than 24 hours.
+     */
     @Test
-    fun testValidateInputs_invalidDailyEffortGreaterThan24() = runBlocking {
+    fun test_Validate_Inputs_invalid_DailyEffortGreaterThan24() = runBlocking {
         trackEntryViewModel.updateDailyEffort("25")
         trackEntryViewModel.updateFinalGoal("50")
         trackEntryViewModel.updateStartingDate("01/15/2025")
@@ -79,9 +85,11 @@ class TrackEntryViewModelTest {
         Assert.assertFalse(state.isDateError)
         Assert.assertFalse(state.isFormValid)
     }
-
+    /**
+     * Tests that the ViewModel correctly identifies an invalid starting date that is greater than the ending date.
+     */
     @Test
-    fun testValidateInputs_invalidStartingDateGreaterThanEndingDate() = runBlocking {
+    fun test_Validate_Inputs_invalid_StartingDateGreaterThanEndingDate() = runBlocking {
         trackEntryViewModel.updateDailyEffort("5")
         trackEntryViewModel.updateFinalGoal("20")
         trackEntryViewModel.updateStartingDate("01/25/2025")
@@ -94,7 +102,12 @@ class TrackEntryViewModelTest {
         Assert.assertTrue(state.isDateError)
         Assert.assertFalse(state.isFormValid)
     }
-
+    /**
+     * Tests the following functions of the ViewModel:
+     * - addNewItem()
+     * - retrieveAllItemsByUserId()
+     * - deleteItem()
+     */
     @Test
     fun test_AddNewItem_RetrieveAllItemsByUserId_and_DeleteItem_functions() = runBlocking {
         val trackedTopic = TrackedTopic(
