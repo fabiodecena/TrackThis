@@ -43,7 +43,7 @@ data class TrackedTopic(
     val endingDate: String,
     @ColumnInfo(name = "time_spent")
     val totalTimeSpent: Int,
-    @ColumnInfo(name = "index")
+    @ColumnInfo(name = "weekly_time_spent")
     val weeklyTimeSpent: Int,
     @ColumnInfo(name = "daily_time_spent")
     val dailyTimeSpent: Map<String, Long> = emptyMap()

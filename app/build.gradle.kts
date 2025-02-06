@@ -5,6 +5,7 @@ plugins {
     id("com.google.devtools.ksp") version "1.9.10-1.0.13"
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+    id("org.jetbrains.dokka") version "2.0.0"
     kotlin("plugin.serialization") version "2.1.0"
 }
 

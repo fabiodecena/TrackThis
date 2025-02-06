@@ -230,20 +230,9 @@ fun Long.formatTime(): String {
  * Object responsible for scheduling a worker to reset data on Mondays.
  */
 object WorkerScheduler {
-    /**
-     * Schedules a worker to reset data on Mondays.
-     *
-     * This function calculates the initial delay until midnight and then schedules a periodic
-     * [MondayResetWorker] to run every 24 hours, starting at midnight on Monday to reset data
-     * and reset timer value daily.
-     *
-     * @param context The application context.
-     */
     fun scheduleMondayResetWorker(context: Context) {
         val initialDelay = calculateInitialDelayToMidnight()
-
         WorkManager.getInstance(context).cancelUniqueWork("MondayResetWorker")
-
         val workRequest = PeriodicWorkRequestBuilder<MondayResetWorker>(initialDelay, TimeUnit.MILLISECONDS)
             .setConstraints(
                 Constraints.Builder()
@@ -252,14 +241,12 @@ object WorkerScheduler {
                     .build()
             )
             .build()
-
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             "MondayResetWorker",
             ExistingPeriodicWorkPolicy.UPDATE,
             workRequest
         )
     }
-
     private fun calculateInitialDelayToMidnight(): Long {
         val now = LocalDateTime.now(ZoneId.systemDefault())
         val nextDay = now.plusDays(1)

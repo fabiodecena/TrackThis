@@ -77,37 +77,41 @@ fun Navigation(
             val topic = listOfVisualizedTopicListItem.find { it.name == topicId }
             topic?.let {
                 TrackEntryScreen(
-                    topic = topic, navController = navController,
-                    timerViewModel = timerViewModel, trackEntryViewModel = trackEntryViewModel
+                    topic = topic,
+                    navController = navController,
+                    timerViewModel = timerViewModel,
+                    trackEntryViewModel = trackEntryViewModel
                 )
             }
         }
-
-            composable(NavigationItem.Statistics.route) {
+        composable(NavigationItem.Statistics.route) {
+            StatisticsScreen(
+                chartViewModel = chartViewModel,
+                timerViewModel = timerViewModel,
+                navController = navController,
+                topic = null
+            )
+        }
+        composable(
+            route = "${NavigationItem.Statistics.route}/{topicId}",
+            arguments = listOf(navArgument("topicId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val topicId = backStackEntry.arguments?.getInt("topicId")
+            val topic = trackedTopics.find { it.name == topicId }
+            timerViewModel.setTopic(topic)
+            topic?.let {
                 StatisticsScreen(
-                    chartViewModel = chartViewModel, timerViewModel = timerViewModel,
+                    chartViewModel = chartViewModel,
+                    timerViewModel = timerViewModel,
                     navController = navController,
-                    topic = null
+                    topic = topic
                 )
             }
-            composable(
-                route = "${NavigationItem.Statistics.route}/{topicId}",
-                arguments = listOf(navArgument("topicId") { type = NavType.IntType })
-            ) { backStackEntry ->
-                val topicId = backStackEntry.arguments?.getInt("topicId")
-                val topic = trackedTopics.find { it.name == topicId }
-                timerViewModel.setTopic(topic)
-                topic?.let {
-                    StatisticsScreen(
-                        chartViewModel = chartViewModel, timerViewModel = timerViewModel,
-                        navController = navController,
-                        topic = topic
-                    )
-                }
-            }
+        }
         composable(NavigationItem.History.route) {
             HistoryScreen(
-                trackEntryViewModel = trackEntryViewModel, timerViewModel = timerViewModel,
+                trackEntryViewModel = trackEntryViewModel,
+                timerViewModel = timerViewModel,
                 trackedTopics = trackedTopics,
                 navigateOnSelectedClick = { topicId ->
                     navController.navigate("${NavigationItem.Statistics.route}/$topicId")

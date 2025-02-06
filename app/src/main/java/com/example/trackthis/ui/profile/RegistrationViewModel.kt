@@ -88,9 +88,7 @@ class RegistrationViewModel : ViewModel() {
      */
     private fun createUserInFirebase(email: String, password: String, context: Context) {
         val auth = FirebaseAuth.getInstance()
-
         auth.setLanguageCode(Locale.getDefault().language)
-
         auth
             .createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
