@@ -4,11 +4,14 @@ import android.content.Context
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasNoClickAction
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.printToLog
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -176,6 +179,8 @@ class TrackEntryScreenTest {
 
         // Open and select a starting date
         composeTestRule.onNodeWithText(context.getString(R.string.starting_date)).performClick()
+        composeTestRule.onAllNodes(hasClickAction()).printToLog("Clickable")
+        composeTestRule.onAllNodes(hasNoClickAction()).printToLog("Not Clickable")
         composeTestRule.onNodeWithText(startingDate).performClick()
         composeTestRule.onNodeWithText("OK").performClick()
 
@@ -295,12 +300,12 @@ class TrackEntryScreenTest {
 }
 
 fun getCurrentDateFormatted(): String {
-    val dateFormat = SimpleDateFormat("EEEE, MMMM dd, yyyy", Locale.ENGLISH)
+    val dateFormat = SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.ENGLISH)
     val currentDate = Date()
     return "Today, ${dateFormat.format(currentDate)}"
 }
 fun getEndingDateFormatted(): String {
-    val dateFormat = SimpleDateFormat("EEEE, MMMM dd, yyyy", Locale.ENGLISH)
+    val dateFormat = SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.ENGLISH)
     val calendar = Calendar.getInstance()
     calendar.time = Date()
     calendar.add(Calendar.DAY_OF_YEAR, 1) // Add one day
